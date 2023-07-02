@@ -35,6 +35,7 @@ git2 = "^0.18"
 gnostr-types = "0.7.1-unstable"
 hex = "0.4"
 http = "0.2"
+insta.workspace = true
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 nip44 = { package = "gnip44", git = "https://github.com/gnostr-org/gnip44", version = "0.1.1" }
 num-bigint = "0.4.4"

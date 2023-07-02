@@ -7,7 +7,7 @@
 ![](./gnostr-bins-make.png)
 
 #### Usage:
-#### In context of other gnostr utilites
+#### In context of other gnostr utilities
 
 ```
 gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) \
