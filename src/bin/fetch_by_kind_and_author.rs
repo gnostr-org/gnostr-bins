@@ -31,7 +31,7 @@ fn main() {
         .. Default::default()
     };
 
-    for event in nostr_bins::fetch_by_filter(&relay_url, filter) {
-        nostr_bins::print_event(&event);
+    for event in gnostr_bins::fetch_by_filter(&relay_url, filter) {
+        gnostr_bins::print_event(&event);
     }
 }
