@@ -1,6 +1,7 @@
 
 use base64::Engine;
 use http::Uri;
+use nostr_types::RelayMessageV3;
 use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use tungstenite::protocol::Message;
 
@@ -54,7 +55,7 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
                 let relay_message: RelayMessage =
                     serde_json::from_str(&s).expect(&s);
                 match relay_message {
-                    RelayMessage::Closed(_, _) => todo!(),
+                    RelayMessageV3::Closed(_, _) => todo!(),
                     RelayMessage::Event(_, e) => events.push(*e),
                     RelayMessage::Notice(s) => println!("NOTICE: {}", s),
                     RelayMessage::Eose(_) => {
@@ -143,7 +144,7 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
                 RelayMessage::Eose(_) => println!("EOSE"),
                 RelayMessage::Ok(_id, ok, reason) => println!("OK: ok={} reason={}", ok, reason),
                 RelayMessage::Auth(challenge) => println!("AUTH: {}", challenge),
-                RelayMessage::Closed(_, _) => todo!(),
+                RelayMessageV3::Closed(_, _) => todo!(),
             }
         }
         Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),
