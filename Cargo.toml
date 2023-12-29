@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "Binaries for gnostr"
@@ -15,8 +15,9 @@ git = "https://github.com/mikedilger/nip44"
 rev = "e38717f86ccccb91c25ebf07881a77d66411161c"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/mikedilger/nostr-types"]
+[source."git+https://github.com/mikedilger/nostr-types?rev=a7aabd3de577de87f2bf8034b24b490e4ba0aa02"]
 git = "https://github.com/mikedilger/nostr-types"
+rev = "a7aabd3de577de87f2bf8034b24b490e4ba0aa02"
 replace-with = "vendored-sources"
 
 [source.vendored-sources]
