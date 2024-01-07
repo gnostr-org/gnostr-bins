@@ -1,4 +1,5 @@
-/target
+!target/doc
+target
 **.DS_Store
 
 ##vendor
