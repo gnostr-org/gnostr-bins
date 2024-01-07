@@ -23,16 +23,22 @@
 <a href="#22" id="22">22</a>
 <a href="#23" id="23">23</a>
 <a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
 </pre></div><pre class="rust"><code>
 <span class="kw">use </span>std::env;
 <span class="kw">use </span>nostr_types::IdHex;
 
 <span class="kw">fn </span>main() {
-    <span class="kw">let </span><span class="kw-2">mut </span>args = env::args();
+
+  <span class="comment">//gnostr-fetch-by-id wss://relay.damus.io fc7aeb54b43215bff5b561bf59fb72128e36d67ef1092ba9c8ca7cdcfc68a439
+
+    </span><span class="kw">let </span><span class="kw-2">mut </span>args = env::args();
     <span class="kw">let _ </span>= args.next(); <span class="comment">// program name
     </span><span class="kw">let </span>relay_url = <span class="kw">match </span>args.next() {
         <span class="prelude-val">Some</span>(u) =&gt; u,
-        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Usage: fetch_by_id &lt;RelayURL&gt; &lt;EventID&gt;"</span>),
+        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Usage:\ngnostr-fetch-by-id &lt;RelayURL&gt; &lt;EventID&gt;"</span>),
     };
     <span class="kw">let </span>id = <span class="kw">match </span>args.next() {
         <span class="prelude-val">Some</span>(id) =&gt; id,

@@ -19,23 +19,35 @@
 <a href="#18" id="18">18</a>
 <a href="#19" id="19">19</a>
 <a href="#20" id="20">20</a>
+<a href="#21" id="21">21</a>
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
 </pre></div><pre class="rust"><code>
 <span class="kw">use </span>std::env;
 <span class="kw">use </span>std::io::Read;
 <span class="kw">use </span>nostr_types::Event;
 
 <span class="kw">fn </span>main() {
-    <span class="kw">let </span><span class="kw-2">mut </span>args = env::args();
+
+<span class="comment">// gnostr --sec $(gnostr-sha256) --content 'test'  | gnostr-post-event wss://relay.damus.io
+// gnostr --sec $(gnostr-sha256) --content "$(gnostr-git show HEAD)" | gnostr-post-event wss://relay.damus.io
+    </span><span class="kw">let </span><span class="kw-2">mut </span>args = env::args();
     <span class="kw">let _ </span>= args.next(); <span class="comment">// program name
     </span><span class="kw">let </span>relay_url = <span class="kw">match </span>args.next() {
         <span class="prelude-val">Some</span>(u) =&gt; u,
-        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Usage: fetch_by_id &lt;RelayURL&gt; &lt; EventJSON"</span>),
+        <span class="prelude-val">None </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Usage:\ngnostr --sec $(gnostr-sha256) --content 'test'  | gnostr-post-event wss://relay.damus.io\ngnostr --sec $(gnostr-sha256) --content \"$(gnostr-git show HEAD)\" | gnostr-post-event wss://relay.damus.io"</span>),
     };
 
     <span class="kw">let </span><span class="kw-2">mut </span>s: String = String::new();
     std::io::stdin().read_to_string(<span class="kw-2">&amp;mut </span>s).unwrap();
 
-    <span class="kw">let </span>event: Event = serde_json::from_str(<span class="kw-2">&amp;</span>s).unwrap();
+    <span class="macro">println!</span>(<span class="string">"{}"</span>, s);<span class="comment">//TODO:write event to .gnostr/EVENT_HASH.event
+
+// TODO: detect { EVENT: } envelope
+    </span><span class="kw">let </span>event: Event = serde_json::from_str(<span class="kw-2">&amp;</span>s).unwrap();
 
     gnostr_bins::post_event(<span class="kw-2">&amp;</span>relay_url, event);
 }
