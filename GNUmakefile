@@ -13,12 +13,12 @@ rustup-install:rustup-install-stable## 	rustup-install
 rustup-install-stable:## 	rustup-install-stable
 ##rustup-install-stable:
 ##	install rustup && rustup default stable
-	$(shell echo which rustup) || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain stable --profile default && . "$(HOME)/.cargo/env"
+	$(shell echo which rustup) || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain stable --profile default && . "$(HOME)/.cargo/env" || true
 	$(shell echo which rustup) && rustup default stable
 rustup-install-nightly:## 	rustup-install-nightly
 ##rustup-install-nightly:
 ##	install rustup && rustup default nightly
-	$(shell echo which rustup) || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain nightly --profile default && . "$(HOME)/.cargo/env"
+	$(shell echo which rustup) || curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain nightly --profile default && . "$(HOME)/.cargo/env" || true
 	$(shell echo which rustup) && rustup default nightly
 
 cargo-b:## 	cargo-b

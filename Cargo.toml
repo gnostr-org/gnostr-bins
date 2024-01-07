@@ -1,9 +1,9 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
-description = "Binaries for gnostr"
+description = "gnostr-bins: part of the gnostr workflow commands"
 repository = "https://github.com/gnostr-org/gnostr-bins"
 documentation = "https://docs.rs/gnostr-bins"
 readme = "README.md"
