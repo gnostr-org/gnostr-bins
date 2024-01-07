@@ -26,14 +26,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: ["latest", "slim-buster", "slim-bullseye", "slim-bookwork"]
+        tag: ["latest", "slim-buster", "slim-bullseye", "slim-bookworm"]
 
     container: rust:${{ matrix.tag }}
 
     steps:
       ## notice: this is a pre checkout step
       ## notice: additional operations can be done prior to checkout
-      - run: apk update && apk add bash cmake git python3 && python3 -m ensurepip
+      ## - run: apk update && apk add bash cmake git python3 && python3 -m ensurepip
+      - run: apt-get update && apt-get install git make -y
       - run: printenv
       - name: checkout@v3 fetch-depth submodules set-safe-dir true
         uses: actions/checkout@v3
@@ -42,13 +43,6 @@ jobs:
           submodules: 'true'
           set-safe-directory: 'true'
       ## notice: these are post checkout steps
-      - run: apk update && apk add autoconf automake build-base openssl-dev libtool make
+      ## - run: apk update && apk add autoconf automake build-base openssl-dev libtool make
       - run: touch ~/GITHUB_TOKEN.txt
-      - run: rm CMakeCache.txt || echo && cmake .
       - run: make
-      - run: make help
-      - run: make libsecp256k1.a || rm -rf deps/secp256k1 && make libsecp256k1.a
-      - run: make gnostr || rm gnostr && make gnostr
-      - run: make gnostr-install
-      ## TODO: add ssh config to act sequence
-      - run: rm -rf .venv
