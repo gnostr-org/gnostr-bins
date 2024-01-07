@@ -47,3 +47,4 @@ jobs:
       - run: touch ~/GITHUB_TOKEN.txt
       - run: make
       - run: make cargo-b-release
+      - run: make cargo-i
