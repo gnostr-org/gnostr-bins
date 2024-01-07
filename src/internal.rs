@@ -91,7 +91,7 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
             }
             Message::Pong(_) => println!("IGNORING PONG"),
             Message::Close(_) => {
-                println!("Closing");
+                //println!("Closing");
                 break;
             }
             Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),
@@ -153,7 +153,7 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
         }
         Message::Pong(_) => println!("IGNORING PONG"),
         Message::Close(_) => {
-            println!("Closing");
+            //println!("Closing");
             return;
         }
         Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),
