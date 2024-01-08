@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "gnostr-bins: part of the gnostr workflow commands"
@@ -18,7 +18,7 @@ replace-with = "vendored-sources"
 
 [source."git+https://github.com/mikedilger/nostr-types?rev=a7aabd3de577de87f2bf8034b24b490e4ba0aa02"]
 git = "https://github.com/mikedilger/nostr-types"
-version = "0.0.0"
+version = "0.7.0-unstable"
 rev = "a7aabd3de577de87f2bf8034b24b490e4ba0aa02"
 replace-with = "vendored-sources"
 
@@ -31,7 +31,7 @@ bech32 = "0.9"
 hex = "0.4"
 http = "0.2"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
-nostr-types = { git = "https://github.com/mikedilger/nostr-types", version = "0.0.0" }
+nostr-types = { git = "https://github.com/mikedilger/nostr-types", version = "0.7.0-unstable" }
 rand = "0.8"
 rand_core = "0.6"
 reqwest = { version = "0.11", default-features = false, features = [ "blocking", "json", "rustls-tls-webpki-roots"  ] }
