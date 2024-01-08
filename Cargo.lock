@@ -490,15 +490,31 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4271d37baee1b8c7e4b708028c57d816cf9d2434acb33a549475f78c181f6253"
 
 [[package]]
+name = "gnip44"
+version = "0.1.1"
+source = "git+https://github.com/gnostr-org/gnip44#0d4bbc3359973d9daa216676a3fa15584f62797e"
+dependencies = [
+ "base64 0.21.5",
+ "chacha20",
+ "constant_time_eq",
+ "hkdf",
+ "hmac",
+ "rand_core",
+ "secp256k1 0.28.1",
+ "sha2",
+ "thiserror",
+]
+
+[[package]]
 name = "gnostr-bins"
 version = "0.0.4"
 dependencies = [
  "base64 0.21.5",
  "bech32",
+ "gnostr-types",
  "hex",
  "http",
  "k256",
- "nostr-types",
  "rand",
  "rand_core",
  "reqwest",
@@ -506,6 +522,43 @@ dependencies = [
  "serde",
  "serde_json",
  "tungstenite",
+ "zeroize",
+]
+
+[[package]]
+name = "gnostr-types"
+version = "0.7.1-unstable"
+source = "git+https://github.com/gnostr-org/gnostr-types#4334e7f24e8a9dda8ee45a42e5e91441af0fd38a"
+dependencies = [
+ "aes",
+ "base64 0.21.5",
+ "bech32",
+ "cbc",
+ "chacha20",
+ "chacha20poly1305",
+ "core-net",
+ "derive_more",
+ "gnip44",
+ "hex",
+ "hmac",
+ "http",
+ "inout",
+ "lazy_static",
+ "lightning-invoice",
+ "linkify",
+ "num_cpus",
+ "pbkdf2",
+ "rand",
+ "rand_core",
+ "regex",
+ "scrypt",
+ "secp256k1 0.28.1",
+ "serde",
+ "serde_json",
+ "sha2",
+ "thiserror",
+ "thread-priority",
+ "url",
  "zeroize",
 ]
 
@@ -798,59 +851,6 @@ dependencies = [
  "libc",
  "wasi",
  "windows-sys",
-]
-
-[[package]]
-name = "nip44"
-version = "0.1.0"
-source = "git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14#e6ab1bc4480fd53aa854814bbacacf200c51af14"
-dependencies = [
- "base64 0.21.5",
- "chacha20",
- "constant_time_eq",
- "hkdf",
- "hmac",
- "rand_core",
- "secp256k1 0.28.1",
- "sha2",
- "thiserror",
-]
-
-[[package]]
-name = "nostr-types"
-version = "0.7.0-unstable"
-source = "git+https://github.com/mikedilger/nostr-types#d0a538e00724c242f15572b49fd35014661cbfaf"
-dependencies = [
- "aes",
- "base64 0.21.5",
- "bech32",
- "cbc",
- "chacha20",
- "chacha20poly1305",
- "core-net",
- "derive_more",
- "hex",
- "hmac",
- "http",
- "inout",
- "lazy_static",
- "lightning-invoice",
- "linkify",
- "nip44",
- "num_cpus",
- "pbkdf2",
- "rand",
- "rand_core",
- "regex",
- "scrypt",
- "secp256k1 0.28.1",
- "serde",
- "serde_json",
- "sha2",
- "thiserror",
- "thread-priority",
- "url",
- "zeroize",
 ]
 
 [[package]]
