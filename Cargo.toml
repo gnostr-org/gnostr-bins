@@ -10,20 +10,20 @@ readme = "README.md"
 keywords = [ "nostr", "gnostr", "git"]
 license = "MIT"
 
-[source."git+https://github.com/mikedilger/nip44?rev=e38717f86ccccb91c25ebf07881a77d66411161c"]
-git = "https://github.com/mikedilger/nip44"
-version = "0.1.0"
-rev = "e38717f86ccccb91c25ebf07881a77d66411161c"
-replace-with = "vendored-sources"
-
-[source."git+https://github.com/mikedilger/nostr-types?rev=a7aabd3de577de87f2bf8034b24b490e4ba0aa02"]
-git = "https://github.com/mikedilger/nostr-types"
-version = "0.7.0-unstable"
-rev = "a7aabd3de577de87f2bf8034b24b490e4ba0aa02"
-replace-with = "vendored-sources"
-
-[source.vendored-sources]
-directory = "vendor"
+## [source."git+https://github.com/gnostr-org/nip44?rev=e38717f86ccccb91c25ebf07881a77d66411161c"]
+## git = "https://github.com/mikedilger/nip44"
+## version = "0.1.0"
+## rev = "e38717f86ccccb91c25ebf07881a77d66411161c"
+## replace-with = "vendored-sources"
+##
+## [source."git+https://github.com/gnostr-org/gnostr-types?rev=c9f82eb8935c51d912dcbada79c8990029114930"]
+## git = "https://github.com/mikedilger/nostr-types"
+## version = "0.7.0-unstable"
+## rev = "a7aabd3de577de87f2bf8034b24b490e4ba0aa02"
+## replace-with = "vendored-sources"
+##
+## [source.vendored-sources]
+## directory = "vendor"
 
 [dependencies]
 base64 = "0.21"
