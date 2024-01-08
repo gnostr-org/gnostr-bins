@@ -42,4 +42,6 @@ cargo-i:## 	cargo-i
 ##cargo install
 	[ -x "$(shell command -v $(RUSTC))" ] || $(MAKE) rustup-install-stable
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) install --force --path .
+cargo-publish:## cargo publish
+	cargo publish --registry crates-io
 -include Makefile
