@@ -1,4 +1,6 @@
 !target/doc
+target/package
+
 **.DS_Store
 
 #target
