@@ -31,7 +31,7 @@ bech32 = "0.9"
 hex = "0.4"
 http = "0.2"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
-nostr-types = { git = "https://github.com/mikedilger/nostr-types", version = "0.7.0-unstable" }
+nostr-types = { git = "https://github.com/gnostr-org/gnostr-types", version = "0.7.0-unstable" }
 #nostr-types = { version = "0.4.0" }
 rand = "0.8"
 rand_core = "0.6"
