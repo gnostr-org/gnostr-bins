@@ -12,7 +12,7 @@ fn main() {
     let _ = args.next(); // program name
     let relay_url = match args.next() {
         Some(u) => u,
-        None => panic!("Usage:\ngnostr --sec $(gnostr-sha256) --content 'test'  | gnostr-post-event wss://relay.damus.io\ngnostr --sec $(gnostr-sha256) --content \"$(gnostr-git show HEAD)\ngnostr --sec $(gnostr-sha256) --content "$(gnostr-git-reflog -gd)" | gnostr-post-event wss://relay.damus.io" | gnostr-post-event wss://relay.damus.io"),
+        None => panic!("Usage:\ngnostr --sec $(gnostr-sha256) --content 'test'  | gnostr-post-event wss://relay.damus.io\ngnostr --sec $(gnostr-sha256) --content \"$(gnostr-git show HEAD)\ngnostr --sec $(gnostr-sha256) --content \"$(gnostr-git-reflog -gd)\" | gnostr-post-event wss://relay.damus.io | gnostr-post-event wss://relay.damus.io"),
     };
 
     let mut s: String = String::new();
