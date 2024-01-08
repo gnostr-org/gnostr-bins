@@ -13,11 +13,11 @@
 edition = "2021"
 rust-version = "1.65"
 name = "k256"
-version = "0.13.1"
+version = "0.13.2"
 authors = ["RustCrypto Developers"]
 description = """
 secp256k1 elliptic curve library written in pure Rust with support for ECDSA
-signing/verification/public-key recovery, Taproot Schnorr signatures,
+signing/verification/public-key recovery, Taproot Schnorr signatures (BIP340),
 Elliptic Curve Diffie-Hellman (ECDH), and general-purpose secp256k1 elliptic
 curve group operations which can be used to implement arbitrary protocols
 """
@@ -70,14 +70,14 @@ harness = false
 version = "1.0"
 
 [dependencies.ecdsa-core]
-version = "0.16"
+version = "0.16.8"
 features = ["der"]
 optional = true
 default-features = false
 package = "ecdsa"
 
 [dependencies.elliptic-curve]
-version = "0.13"
+version = "0.13.7"
 features = [
     "hazmat",
     "sec1",
@@ -89,7 +89,7 @@ version = "0.4"
 optional = true
 
 [dependencies.once_cell]
-version = "1.17"
+version = "1.18"
 optional = true
 default-features = false
 
@@ -111,7 +111,7 @@ optional = true
 version = "0.3"
 
 [dev-dependencies.criterion]
-version = "0.4"
+version = "0.5"
 
 [dev-dependencies.ecdsa-core]
 version = "0.16"
@@ -129,7 +129,7 @@ version = "0.4"
 version = "0.2"
 
 [dev-dependencies.proptest]
-version = "1.1"
+version = "1.4"
 
 [dev-dependencies.rand_core]
 version = "0.6"

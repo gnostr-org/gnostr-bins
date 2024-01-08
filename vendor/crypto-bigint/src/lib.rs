@@ -152,10 +152,12 @@
 //! [`Sub`]: core::ops::Sub
 
 #[cfg(feature = "alloc")]
+#[allow(unused_imports)]
+#[macro_use]
 extern crate alloc;
 
 #[macro_use]
-mod nlimbs;
+mod macros;
 
 #[cfg(feature = "generic-array")]
 mod array;

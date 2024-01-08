@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.65"
 name = "crypto-bigint"
-version = "0.5.3"
+version = "0.5.5"
 authors = ["RustCrypto Developers"]
 description = """
 Pure Rust implementation of a big integer library which has been designed from
