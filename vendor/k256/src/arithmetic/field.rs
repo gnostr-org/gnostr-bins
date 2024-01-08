@@ -38,6 +38,7 @@ use core::{
 };
 use elliptic_curve::{
     ff::{self, Field, PrimeField},
+    ops::Invert,
     rand_core::RngCore,
     subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption},
     zeroize::DefaultIsZeroes,
@@ -245,6 +246,14 @@ impl FieldElement {
     }
 }
 
+impl Invert for FieldElement {
+    type Output = CtOption<Self>;
+
+    fn invert(&self) -> CtOption<Self> {
+        self.invert()
+    }
+}
+
 impl Field for FieldElement {
     const ZERO: Self = Self::ZERO;
     const ONE: Self = Self::ONE;
@@ -323,6 +332,7 @@ impl PrimeField for FieldElement {
 }
 
 impl ConditionallySelectable for FieldElement {
+    #[inline(always)]
     fn conditional_select(a: &Self, b: &Self, choice: Choice) -> Self {
         Self(FieldElementImpl::conditional_select(&(a.0), &(b.0), choice))
     }
@@ -499,8 +509,10 @@ impl<'a> Product<&'a FieldElement> for FieldElement {
 #[cfg(test)]
 mod tests {
     use elliptic_curve::ff::{Field, PrimeField};
+    use elliptic_curve::ops::BatchInvert;
     use num_bigint::{BigUint, ToBigUint};
     use proptest::prelude::*;
+    use rand_core::OsRng;
 
     use super::FieldElement;
     use crate::{
@@ -508,6 +520,9 @@ mod tests {
         test_vectors::field::DBL_TEST_VECTORS,
         FieldBytes,
     };
+
+    #[cfg(feature = "alloc")]
+    use alloc::vec::Vec;
 
     impl From<&BigUint> for FieldElement {
         fn from(x: &BigUint) -> Self {
@@ -669,6 +684,31 @@ mod tests {
         let two = one + &one;
         let inv_two = two.invert().unwrap();
         assert_eq!((two * &inv_two).normalize(), one);
+    }
+
+    #[test]
+    fn batch_invert_array() {
+        let k: FieldElement = FieldElement::random(&mut OsRng);
+        let l: FieldElement = FieldElement::random(&mut OsRng);
+
+        let expected = [k.invert().unwrap(), l.invert().unwrap()];
+        assert_eq!(
+            <FieldElement as BatchInvert<_>>::batch_invert(&[k, l]).unwrap(),
+            expected
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "alloc")]
+    fn batch_invert() {
+        let k: FieldElement = FieldElement::random(&mut OsRng);
+        let l: FieldElement = FieldElement::random(&mut OsRng);
+
+        let expected = vec![k.invert().unwrap(), l.invert().unwrap()];
+        let field_elements = vec![k, l];
+        let res: Vec<_> =
+            <FieldElement as BatchInvert<_>>::batch_invert(field_elements.as_slice()).unwrap();
+        assert_eq!(res, expected);
     }
 
     #[test]

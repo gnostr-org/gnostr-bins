@@ -5,6 +5,7 @@
     html_logo_url = "https://raw.githubusercontent.com/RustCrypto/meta/master/logo.svg",
     html_favicon_url = "https://raw.githubusercontent.com/RustCrypto/meta/master/logo.svg"
 )]
+#![allow(clippy::needless_range_loop)]
 #![forbid(unsafe_code)]
 #![warn(
     clippy::mod_module_files,
@@ -25,6 +26,11 @@
 //! - [`ecdsa::VerifyingKey`]
 //!
 //! Please see type-specific documentation for more information.
+
+#[cfg(feature = "alloc")]
+#[allow(unused_imports)]
+#[macro_use]
+extern crate alloc;
 
 #[cfg(feature = "arithmetic")]
 mod arithmetic;
