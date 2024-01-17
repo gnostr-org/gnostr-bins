@@ -75,12 +75,14 @@ fn main() {
     for i in 0..args_vector.len() {
         if i == args_vector.len() {
             //process::exit(0);
-            //process::exit(1);
             process::exit(i.try_into().unwrap());
             //unsafe { libc::exit(1); }
+        } else {
+
+          println!("i={}", i);
+          println!("args_vector[{}]={}", i, args_vector[i]);
+
         }
-        println!("i={}", i);
-        println!("args_vector[{}]={}", i, args_vector[i]);
     }
 
     let mut args = env::args();
