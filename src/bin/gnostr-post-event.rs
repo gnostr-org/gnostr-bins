@@ -27,6 +27,7 @@ fn main() {
     //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
     //!
     //!
+    //! $(echo gnostr --sec $(gnostr-sha256)) | ./target/debug/gnostr-post-event
     //let v: Vec<u8> = vec![0, 1, 2, 3];
     //// The `Vec` type implements the `Index` trait so you can do:
     //println!("{:?}", v);
@@ -85,6 +86,7 @@ fn main() {
             if args_vector.len() == 2 {
                 //println!("i={}", i);
                 //println!("args_vector[{}]={}", i, args_vector[i]);
+
                 if args_vector[i] == "-h" {
                     println!("-h HELP!");
                     process::exit(1);
@@ -103,6 +105,20 @@ fn main() {
                     println!("--version VERSION!");
                     process::exit(1);
                 }
+
+                //if not -h --help or -v --version
+                //assume the arg is an event
+
+                let mut s: String = String::new();
+                std::io::stdin().read_to_string(&mut s).unwrap();
+                println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                let event: Event = serde_json::from_str(&s).unwrap();
+
+                let relay_url = "wss://nos.lol";
+                gnostr_bins::post_event(&relay_url, event);
+
+
+
                 //println!("args_vector.len() = {}", 2);
                 //let app: Vec<u8> = args_vector[0].clone().into();
                 //println!("app.len() = {:?}", app.len());
@@ -115,6 +131,19 @@ fn main() {
                 println!("i={}", i);
                 println!("args_vector[{}]={}", i, args_vector[i]);
                 println!("args_vector.len() = {}", 2);
+                let relay_url = &args_vector[2];
+                println!("relay_url={}", relay_url);
+
+                let mut s: String = String::new();
+                std::io::stdin().read_to_string(&mut s).unwrap();
+
+                println!("{}", s);//TODO:write event to .gnostr/EVENT_HASH.event
+
+            // TODO: detect { EVENT: } envelope
+                let event: Event = serde_json::from_str(&s).unwrap();
+
+                gnostr_bins::post_event(relay_url, event);
+
                 let app: Vec<u8> = args_vector[0].clone().into();
                 println!("app.len() = {:?}", app.len());
                 println!("app = {:?}", app);
