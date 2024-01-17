@@ -47,46 +47,40 @@ fn main() {
             process::exit(i.try_into().unwrap());
             //unsafe { libc::exit(1); }
         } else {
+            println!("i={}", i);
+            println!("args_vector[{}]={}", i, args_vector[i]);
 
-          println!("i={}", i);
-          println!("args_vector[{}]={}", i, args_vector[i]);
-
-          if args_vector.len() == 0 {
-              println!("args_vector.len() = {}", 0);
-          };
-          if args_vector.len() == 1 {
-              println!("args_vector.len() = {}", 1);
-              let app: Vec<u8> = args_vector[0].clone().into();
-              println!("app.len() = {:?}", app.len());
-              println!("Searching for {:?}", app);
-          };
-          if args_vector.len() == 2 {
-              println!("args_vector.len() = {}", 2);
-              let app: Vec<u8> = args_vector[0].clone().into();
-              println!("app.len() = {:?}", app.len());
-              println!("Searching for {:?}", app);
-              let relay: Vec<u8> = args_vector[1].clone().into();
-              println!("relay.len() = {:?}", relay.len());
-              println!("Searching for {:?}", relay);
-          };
-          if args_vector.len() == 3 {
-              println!("args_vector.len() = {}", 2);
-              let app: Vec<u8> = args_vector[0].clone().into();
-              println!("app.len() = {:?}", app.len());
-              println!("app = {:?}", app);
-              let relay: Vec<u8> = args_vector[1].clone().into();
-              println!("relay.len() = {:?}", relay.len());
-              println!("relay = {:?}", relay);
-              let content: Vec<u8> = args_vector[2].clone().into();
-              println!("content.len() = {:?}", content.len());
-              println!("content = {:?}", content);
-          };
-          //process::exit(0);
-
-
-
-
-
+            if args_vector.len() == 0 {
+                println!("args_vector.len() = {}", 0);
+            };
+            if args_vector.len() == 1 {
+                println!("args_vector.len() = {}", 1);
+                let app: Vec<u8> = args_vector[0].clone().into();
+                println!("app.len() = {:?}", app.len());
+                println!("Searching for {:?}", app);
+            };
+            if args_vector.len() == 2 {
+                println!("args_vector.len() = {}", 2);
+                let app: Vec<u8> = args_vector[0].clone().into();
+                println!("app.len() = {:?}", app.len());
+                println!("Searching for {:?}", app);
+                let relay: Vec<u8> = args_vector[1].clone().into();
+                println!("relay.len() = {:?}", relay.len());
+                println!("Searching for {:?}", relay);
+            };
+            if args_vector.len() == 3 {
+                println!("args_vector.len() = {}", 2);
+                let app: Vec<u8> = args_vector[0].clone().into();
+                println!("app.len() = {:?}", app.len());
+                println!("app = {:?}", app);
+                let relay: Vec<u8> = args_vector[1].clone().into();
+                println!("relay.len() = {:?}", relay.len());
+                println!("relay = {:?}", relay);
+                let content: Vec<u8> = args_vector[2].clone().into();
+                println!("content.len() = {:?}", content.len());
+                println!("content = {:?}", content);
+            };
+            //process::exit(0);
         }
     }
 
