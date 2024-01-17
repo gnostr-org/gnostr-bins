@@ -72,11 +72,12 @@ fn main() {
     //process::exit(0);
 
     #[allow(unreachable_code)]
-    for i in 0..10 {
-        if i == 5 {
+    for i in 0..args_vector.len() {
+        if i == args_vector.len() {
             process::exit(1);
             //unsafe { libc::exit(1); }
         }
+        println!("{}", args_vector[i]);
         println!("{}", i);
     }
 
