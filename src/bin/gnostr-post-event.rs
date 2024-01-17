@@ -54,12 +54,20 @@ fn main() {
                 println!("args_vector.len() = {}", 0);
             };
             if args_vector.len() == 1 {
+                println!("i={}", i);
+                println!("args_vector[{}]={}", i, args_vector[i]);
                 println!("args_vector.len() = {}", 1);
                 let app: Vec<u8> = args_vector[0].clone().into();
                 println!("app.len() = {:?}", app.len());
                 println!("Searching for {:?}", app);
             };
             if args_vector.len() == 2 {
+                println!("i={}", i);
+                println!("args_vector[{}]={}", i, args_vector[i]);
+                if args_vector[i] == "-h" {
+                    println!("-h HELP!");
+                    process::exit(0);
+                }
                 println!("args_vector.len() = {}", 2);
                 let app: Vec<u8> = args_vector[0].clone().into();
                 println!("app.len() = {:?}", app.len());
@@ -69,6 +77,8 @@ fn main() {
                 println!("Searching for {:?}", relay);
             };
             if args_vector.len() == 3 {
+                println!("i={}", i);
+                println!("args_vector[{}]={}", i, args_vector[i]);
                 println!("args_vector.len() = {}", 2);
                 let app: Vec<u8> = args_vector[0].clone().into();
                 println!("app.len() = {:?}", app.len());
