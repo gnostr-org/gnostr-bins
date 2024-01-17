@@ -74,11 +74,13 @@ fn main() {
     #[allow(unreachable_code)]
     for i in 0..args_vector.len() {
         if i == args_vector.len() {
-            process::exit(1);
+            //process::exit(0);
+            //process::exit(1);
+            process::exit(i.try_into().unwrap());
             //unsafe { libc::exit(1); }
         }
-        println!("{}", args_vector[i]);
-        println!("{}", i);
+        println!("i={}", i);
+        println!("args_vector[{}]={}", i, args_vector[i]);
     }
 
     let mut args = env::args();
