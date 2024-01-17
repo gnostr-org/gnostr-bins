@@ -54,7 +54,7 @@ fn main() {
                 println!("args_vector.len() = {}", 0);
             };
             if args_vector.len() == 1 {
-              //no args case
+                //no args case
                 println!("i={}", i);
                 println!("args_vector[{}]={}", i, args_vector[i]);
                 println!("args_vector.len() = {}", 1);
@@ -62,7 +62,7 @@ fn main() {
                 //gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
-                println!("{}", s);//TODO:write event to .gnostr/EVENT_HASH.event
+                println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
                 let event: Event = serde_json::from_str(&s).unwrap();
                 let relay_url = "wss://nos.lol";
                 gnostr_bins::post_event(&relay_url, event);
