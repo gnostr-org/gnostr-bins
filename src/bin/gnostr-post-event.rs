@@ -14,6 +14,19 @@ fn main() {
     //! gnostr --sec $(gnostr-sha256) --content "$(gnostr-git-reflog -gd)" | gnostr-post-event wss://relay.damus.io
     //!
 
+                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
+                //!
+                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event | sed 's/\\//g'
+
+
+                //! Usage: in context of other gnostr utilities
+                //!
+                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "gnostr\/$(gnostr-weeble)\/$(gnostr-blockheight)\/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+                //!
+                //!
+                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+                //!
+                //!
     //let v: Vec<u8> = vec![0, 1, 2, 3];
     //// The `Vec` type implements the `Index` trait so you can do:
     //println!("{:?}", v);
@@ -60,10 +73,23 @@ fn main() {
                 //println!("args_vector.len() = {}", 1);
 
                 //gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
+                //gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event | sed 's/\\//g'
+
+                // Usage: in context of other gnostr utilities
+                // gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "gnostr\/$(gnostr-weeble)\/$(gnostr-blockheight)\/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+                //
+                //
+                // gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
                 println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
                 let event: Event = serde_json::from_str(&s).unwrap();
+                //println!("{:?}", event); //TODO:write event to .gnostr/EVENT_HASH.event
+                //println!("{}", serde_json::to_string_pretty(&s).unwrap());
+                //println!("{:?}", serde_json::to_string_pretty(&s).unwrap());
+                //println!("{:#?}", serde_json::to_string_pretty(&s).unwrap());
+
                 let relay_url = "wss://nos.lol";
                 gnostr_bins::post_event(&relay_url, event);
 
