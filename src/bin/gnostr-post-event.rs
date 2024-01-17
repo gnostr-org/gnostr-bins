@@ -5,7 +5,7 @@ use std::process;
 
 fn main() {
     //!
-    //! USAGE:
+    //! Usage: in context of other gnostr utilities
     //!
     //! gnostr --sec $(gnostr-sha256) --content 'test'  | gnostr-post-event wss://relay.damus.io
     //!
@@ -14,19 +14,19 @@ fn main() {
     //! gnostr --sec $(gnostr-sha256) --content "$(gnostr-git-reflog -gd)" | gnostr-post-event wss://relay.damus.io
     //!
 
-                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
-                //!
-                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event | sed 's/\\//g'
+    //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
+    //!
+    //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event | sed 's/\\//g'
 
 
-                //! Usage: in context of other gnostr utilities
-                //!
-                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "gnostr\/$(gnostr-weeble)\/$(gnostr-blockheight)\/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
-                //!
-                //!
-                //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
-                //!
-                //!
+    //! Usage: in context of other gnostr utilities
+    //!
+    //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "gnostr\/$(gnostr-weeble)\/$(gnostr-blockheight)\/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+    //!
+    //!
+    //! gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
+    //!
+    //!
     //let v: Vec<u8> = vec![0, 1, 2, 3];
     //// The `Vec` type implements the `Index` trait so you can do:
     //println!("{:?}", v);
@@ -68,49 +68,48 @@ fn main() {
             };
             if args_vector.len() == 1 {
                 //no args case
+
                 //println!("i={}", i);
                 //println!("args_vector[{}]={}", i, args_vector[i]);
                 //println!("args_vector.len() = {}", 1);
-
-                //gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event
-                //gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "test" | ./target/debug/gnostr-post-event | sed 's/\\//g'
-
-                // Usage: in context of other gnostr utilities
-                // gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "gnostr\/$(gnostr-weeble)\/$(gnostr-blockheight)\/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
-                //
-                //
-                // gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) -t gnostr -t gnostr-get-relays --tag weeble $(gnostr-weeble) --tag wobble $(gnostr-wobble) --content "#gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(gnostr-wobble)" | ./target/debug/gnostr-post-event
 
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
                 println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
                 let event: Event = serde_json::from_str(&s).unwrap();
-                //println!("{:?}", event); //TODO:write event to .gnostr/EVENT_HASH.event
-                //println!("{}", serde_json::to_string_pretty(&s).unwrap());
-                //println!("{:?}", serde_json::to_string_pretty(&s).unwrap());
-                //println!("{:#?}", serde_json::to_string_pretty(&s).unwrap());
 
                 let relay_url = "wss://nos.lol";
                 gnostr_bins::post_event(&relay_url, event);
 
-                //let app: Vec<u8> = args_vector[0].clone().into();
-                //println!("app.len() = {:?}", app.len());
-                //println!("Searching for {:?}", app);
             };
             if args_vector.len() == 2 {
                 //println!("i={}", i);
                 //println!("args_vector[{}]={}", i, args_vector[i]);
                 if args_vector[i] == "-h" {
                     println!("-h HELP!");
-                    process::exit(0);
+                    process::exit(1);
                 }
-                println!("args_vector.len() = {}", 2);
-                let app: Vec<u8> = args_vector[0].clone().into();
-                println!("app.len() = {:?}", app.len());
-                println!("Searching for {:?}", app);
-                let relay: Vec<u8> = args_vector[1].clone().into();
-                println!("relay.len() = {:?}", relay.len());
-                println!("Searching for {:?}", relay);
+                if args_vector[i] == "--help" {
+                    println!("--help HELP!");
+                    process::exit(1);
+                }
+                //println!("i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
+                if args_vector[i] == "-v" {
+                    println!("-v VERSION!");
+                    process::exit(1);
+                }
+                if args_vector[i] == "--version" {
+                    println!("--version VERSION!");
+                    process::exit(1);
+                }
+                //println!("args_vector.len() = {}", 2);
+                //let app: Vec<u8> = args_vector[0].clone().into();
+                //println!("app.len() = {:?}", app.len());
+                //println!("Searching for {:?}", app);
+                //let relay: Vec<u8> = args_vector[1].clone().into();
+                //println!("relay.len() = {:?}", relay.len());
+                //println!("Searching for {:?}", relay);
             };
             if args_vector.len() == 3 {
                 println!("i={}", i);
