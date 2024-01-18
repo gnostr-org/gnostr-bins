@@ -71,14 +71,14 @@ fn main() {
                println!("args_vector.len() = {}", 0);
             };
             if args_vector.len() == 1 {
-            println!("args_vector[{}]={}", i, args_vector[i]);
+            //println!("args_vector[{}]={}", i, args_vector[i]);
                 //no args case
                 //no args case
                 //no args case
 
-                println!("77:i={}", i);
-                println!("args_vector[{}]={}", i, args_vector[i]);
-                println!("args_vector.len() = {}", 1);
+                //println!("77:i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("args_vector.len() = {}", 1);
 
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
@@ -89,9 +89,9 @@ fn main() {
                 gnostr_bins::post_event(&relay_url, event);
             };
             if args_vector.len() == 2 {
-                println!("92:i={}", i);
-                println!("args_vector[{}]={}", i, args_vector[i]);
-                println!("args_vector.len() = {}", args_vector.len());
+                //println!("92:i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("args_vector.len() = {}", args_vector.len());
 
                 //catch help
                 if args_vector[1] == "-h" {
@@ -102,8 +102,8 @@ fn main() {
                     println!("--help HELP!");
                     process::exit(0);
                 }
-                println!("i={}", i);
-                println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
 
                 //catch version
                 if args_vector[1] == "-v" {
@@ -149,9 +149,8 @@ fn main() {
                 process::exit(0);
             };
             if args_vector.len() == 3 {
-                //println!("i={}", i);
-                //println!("args_vector[{}]={}", i, args_vector[i]);
                 //println!("args_vector.len() = {}", 3);
+                //println!("args_vector[{}]={}", 2, args_vector[2]);
                 if args_vector[1] == "--relay" {
                     //println!("--relay RELAY!");
                     let relay_url = &args_vector[2];
