@@ -45,8 +45,25 @@ cargo-i:## 	cargo-i
 cargo-publish:## cargo publish
 	cargo publish --registry crates-io
 
-test-gnostr-post-event:
-	cargo install --bin gnostr-post-event --path . && \
+test-gnostr-post-duplicate:## 	test-gnostr-post-duplicate
+	@[ -x $(shell which cat) ] && \
+		cat tests/event.ab0d7c747e0d6651814f8092287f9a58c9cc7a48ce700e2cf743c082577f7850 | gnostr-post-event --relay wss://relay.damus.io
+test-gnostr-post-commit:## 	test-gnostr-post-commit
+	@[ -x $(shell which cat) ] && \
+		cat tests/first-gnostr-commit.json | gnostr-post-event --relay wss://relay.damus.io
+test-gnostr-fetch-first-commit:## 	test-gnostr-fetch-first-commit
+	@gnostr-fetch-by-id wss://relay.damus.io fbf73a17a4e0fe390aba1808a8d55f1b50717d5dd765b2904bf39eba18c51f7c
+test-gnostr-post-event:## 	test-gnostr-post-event
+	@cargo install --bin gnostr-post-event --path . && \
 	[ -x $(shell which gnostr) ] && [ -x $(shell which gnostr-sha256) ] && \
-		gnostr --sec $(shell gnostr-sha256) | cargo run --bin gnostr-post-event -- --relay wss://nos.lol
+	[ -x $(shell which gnostr-weeble) ] && [ -x $(shell which gnostr-wobble) ] && \
+	[ -x $(shell which gnostr-blockheight) ] && \
+		gnostr --sec $(shell gnostr-sha256 $(shell gnostr-weeble)) -t gnostr --tag weeble $(shell gnostr-weeble) --tag wobble $(shell gnostr-wobble) --tag blockheight $(shell gnostr-blockheight) --content 'gnostr/$(shell gnostr-weeble)/$(shell gnostr-blockheight)/$(shell gnostr-wobble))' | cargo run --bin gnostr-post-event -- --relay wss://nos.lol
+test-gnostr-post-event-context:## 	test-gnostr-post-event-context
+	@cargo install --bin gnostr-post-event --path . && \
+	[ -x $(shell which gnostr) ] && [ -x $(shell which gnostr-sha256) ] && \
+	[ -x $(shell which gnostr-weeble) ] && [ -x $(shell which gnostr-wobble) ] && \
+	[ -x $(shell which gnostr-blockheight) ] && \
+		gnostr --sec $(shell gnostr-sha256 $(shell gnostr-weeble)) -t gnostr --tag weeble $(shell gnostr-weeble) --tag wobble $(shell gnostr-wobble) --tag blockheight $(shell gnostr-blockheight) --content 'gnostr/$(shell gnostr-weeble)/$(shell gnostr-blockheight)/$(shell gnostr-wobble))' | cargo run --bin gnostr-post-event -- --relay wss://nos.lol
+
 -include Makefile
