@@ -57,9 +57,9 @@ fn main() {
     for i in 0..args_vector.len() {
         //println!("58:i={}", i);
         if i == args_vector.len() {
-          //println!("60:i={}", i);
-          //println!("61:i-1={}", i-1);
-          //println!("process::exit(0)");
+            //println!("60:i={}", i);
+            //println!("61:i-1={}", i-1);
+            //println!("process::exit(0)");
             //process::exit(0);
             process::exit(i.try_into().unwrap());
             //unsafe { libc::exit(1); }
@@ -68,10 +68,10 @@ fn main() {
             //println!("args_vector[{}]={}", i, args_vector[i]);
 
             if args_vector.len() == 0 {
-               println!("args_vector.len() = {}", 0);
+                println!("args_vector.len() = {}", 0);
             };
             if args_vector.len() == 1 {
-            //println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
                 //no args case
                 //no args case
                 //no args case
@@ -131,16 +131,16 @@ fn main() {
                 }
 
                 //else assume the second arg is the relay url
-                    let relay_url = &args_vector[1];
-                    //catch the stream
-                    //example:
-                    //gnostr --sec <privkey> --content "<string>" | gnostr-post-event <relay_url>
-                    let mut s: String = String::new();
-                    std::io::stdin().read_to_string(&mut s).unwrap();
-                    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
-                    let event: Event = serde_json::from_str(&s).unwrap();
-                    gnostr_bins::post_event(relay_url, event);
-                    process::exit(0);
+                let relay_url = &args_vector[1];
+                //catch the stream
+                //example:
+                //gnostr --sec <privkey> --content "<string>" | gnostr-post-event <relay_url>
+                let mut s: String = String::new();
+                std::io::stdin().read_to_string(&mut s).unwrap();
+                println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                let event: Event = serde_json::from_str(&s).unwrap();
+                gnostr_bins::post_event(relay_url, event);
+                process::exit(0);
 
                 //if not -h --help or -v --version
                 //assume the arg is an event
