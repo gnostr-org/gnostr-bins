@@ -71,6 +71,7 @@ fn main() {
                println!("args_vector.len() = {}", 0);
             };
             if args_vector.len() == 1 {
+            println!("args_vector[{}]={}", i, args_vector[i]);
                 //no args case
                 //no args case
                 //no args case
@@ -88,28 +89,29 @@ fn main() {
                 gnostr_bins::post_event(&relay_url, event);
             };
             if args_vector.len() == 2 {
-                println!("90:i={}", i);
+                println!("92:i={}", i);
                 println!("args_vector[{}]={}", i, args_vector[i]);
+                println!("args_vector.len() = {}", args_vector.len());
 
-                if args_vector[i] == "-h" {
+                if args_vector[1] == "-h" {
                     println!("-h HELP!");
                     process::exit(0);
                 }
-                if args_vector[i] == "--help" {
+                if args_vector[1] == "--help" {
                     println!("--help HELP!");
                     process::exit(0);
                 }
                 println!("i={}", i);
                 println!("args_vector[{}]={}", i, args_vector[i]);
-                if args_vector[i] == "-v" {
+                if args_vector[1] == "-v" {
                     println!("-v VERSION!");
                     process::exit(0);
                 }
-                if args_vector[i] == "--version" {
+                if args_vector[1] == "--version" {
                     println!("--version VERSION!");
                     process::exit(0);
                 }
-                if args_vector[i] == "--relay" {
+                if args_vector[1] == "--relay" {
                     println!("--relay RELAY!");
                     let relay_url = &args_vector[i + 1];
                     let mut s: String = String::new();
