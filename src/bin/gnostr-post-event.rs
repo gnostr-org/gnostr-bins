@@ -114,6 +114,21 @@ fn main() {
                     println!("--version VERSION!");
                     process::exit(0);
                 }
+                //catch missing url
+                //catch missing url
+                //catch missing url
+                //catch missing url
+                if args_vector[1] == "--relay" {
+                    //println!("--relay RELAY!");
+                    let relay_url = "wss://nos.lol";
+                    //println!("relay_url={}", relay_url);
+                    let mut s: String = String::new();
+                    std::io::stdin().read_to_string(&mut s).unwrap();
+                    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                    let event: Event = serde_json::from_str(&s).unwrap();
+                    gnostr_bins::post_event(relay_url, event);
+                    process::exit(0);
+                }
 
                 //else assume the second arg is the relay url
                     let relay_url = &args_vector[1];
