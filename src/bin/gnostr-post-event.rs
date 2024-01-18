@@ -84,7 +84,7 @@ fn main() {
 
             };
             if args_vector.len() == 2 {
-                //println!("i={}", i);
+                println!("i={}", i);
                 //println!("args_vector[{}]={}", i, args_vector[i]);
 
                 if args_vector[i] == "-h" {
@@ -105,19 +105,28 @@ fn main() {
                     println!("--version VERSION!");
                     process::exit(1);
                 }
+                if args_vector[i] == "--relay" {
+
+                    println!("--relay RELAY!");
+                    let relay_url = &args_vector[i+1];
+                    let mut s: String = String::new();
+                    std::io::stdin().read_to_string(&mut s).unwrap();
+                    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                    let event: Event = serde_json::from_str(&s).unwrap();
+                    gnostr_bins::post_event(relay_url, event);
+                    process::exit(1);
+                }
 
                 //if not -h --help or -v --version
                 //assume the arg is an event
 
-                let mut s: String = String::new();
-                std::io::stdin().read_to_string(&mut s).unwrap();
-                println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
-                let event: Event = serde_json::from_str(&s).unwrap();
+                //let mut s: String = String::new();
+                //std::io::stdin().read_to_string(&mut s).unwrap();
+                //println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                //let event: Event = serde_json::from_str(&s).unwrap();
 
-                let relay_url = "wss://nos.lol";
-                gnostr_bins::post_event(&relay_url, event);
-
-
+                //let relay_url = "wss://nos.lol";
+                //gnostr_bins::post_event(&relay_url, event);
 
                 //println!("args_vector.len() = {}", 2);
                 //let app: Vec<u8> = args_vector[0].clone().into();
@@ -126,36 +135,41 @@ fn main() {
                 //let relay: Vec<u8> = args_vector[1].clone().into();
                 //println!("relay.len() = {:?}", relay.len());
                 //println!("Searching for {:?}", relay);
+
+                process::exit(0);
             };
             if args_vector.len() == 3 {
-                println!("i={}", i);
-                println!("args_vector[{}]={}", i, args_vector[i]);
-                println!("args_vector.len() = {}", 2);
-                let relay_url = &args_vector[2];
-                println!("relay_url={}", relay_url);
+
+                //println!("i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("args_vector.len() = {}", 3-1);
+
+                let relay_url = &args_vector[3-1];
+                //println!("relay_url={}", relay_url);
 
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
 
                 println!("{}", s);//TODO:write event to .gnostr/EVENT_HASH.event
 
-            // TODO: detect { EVENT: } envelope
+                // TODO: detect { EVENT: } envelope
                 let event: Event = serde_json::from_str(&s).unwrap();
 
                 gnostr_bins::post_event(relay_url, event);
 
-                let app: Vec<u8> = args_vector[0].clone().into();
-                println!("app.len() = {:?}", app.len());
-                println!("app = {:?}", app);
-                let relay: Vec<u8> = args_vector[1].clone().into();
-                println!("relay.len() = {:?}", relay.len());
-                println!("relay = {:?}", relay);
-                let content: Vec<u8> = args_vector[2].clone().into();
-                println!("content.len() = {:?}", content.len());
-                println!("content = {:?}", content);
+                //let app: Vec<u8> = args_vector[0].clone().into();
+                //println!("app.len() = {:?}", app.len());
+                //println!("app = {:?}", app);
+                //let relay: Vec<u8> = args_vector[1].clone().into();
+                //println!("relay.len() = {:?}", relay.len());
+                //println!("relay = {:?}", relay);
+                //let content: Vec<u8> = args_vector[2].clone().into();
+                //println!("content.len() = {:?}", content.len());
+                //println!("content = {:?}", content);
             };
-            //process::exit(0);
+            process::exit(0);
         }
+        process::exit(0);
     }
 
     let mut args = env::args();
