@@ -111,20 +111,17 @@ fn main() {
                     println!("--version VERSION!");
                     process::exit(0);
                 }
-                if args_vector[1] == "--relay" {
-                    println!("--relay RELAY!");
-                    let relay_url = &args_vector[i + 1];
-                    let mut s: String = String::new();
-                    std::io::stdin().read_to_string(&mut s).unwrap();
-                    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
-                    let event: Event = serde_json::from_str(&s).unwrap();
-                    gnostr_bins::post_event(relay_url, event);
-                    process::exit(0);
-                } else {
-                    //process::exit(0);
-                }
-
-                process::exit(0);
+                //if args_vector[1] == "--relay" {
+                //    println!("--relay RELAY!");
+                //    let relay_url = &args_vector[i + 1];
+                //    let mut s: String = String::new();
+                //    std::io::stdin().read_to_string(&mut s).unwrap();
+                //    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                //    let event: Event = serde_json::from_str(&s).unwrap();
+                //    gnostr_bins::post_event(relay_url, event);
+                //    process::exit(0);
+                //}
+                else { process::exit(0); }
 
                 //if not -h --help or -v --version
                 //assume the arg is an event
@@ -151,6 +148,16 @@ fn main() {
                 println!("i={}", i);
                 println!("args_vector[{}]={}", i, args_vector[i]);
                 println!("args_vector.len() = {}", 3);
+                if args_vector[1] == "--relay" {
+                    println!("--relay RELAY!");
+                    let relay_url = &args_vector[2];
+                    let mut s: String = String::new();
+                    std::io::stdin().read_to_string(&mut s).unwrap();
+                    println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
+                    let event: Event = serde_json::from_str(&s).unwrap();
+                    gnostr_bins::post_event(relay_url, event);
+                    process::exit(0);
+                }
 
                 let relay_url = &args_vector[3 - 1];
                 println!("relay_url={}", relay_url);
