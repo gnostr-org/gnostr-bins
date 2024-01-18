@@ -44,4 +44,9 @@ cargo-i:## 	cargo-i
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) install --force --path .
 cargo-publish:## cargo publish
 	cargo publish --registry crates-io
+
+test-gnostr-post-event:
+	cargo install --bin gnostr-post-event --path . && \
+	[ -x $(shell which gnostr) ] && [ -x $(shell which gnostr-sha256) ] && \
+		gnostr --sec $(shell gnostr-sha256) | cargo run --bin gnostr-post-event -- --relay wss://nos.lol
 -include Makefile
