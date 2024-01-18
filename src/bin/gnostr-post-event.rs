@@ -55,17 +55,17 @@ fn main() {
 
     #[allow(unreachable_code)]
     for i in 0..args_vector.len() {
-        println!("58:i={}", i);
+        //println!("58:i={}", i);
         if i == args_vector.len() {
-          println!("60:i={}", i);
-          println!("61:i-1={}", i-1);
-          println!("process::exit(0)");
+          //println!("60:i={}", i);
+          //println!("61:i-1={}", i-1);
+          //println!("process::exit(0)");
             //process::exit(0);
             process::exit(i.try_into().unwrap());
             //unsafe { libc::exit(1); }
         } else {
-            println!("66:i={}", i);
-            println!("args_vector[{}]={}", i, args_vector[i]);
+            //println!("66:i={}", i);
+            //println!("args_vector[{}]={}", i, args_vector[i]);
 
             if args_vector.len() == 0 {
                println!("args_vector.len() = {}", 0);
@@ -149,13 +149,13 @@ fn main() {
                 process::exit(0);
             };
             if args_vector.len() == 3 {
-                println!("i={}", i);
-                println!("args_vector[{}]={}", i, args_vector[i]);
-                println!("args_vector.len() = {}", 3);
+                //println!("i={}", i);
+                //println!("args_vector[{}]={}", i, args_vector[i]);
+                //println!("args_vector.len() = {}", 3);
                 if args_vector[1] == "--relay" {
-                    println!("--relay RELAY!");
+                    //println!("--relay RELAY!");
                     let relay_url = &args_vector[2];
-                    println!("relay_url={}", relay_url);
+                    //println!("relay_url={}", relay_url);
                     let mut s: String = String::new();
                     std::io::stdin().read_to_string(&mut s).unwrap();
                     println!("{}", s); //TODO:write event to .gnostr/EVENT_HASH.event
@@ -165,7 +165,7 @@ fn main() {
                 }
 
                 let relay_url = &args_vector[3 - 1];
-                println!("relay_url={}", relay_url);
+                //println!("relay_url={}", relay_url);
 
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
