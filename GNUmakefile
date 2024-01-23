@@ -25,6 +25,7 @@ cargo-b:## 	cargo-b
 ##cargo build
 	[ -x "$(shell command -v $(RUSTUP))" ] || $(MAKE) rustup-install-stable
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) build
+cargo-build-release:cargo-b-release
 cargo-b-release:## 	cargo-b-release
 ##cargo build --releae --path .
 	[ -x "$(shell command -v $(RUSTUP))" ] || $(MAKE) rustup-install-stable
