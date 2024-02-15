@@ -66,5 +66,7 @@ test-gnostr-post-event-context:## 	test-gnostr-post-event-context
 	[ -x $(shell which gnostr-weeble) ] && [ -x $(shell which gnostr-wobble) ] && \
 	[ -x $(shell which gnostr-blockheight) ] && \
 		gnostr --sec $(shell gnostr-sha256 $(shell gnostr-weeble)) -t gnostr --tag weeble $(shell gnostr-weeble) --tag wobble $(shell gnostr-wobble) --tag blockheight $(shell gnostr-blockheight) --content 'gnostr/$(shell gnostr-weeble)/$(shell gnostr-blockheight)/$(shell gnostr-wobble))' | cargo run --bin gnostr-post-event -- --relay wss://nos.lol
+test-gnostr-bounce-event:## 	test-gnostr-bounce-event
+	make test-gnostr-fetch-first-commit | gnostr-post-event
 
 -include Makefile
