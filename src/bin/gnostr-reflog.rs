@@ -85,7 +85,7 @@ for rev in revwalk {
     Ok(())
 }
 
-fn format_commit(commit: &Commit, format_str: &str, show_date: bool, show_message: bool) -> String {
+fn format_commit(_commit: &Commit, _format_str: &str, _show_date: bool, _show_message: bool) -> String {
     // This function is not implemented in this example, but provides a placeholder for future enhancements
     // It would allow more flexible output formatting based on the provided format string and boolean flags.
     panic!("Formatting not implemented.");
