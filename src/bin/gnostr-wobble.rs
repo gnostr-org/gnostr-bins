@@ -1,36 +1,44 @@
 #[allow(unused_imports)]
 use reqwest::{get, Url, Error};
 use std::process::Command;
+use std::process;
+
+fn check_curl(){
+
+    //println!("check_curl");
+
+}
 
 fn main() -> Result<(), reqwest::Error> {
 
+    let now = chrono::Utc::now().timestamp();
+    //println!("{}", now);
+
+    check_curl();
 	#[allow(clippy::if_same_then_else)]
-	let gnostr_weeble = if cfg!(target_os = "windows") {
+	let blockchain_gnostr_weeble = if cfg!(target_os = "windows") {
 		Command::new("cmd")
 			.args(["/C", "gnostr-weeble || echo weeble"])
 			.output()
 			.expect("failed to execute process")
 	} else if cfg!(target_os = "macos") {
-		Command::new("sh")
-                .arg("-c")
-                .arg("gnostr-weeble 2>/tmp/gnostr-legit.log || echo weeble")
+		Command::new("curl")
+                .arg("https://blockchain.info/q/getblockcount")
                 .output()
                 .expect("failed to execute process")
 	} else if cfg!(target_os = "linux") {
-		Command::new("sh")
-                .arg("-c")
-                .arg("gnostr-weeble 2>/tmp/gnostr-legit.log || echo weeble")
+		Command::new("curl")
+                .arg("https://blockchain.info/q/getblockcount")
                 .output()
                 .expect("failed to execute process")
 	} else {
-		Command::new("sh")
-                .arg("-c")
-                .arg("gnostr-weeble 2>/tmp/gnostr-legit.log || echo weeble")
+		Command::new("curl")
+                .arg("https://blockchain.info/q/getblockcount")
                 .output()
                 .expect("failed to execute process")
 	};
 
-	let weeble = String::from_utf8(gnostr_weeble.stdout)
+	let blockchain_weeble = String::from_utf8(blockchain_gnostr_weeble.stdout)
 		.map_err(|non_utf8| {
 			String::from_utf8_lossy(non_utf8.as_bytes()).into_owned()
 		})
@@ -38,73 +46,61 @@ fn main() -> Result<(), reqwest::Error> {
 
 	//assert_eq!(weeble.is_empty(), true); // a)
 	//
-	println!("weeble={}", weeble);
-
-	#[allow(clippy::if_same_then_else)]
-	let gnostr_wobble = if cfg!(target_os = "windows") {
+	let mempool_gnostr_weeble = if cfg!(target_os = "windows") {
 		Command::new("cmd")
-			.args(["/C", "gnostr-wobble"])
+			.args(["/C", "gnostr-weeble || echo weeble"])
 			.output()
 			.expect("failed to execute process")
 	} else if cfg!(target_os = "macos") {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-wobble || echo wobble")
-			.output()
-			.expect("failed to execute process")
+		Command::new("curl")
+                .arg("https://mempool.space/api/blocks/tip/height")
+                .output()
+                .expect("failed to execute process")
 	} else if cfg!(target_os = "linux") {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-wobble || echo wobble")
-			.output()
-			.expect("failed to execute process")
+		Command::new("curl")
+                .arg("https://mempool.space/api/blocks/tip/height")
+                .arg("https://blockchain.info/q/getblockcount")
+                .output()
+                .expect("failed to execute process")
 	} else {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-wobble || echo wobble")
-			.output()
-			.expect("failed to execute process")
+		Command::new("curl")
+                .arg("https://mempool.space/api/blocks/tip/height")
+                .arg("https://blockchain.info/q/getblockcount")
+                .output()
+                .expect("failed to execute process")
 	};
 
-	let wobble = String::from_utf8(gnostr_wobble.stdout)
+	let mempool_weeble = String::from_utf8(mempool_gnostr_weeble.stdout)
 		.map_err(|non_utf8| {
 			String::from_utf8_lossy(non_utf8.as_bytes()).into_owned()
 		})
 		.unwrap();
-    println!("wobble={}", wobble);
 
-	#[allow(clippy::if_same_then_else)]
-	let gnostr_blockheight = if cfg!(target_os = "windows") {
-		Command::new("cmd")
-			.args(["/C", "gnostr-blockheight"])
-			.output()
-			.expect("failed to execute process")
-	} else if cfg!(target_os = "macos") {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-blockheight || echo blockheight")
-			.output()
-			.expect("failed to execute process")
-	} else if cfg!(target_os = "linux") {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-blockheight || echo blockheight")
-			.output()
-			.expect("failed to execute process")
-	} else {
-		Command::new("sh")
-			.arg("-c")
-			.arg("gnostr-blockheight || echo blockheight")
-			.output()
-			.expect("failed to execute process")
-	};
+	assert_eq!(blockchain_weeble.is_empty(), false);
+	assert_eq!(mempool_weeble.is_empty(), false);
+    //assert_eq!(blockchain_weeble, mempool_weeble);
 
-	let blockheight = String::from_utf8(gnostr_blockheight.stdout)
-		.map_err(|non_utf8| {
-			String::from_utf8_lossy(non_utf8.as_bytes()).into_owned()
-		})
-		.unwrap();
-	println!("blockheight={}", blockheight);
+    let blockchain_weeble : i64 = blockchain_weeble.trim().parse().unwrap();
+    //println!("{}", blockchain_weeble + 1);
+    let mempool_weeble : i64 = mempool_weeble.trim().parse().unwrap();
+    //println!("{}", mempool_weeble + 1);
+
+    //
+    if mempool_weeble as u64 == blockchain_weeble as u64
+    {
+
+        println!("{}", now%mempool_weeble);
+        process::exit(0);
+
+    }
+    if mempool_weeble as u64 >= blockchain_weeble as u64
+    {
+        println!("{}", now%mempool_weeble);
+    }
+    else
+    {
+        println!("{}", now%blockchain_weeble);
+    }
 
     Ok(())
 }
