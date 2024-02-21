@@ -28,6 +28,7 @@ license = "MIT"
 [dependencies]
 base64 = "0.21"
 bech32 = "0.9"
+chrono = "0.4.34"
 getopts = "0.2.21"
 git2 = "0.18.2"
 hex = "0.4"
