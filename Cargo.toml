@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "gnostr-bins: part of the gnostr workflow commands"
@@ -28,6 +28,7 @@ license = "MIT"
 [dependencies]
 base64 = "0.21"
 bech32 = "0.9"
+chrono = "0.4.34"
 getopts = "0.2.21"
 git2 = "0.18.2"
 hex = "0.4"
