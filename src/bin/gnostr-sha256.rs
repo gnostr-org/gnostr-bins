@@ -13,7 +13,9 @@ use std::path::PathBuf;
 #[cfg(not(debug_assertions))]
 use std::path::PathBuf;
 
+#[allow(unused_imports)]
 use gnostr_bins::Config;
+#[allow(unused_imports)]
 use gnostr_bins::run;
 
 //main.rs functions
@@ -30,6 +32,7 @@ fn get_current_working_dir() -> std::io::Result<PathBuf> {
 
 }
 #[cfg(not(debug_assertions))]
+#[allow(dead_code)]
 fn get_current_working_dir() -> std::io::Result<PathBuf> {
 
     env::current_dir()
