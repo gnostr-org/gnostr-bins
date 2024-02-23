@@ -90,14 +90,21 @@ pub fn main() -> Result<(), git2::Error> {
 
     let mut opts = Options::new();
     opts.optopt("o", "output", "set output file name", "NAME");
-    //opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
-    //opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
-    opts.optflag("h", "help", "print this help menu");
-    opts.optflag("m", "messages", "print reflog with commit messages");
+    opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
+    opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
+
     opts.optopt("s", "sec", "use following privkey", "SEC");
 
+    opts.optflag("h", "help", "print this help menu");
+    opts.optflag("m", "messages", "print reflog with commit messages");
+
     //println!("args.len()={}",args.len());
+
     if args.len() == 1 {
+
+        //println!("program={}",program);
+        //println!("args[0]={}",args[0]);
+
         let mut input = String::new();
         //capture input from prompt
         io::stdin()
@@ -108,17 +115,26 @@ pub fn main() -> Result<(), git2::Error> {
         let mut count = 0;
         let mut key_maybe = true;
         //REF: https://docs.rs/ascii/latest/ascii/enum.AsciiChar.html#method.is_ascii_hexdigit
-        for (i, c) in input.trim().chars().enumerate() {
+        for (_i, c) in input.trim().chars().enumerate() {
+            //TODO:more validation
             assert_eq!(c.is_ascii_control(), false);
+            if c.is_ascii_graphic() {
+                println!("{}.is_asscii_graphic()={}",c,c.is_ascii_graphic());
+            }
+            if c.is_whitespace() {
+                println!("{}.is_whitespace()={}",c,c.is_whitespace());
+            }
             if !c.is_ascii_hexdigit() {
                 key_maybe = false;
             }
-            println!("{}:{}={}", i, c, c.is_ascii_hexdigit());
+            //println!("{}:{}={}", _i, c, c.is_ascii_hexdigit());
+            //println!("{}", c);
             count = count + 1;
-        }
+        }//end for loop
 
         //println!("count={:?}", count);
         //println!("key_maybe={:?}", key_maybe);
+
         //we assume the input is a key
         //we assume it is a privkey for now
         if count == 64 && key_maybe == true {
@@ -133,11 +149,12 @@ pub fn main() -> Result<(), git2::Error> {
             }
             let _ = hash_list(&program, &opts);
             process::exit(0);
-        }
+        }//end else
+    //end if args.len() == 1
     } else {
-        let _ = hash_list(&program, &opts);
-        print_usage(&program, &opts);
-        process::exit(0);
+        //let _ = hash_list(&program, &opts);
+        //print_usage(&program, &opts);
+        //process::exit(0);
     }
     if args.len() > 1 {
 
@@ -148,35 +165,36 @@ pub fn main() -> Result<(), git2::Error> {
         }
     };
 
-    let output = matches.opt_str("o");
-    //let output = if matches.opt_present("o") {
-    //    //println!("output:0{:}", &args[0].to_string());
-    //    //println!("output:1{:}", &args[1].to_string());
-    //    //println!("output:2{:}", &args[2].to_string());
-    //    //println!("output:3{:}", &args[3].to_string());
-    //    //print_usage(&program, &opts);
-    //    //process::exit(0);
+    //let output = matches.opt_str("o");
+    ////let output = if matches.opt_present("o") {
+    ////    //println!("output:0{:}", &args[0].to_string());
+    ////    //println!("output:1{:}", &args[1].to_string());
+    ////    //println!("output:2{:}", &args[2].to_string());
+    ////    //println!("output:3{:}", &args[3].to_string());
+    ////    //print_usage(&program, &opts);
+    ////    //process::exit(0);
+    ////} else {
+    ////    print_usage(&program, &opts);
+    ////};
+    //let input = if !matches.free.is_empty() {
+    //    //catch a free floating arg before or after -o <String>
+    //    matches.free[0].clone().to_string();
+    //    //println!("input:0{:}", &args[0].to_string());
+    //    //println!("input:1{:}", &args[1].to_string());
+    //    //println!("input:2{:}", &args[2].to_string());
+    //    //println!("input:3{:}", &args[3].to_string());
     //} else {
     //    print_usage(&program, &opts);
     //};
-    let input = if !matches.free.is_empty() {
-        //catch a free floating arg before or after -o <String>
-        matches.free[0].clone().to_string();
-        //println!("input:0{:}", &args[0].to_string());
-        //println!("input:1{:}", &args[1].to_string());
-        //println!("input:2{:}", &args[2].to_string());
-        //println!("input:3{:}", &args[3].to_string());
-    } else {
-        print_usage(&program, &opts);
-    };
 
-    println!("!====={} true", !matches.free.is_empty());
-    println!("====={} false", matches.free.is_empty());
-    println!("====={}", matches.free[0].clone().to_string());
-    //println!("====={}", matches.free[1].clone().to_string());
-    println!("input===={:?}", input);
-    println!("output==={:?}", output);
-    //do_work(&input, output);
+    //println!("!====={} true", !matches.free.is_empty());
+    //println!("====={} false", matches.free.is_empty());
+    //println!("====={}", matches.free[0].clone().to_string());
+    ////println!("====={}", matches.free[1].clone().to_string());
+    //println!("input===={:?}", input);
+    //println!("output==={:?}", output);
+    ////do_work(&input, output);
+    //process::exit(0);
 
     if matches.opt_present("h") {
         print_usage(&program, &opts);
