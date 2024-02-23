@@ -26,6 +26,7 @@ license = "MIT"
 ## directory = "vendor"
 
 [dependencies]
+ascii = "1.1.0"
 base64 = "0.21"
 bech32 = "0.9"
 chrono = "0.4.34"

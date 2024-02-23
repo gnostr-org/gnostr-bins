@@ -4,7 +4,7 @@ use std::env;
 //use git2::{Repository, Revwalk, Commit};
 use git2::{Commit, Repository};
 use std::io;
-
+use ascii::AsciiChar;
 use std::process;
 
 fn print_usage(program: &str, opts: &Options) {
@@ -116,13 +116,37 @@ pub fn main() -> Result<(), git2::Error> {
         let mut key_maybe = true;
         //REF: https://docs.rs/ascii/latest/ascii/enum.AsciiChar.html#method.is_ascii_hexdigit
         for (_i, c) in input.trim().chars().enumerate() {
+            if c.is_ascii() {
             //TODO:more validation
-            assert_eq!(c.is_ascii_control(), false);
+            assert!(ascii::AsciiChar::Space.is_ascii_blank());
+            assert!(ascii::AsciiChar::Space.is_ascii_blank());
+            assert!(ascii::AsciiChar::Tab.is_ascii_blank());
+            assert!(!ascii::AsciiChar::VT.is_ascii_blank());
+            assert!(!ascii::AsciiChar::LineFeed.is_ascii_blank());
+            assert!(!ascii::AsciiChar::CarriageReturn.is_ascii_blank());
+            assert!(!ascii::AsciiChar::FF.is_ascii_blank());
+
+            assert!(AsciiChar::Space.is_ascii_blank());
+            assert!(AsciiChar::Tab.is_ascii_blank());
+            assert!(!AsciiChar::VT.is_ascii_blank());
+            assert!(!AsciiChar::LineFeed.is_ascii_blank());
+            assert!(!AsciiChar::CarriageReturn.is_ascii_blank());
+            assert!(!AsciiChar::FF.is_ascii_blank());
+
+            if c.is_ascii_control() {
+                println!("{}.is_asscii_control()={}",c,c.is_ascii_control());
+            }
+            if c.is_ascii() {
+                println!("{}.is_asscii()={}",c,c.is_ascii());
+            }
             if c.is_ascii_graphic() {
                 println!("{}.is_asscii_graphic()={}",c,c.is_ascii_graphic());
             }
             if c.is_whitespace() {
                 println!("{}.is_whitespace()={}",c,c.is_whitespace());
+            }
+            if c.is_ascii_whitespace() {
+                println!("{}.is_ascii_whitespace()={}",c,c.is_ascii_whitespace());
             }
             if !c.is_ascii_hexdigit() {
                 key_maybe = false;
@@ -130,6 +154,8 @@ pub fn main() -> Result<(), git2::Error> {
             //println!("{}:{}={}", _i, c, c.is_ascii_hexdigit());
             //println!("{}", c);
             count = count + 1;
+            
+        }//end is_ascii
         }//end for loop
 
         //println!("count={:?}", count);
