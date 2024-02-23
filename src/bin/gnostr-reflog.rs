@@ -131,10 +131,15 @@ pub fn main() -> Result<(), git2::Error> {
             if input.trim() == "install" {
                 println!("input={}", input);
             }
+            let _ = hash_list(&program, &opts);
+            process::exit(0);
         }
     } else {
+        let _ = hash_list(&program, &opts);
         print_usage(&program, &opts);
+        process::exit(0);
     }
+    if args.len() > 1 {
 
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -184,7 +189,9 @@ pub fn main() -> Result<(), git2::Error> {
     if matches.opt_present("m") {
         let _ = hash_list_w_commit_message(&program, &opts);
     } else {
-        let _ = hash_list(&program, &opts);
+        let _ = hash_list_w_commit_message(&program, &opts);
+        //let _ = hash_list(&program, &opts);
+    }
     }
 
     Ok(())
