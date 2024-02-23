@@ -30,7 +30,7 @@ let num_commits = num_commits.parse::<i32>().unwrap_or(10);
 
 //println!("{}", &num_commits);
 //println!("{}", print_type_of(&num_commits));
-println!("ref_name={:?}", _ref_name);
+//println!("ref_name={:?}", _ref_name);
 
 if num_commits <= 0 {
     return Err(
