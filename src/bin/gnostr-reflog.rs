@@ -11,6 +11,16 @@ fn print_usage(program: &str, opts: &Options) {
     print!("{}", opts.usage(&brief));
     process::exit(0);
 }
+fn hash_list(program: &str, opts: &Options) {
+    let brief = format!("Usage: {} FILE [options]", program);
+    print!("hash_list:\n{}", opts.usage(&brief));
+    process::exit(0);
+}
+fn hash_list_w_commit_message(program: &str, opts: &Options) {
+    let brief = format!("Usage: {} FILE [options]", program);
+    print!("hash_list_commit_message:\n{}", opts.usage(&brief));
+    process::exit(0);
+}
 
 #[allow(dead_code)]
 fn print_type_of<T>(_: &T) -> String {
@@ -40,8 +50,9 @@ if matches.opt_present("h") {
     process::exit(0);
 }
 if matches.opt_present("m") {
-    print_usage(&program, &opts);
-    process::exit(0);
+    hash_list_w_commit_message(&program, &opts);
+} else {
+    hash_list(&program, &opts);
 }
 
 
