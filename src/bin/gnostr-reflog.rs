@@ -6,6 +6,11 @@ use git2::{Repository, Commit};
 
 //use std::process;
 
+fn print_usage(program: &str, opts: &Options) {
+    let brief = format!("Usage: {} FILE [options]", program);
+    print!("{}", opts.usage(&brief));
+}
+
 #[allow(dead_code)]
 fn print_type_of<T>(_: &T) -> String {
     format!("{}", std::any::type_name::<T>())
@@ -16,11 +21,28 @@ pub fn main() -> Result<(), git2::Error> {
 
 // Collect and parse arguments
 let args: Vec<String> = env::args().collect();
+let program = args[0].clone();
+
+
 let mut opts = Options::new();
+opts.optopt("o", "", "set output file name", "NAME");
 opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
 opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
+opts.optflag("h", "help", "print this help menu");
+let matches = match opts.parse(&args[1..]) {
+    Ok(m) => { m }
+    Err(f) => { panic!("{}", f.to_string()) }
+};
+if matches.opt_present("h") {
+    print_usage(&program, &opts);
+}
 
-let matches = opts.parse(&args[1..]).unwrap();
+
+//let matches = opts.parse(&args[1..]).unwrap();
+
+if matches.opt_present("h") {
+    print_usage(&program, &opts);
+}
 
 // Extract and validate arguments
 let _ref_name = matches.opt_str("r").unwrap_or("HEAD".to_string());
