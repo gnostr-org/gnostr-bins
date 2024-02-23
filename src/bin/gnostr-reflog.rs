@@ -7,19 +7,54 @@ use git2::{Repository, Commit};
 use std::process;
 
 fn print_usage(program: &str, opts: &Options) {
-    let brief = format!("Usage: {} FILE [options]", program);
+    let brief = format!("Usage: {} [options]", program);
     print!("{}", opts.usage(&brief));
     process::exit(0);
 }
-fn hash_list(program: &str, opts: &Options) {
-    let brief = format!("Usage: {} FILE [options]", program);
-    print!("hash_list:\n{}", opts.usage(&brief));
-    process::exit(0);
+
+pub fn hash_list(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
+    //let brief = format!("Usage: {} FILE [options]", _program);
+    //print!("hash_list_commit_message:\n{}", _opts.usage(&brief));
+    let repo = match Repository::open(".") {
+        Ok(repo) => repo,
+        Err(e) => panic!("Error opening repository: {}", e),
+    };
+    
+    let mut revwalk = repo.revwalk()?;
+    
+    revwalk.push_head()?;
+    revwalk.set_sorting(git2::Sort::TIME)?;
+    
+    
+    for rev in revwalk {
+        let commit = repo.find_commit(rev?)?;
+        println!("{:0>64}", commit.id());
+    }
+    Ok(())
+       // process::exit(0);
 }
-fn hash_list_w_commit_message(program: &str, opts: &Options) {
-    let brief = format!("Usage: {} FILE [options]", program);
-    print!("hash_list_commit_message:\n{}", opts.usage(&brief));
-    process::exit(0);
+pub fn hash_list_w_commit_message(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
+    //let brief = format!("Usage: {} FILE [options]", _program);
+    //print!("hash_list_commit_message:\n{}", _opts.usage(&brief));
+    let repo = match Repository::open(".") {
+        Ok(repo) => repo,
+        Err(e) => panic!("Error opening repository: {}", e),
+    };
+    
+    let mut revwalk = repo.revwalk()?;
+    
+    revwalk.push_head()?;
+    revwalk.set_sorting(git2::Sort::TIME)?;
+    
+    
+    for rev in revwalk {
+        let commit = repo.find_commit(rev?)?;
+        let message = commit.summary_bytes().unwrap_or_else(|| commit.message_bytes());
+    
+        println!("{:0>64}\n{}", commit.id(), String::from_utf8_lossy(message));
+    }
+    Ok(())
+       // process::exit(0);
 }
 
 #[allow(dead_code)]
@@ -36,9 +71,9 @@ let program = args[0].clone();
 
 
 let mut opts = Options::new();
-opts.optopt("o", "", "set output file name", "NAME");
-opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
-opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
+//opts.optopt("o", "", "set output file name", "NAME");
+//opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
+//opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
 opts.optflag("h", "help", "print this help menu");
 opts.optflag("m", "messages", "print reflog with commit messages");
 let matches = match opts.parse(&args[1..]) {
@@ -50,58 +85,10 @@ if matches.opt_present("h") {
     process::exit(0);
 }
 if matches.opt_present("m") {
-    hash_list_w_commit_message(&program, &opts);
+    let _ = hash_list_w_commit_message(&program, &opts);
 } else {
-    hash_list(&program, &opts);
+    let _ = hash_list(&program, &opts);
 }
-
-
-//let matches = opts.parse(&args[1..]).unwrap();
-
-if matches.opt_present("h") {
-    print_usage(&program, &opts);
-    process::exit(0);
-}
-
-// Extract and validate arguments
-let _ref_name = matches.opt_str("r").unwrap_or("HEAD".to_string());
-let num_commits = matches.opt_str("n")
-    .unwrap_or("10".to_string());
-let num_commits = num_commits.parse::<i32>().unwrap_or(10);
-
-//println!("{}", &num_commits);
-//println!("{}", print_type_of(&num_commits));
-//println!("ref_name={:?}", _ref_name);
-
-if num_commits <= 0 {
-    return Err(
-        git2::Error::from_str("Number of commits must be positive"));
-}
-
-
-  let repo = match Repository::open(".") {
-    Ok(repo) => repo,
-    Err(e) => panic!("Error opening repository: {}", e),
-};
-
-let mut revwalk = repo.revwalk()?;
-
-revwalk.push_head()?;
-revwalk.set_sorting(git2::Sort::TIME)?;
-
-
-for rev in revwalk {
-    let commit = repo.find_commit(rev?)?;
-    let message = commit.summary_bytes().unwrap_or_else(|| commit.message_bytes());
-
-    //We pad each git commit hash to be used in a sha256 context
-    //NOTE: git will eventually have sha256 commit hashes
-
-    //TODO: add Mode switch for hash list with or without message
-    //println!("{:0>64}", commit.id());
-    println!("{:0>64}\n{}", commit.id(), String::from_utf8_lossy(message));
-}
-
     Ok(())
 }
 
