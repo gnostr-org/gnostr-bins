@@ -4,11 +4,12 @@ use getopts::Options;
 //use git2::{Repository, Revwalk, Commit};
 use git2::{Repository, Commit};
 
-//use std::process;
+use std::process;
 
 fn print_usage(program: &str, opts: &Options) {
     let brief = format!("Usage: {} FILE [options]", program);
     print!("{}", opts.usage(&brief));
+    process::exit(0);
 }
 
 #[allow(dead_code)]
@@ -29,12 +30,18 @@ opts.optopt("o", "", "set output file name", "NAME");
 opts.optopt("r", "ref", "Specify the Git reference (default: HEAD)", "REF");
 opts.optopt("n", "number", "Specify the maximum number of commits to show (default: 10)", "NUMBER");
 opts.optflag("h", "help", "print this help menu");
+opts.optflag("m", "messages", "print reflog with commit messages");
 let matches = match opts.parse(&args[1..]) {
     Ok(m) => { m }
     Err(f) => { panic!("{}", f.to_string()) }
 };
 if matches.opt_present("h") {
     print_usage(&program, &opts);
+    process::exit(0);
+}
+if matches.opt_present("m") {
+    print_usage(&program, &opts);
+    process::exit(0);
 }
 
 
@@ -42,6 +49,7 @@ if matches.opt_present("h") {
 
 if matches.opt_present("h") {
     print_usage(&program, &opts);
+    process::exit(0);
 }
 
 // Extract and validate arguments
