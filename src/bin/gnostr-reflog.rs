@@ -210,11 +210,11 @@ pub fn main() -> Result<(), git2::Error> {
     );
 
     opts.optopt("s", "sec", "use following privkey", "SEC");
-
-    opts.optflag("h", "help", "print this help menu");
+    
     opts.optflag("m", "messages", "print reflog with commit messages");
+    opts.optflag("h", "help", "print this help menu");
 
-    if args.len() > 1 {
+    if args.len() >= 1 {
         let matches = match opts.parse(&args[1..]) {
             Ok(m) => m,
             Err(f) => {
@@ -233,12 +233,11 @@ pub fn main() -> Result<(), git2::Error> {
         if matches.opt_present("m") {
             let _ = ref_hash_list_w_commit_message(&program, &opts);
         } else {
-            let _ = ref_hash_list_w_commit_message(&program, &opts);
             let _ = ref_hash_list(&program, &opts);
         }
     };
 
-    std_input::parse_input();
+    //std_input::parse_input();
 
     Ok(())
 }
