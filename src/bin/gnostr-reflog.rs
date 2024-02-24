@@ -133,33 +133,43 @@ pub fn main() -> Result<(), git2::Error> {
             assert!(!AsciiChar::CarriageReturn.is_ascii_blank());
             assert!(!AsciiChar::FF.is_ascii_blank());
 
+            #[cfg(debug_assertions)]
             if c.is_ascii_control() {
                 println!("{}.is_asscii_control()={}",c,c.is_ascii_control());
             }
+            #[cfg(debug_assertions)]
             if c.is_ascii() {
                 println!("{}.is_asscii()={}",c,c.is_ascii());
             }
+            #[cfg(debug_assertions)]
             if c.is_ascii_graphic() {
                 println!("{}.is_asscii_graphic()={}",c,c.is_ascii_graphic());
             }
+            #[cfg(debug_assertions)]
             if c.is_whitespace() {
                 println!("{}.is_whitespace()={}",c,c.is_whitespace());
             }
+            #[cfg(debug_assertions)]
             if c.is_ascii_whitespace() {
                 println!("{}.is_ascii_whitespace()={}",c,c.is_ascii_whitespace());
             }
+            #[cfg(debug_assertions)]
             if !c.is_ascii_hexdigit() {
                 key_maybe = false;
             }
-            //println!("{}:{}={}", _i, c, c.is_ascii_hexdigit());
-            //println!("{}", c);
+            #[cfg(debug_assertions)]
+            println!("{}:{}={}", _i, c, c.is_ascii_hexdigit());
+            #[cfg(debug_assertions)]
+            println!("{}", c);
             count = count + 1;
             
         }//end is_ascii
         }//end for loop
 
-        //println!("count={:?}", count);
-        //println!("key_maybe={:?}", key_maybe);
+        #[cfg(debug_assertions)]
+        println!("count={:?}", count);
+        #[cfg(debug_assertions)]
+        println!("key_maybe={:?}", key_maybe);
 
         //we assume the input is a key
         //we assume it is a privkey for now
