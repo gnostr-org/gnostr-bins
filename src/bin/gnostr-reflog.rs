@@ -23,7 +23,6 @@ pub fn ref_hash_list(_program: &str, _opts: &Options) -> Result<(), git2::Error>
         println!("{:0>64}", commit.id());
     }
     Ok(())
-    // process::exit(0);
 } //end ref_hash_list
 
 pub fn ref_hash_list_w_commit_message(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
@@ -48,7 +47,6 @@ pub fn ref_hash_list_w_commit_message(_program: &str, _opts: &Options) -> Result
         println!("{:0>64}\n{}", commit.id(), String::from_utf8_lossy(message));
     }
     Ok(())
-    // process::exit(0);
 } //end ref_hash_list_w_commit_message
 mod std_input {
 
@@ -194,6 +192,7 @@ pub fn hash(program: &str, opts: &Options) {
 pub fn main() -> Result<(), git2::Error> {
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
+    //REF: https://docs.rs/getopts/latest/getopts/struct.Options.html
     let mut opts = Options::new();
     opts.optopt("o", "output", "set output file name", "NAME");
     opts.optopt(
@@ -241,8 +240,6 @@ pub fn main() -> Result<(), git2::Error> {
             let _ = ref_hash_list(&program, &opts);
         }
     };
-
-    //std_input::parse_input();
 
     Ok(())
 }
