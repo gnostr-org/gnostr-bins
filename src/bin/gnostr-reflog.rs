@@ -5,9 +5,7 @@ use git2::{Commit, Repository};
 use std::env;
 use std::process;
 
-pub fn ref_hash_list(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
-    //let brief = format!("Usage: {} FILE [options]", _program);
-    //print!("ref_hash_list_commit_message:\n{}", _opts.usage(&brief));
+pub fn ref_hash_list_padded(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
     let repo = match Repository::open(".") {
         Ok(repo) => repo,
         Err(e) => panic!("Error opening repository: {}", e),
@@ -21,6 +19,23 @@ pub fn ref_hash_list(_program: &str, _opts: &Options) -> Result<(), git2::Error>
     for rev in revwalk {
         let commit = repo.find_commit(rev?)?;
         println!("{:0>64}", commit.id());
+    }
+    Ok(())
+} //end ref_hash_list_padded
+pub fn ref_hash_list(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
+    let repo = match Repository::open(".") {
+        Ok(repo) => repo,
+        Err(e) => panic!("Error opening repository: {}", e),
+    };
+
+    let mut revwalk = repo.revwalk()?;
+
+    revwalk.push_head()?;
+    revwalk.set_sorting(git2::Sort::TIME)?;
+
+    for rev in revwalk {
+        let commit = repo.find_commit(rev?)?;
+        println!("{:}", commit.id());
     }
     Ok(())
 } //end ref_hash_list
@@ -43,8 +58,7 @@ pub fn ref_hash_list_w_commit_message(_program: &str, _opts: &Options) -> Result
         let message = commit
             .summary_bytes()
             .unwrap_or_else(|| commit.message_bytes());
-
-        println!("{:0>64}\n{}", commit.id(), String::from_utf8_lossy(message));
+        println!("{:0}\n{}", commit.id(), String::from_utf8_lossy(message));
     }
     Ok(())
 } //end ref_hash_list_w_commit_message
@@ -190,6 +204,14 @@ pub fn hash(program: &str, opts: &Options) {
 }
 
 pub fn main() -> Result<(), git2::Error> {
+
+    // COMMAND CONTEXT:
+    // for m in $(gnostr-reflog -p);do echo $m; for n in $(gnostr-reflog);do echo $n;done;done
+    // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)";done
+    // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)";done
+    // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)" | gnostr-xq ;done
+    // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)" | gnostr-post-event --relay wss://relay.damus.io ;done
+
     let args: Vec<String> = env::args().collect();
     let program = args[0].clone();
     //REF: https://docs.rs/getopts/latest/getopts/struct.Options.html
@@ -209,10 +231,11 @@ pub fn main() -> Result<(), git2::Error> {
     );
 
     opts.optopt("s", "sec", "use following privkey", "SEC");
-    
-    opts.optflag("m", "msgs", "print reflog with commit messages");
+
     opts.optflag("h", "help", "print this help menu");
     opts.optflag("i", "stdio", "stdio");
+    opts.optflag("p", "padded", "padded commit hashes");
+    opts.optflag("m", "msgs", "print reflog with commit messages");
 
     if args.len() >= 1 {
         let matches = match opts.parse(&args[1..]) {
@@ -222,7 +245,6 @@ pub fn main() -> Result<(), git2::Error> {
                 panic!("{}", f.to_string())
             }
         };
-
         if matches.opt_present("s") {
             sec(&program, &opts);
             process::exit(0);
@@ -235,15 +257,16 @@ pub fn main() -> Result<(), git2::Error> {
             std_input::parse_input();
             process::exit(0);
         }
+        if matches.opt_present("p") {
+            let padded = ref_hash_list_padded(&program, &opts);
+            process::exit(0);
+        }
         if matches.opt_present("m") {
             let _ = ref_hash_list_w_commit_message(&program, &opts);
+            process::exit(0);
         } else {
             let _ = ref_hash_list(&program, &opts);
-        }
-        if matches.opt_present("msgs") {
-            let _ = ref_hash_list_w_commit_message(&program, &opts);
-        } else {
-            let _ = ref_hash_list(&program, &opts);
+            process::exit(0);
         }
     };
 
