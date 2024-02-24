@@ -211,7 +211,7 @@ pub fn main() -> Result<(), git2::Error> {
 
     opts.optopt("s", "sec", "use following privkey", "SEC");
     
-    opts.optflag("m", "messages", "print reflog with commit messages");
+    opts.optflag("m", "msgs", "print reflog with commit messages");
     opts.optflag("h", "help", "print this help menu");
 
     if args.len() >= 1 {
@@ -231,6 +231,11 @@ pub fn main() -> Result<(), git2::Error> {
             process::exit(0);
         }
         if matches.opt_present("m") {
+            let _ = ref_hash_list_w_commit_message(&program, &opts);
+        } else {
+            let _ = ref_hash_list(&program, &opts);
+        }
+        if matches.opt_present("msgs") {
             let _ = ref_hash_list_w_commit_message(&program, &opts);
         } else {
             let _ = ref_hash_list(&program, &opts);
