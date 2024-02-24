@@ -92,7 +92,7 @@ mod std_input {
 
         //check if hex
         let mut count = 0;
-        let mut key_maybe = true;
+        let     key_maybe = true;
         //REF: https://docs.rs/ascii/latest/ascii/enum.AsciiChar.html#method.is_ascii_hexdigit
         for (_i, c) in input.trim().chars().enumerate() {
             if c.is_ascii() {
