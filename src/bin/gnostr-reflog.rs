@@ -183,6 +183,12 @@ pub fn main() -> Result<(), git2::Error> {
             if input.trim() == "install" {
                 println!("input={}", input);
             }
+            if input.contains("PRIVKEY") {
+                println!("PRIVKEY={}", input);
+            }
+            if input.trim() == "PRIVKEY" {
+                println!("PRIVKEY={}", input);
+            }
             let _ = hash_list(&program, &opts);
             process::exit(0);
         }//end else
