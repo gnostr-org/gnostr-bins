@@ -212,21 +212,27 @@ pub fn main() -> Result<(), git2::Error> {
     
     opts.optflag("m", "msgs", "print reflog with commit messages");
     opts.optflag("h", "help", "print this help menu");
+    opts.optflag("i", "stdio", "stdio");
 
     if args.len() >= 1 {
         let matches = match opts.parse(&args[1..]) {
             Ok(m) => m,
             Err(f) => {
+                println!("Error: {}", f.to_string());
                 panic!("{}", f.to_string())
             }
         };
 
+        if matches.opt_present("s") {
+            sec(&program, &opts);
+            process::exit(0);
+        }
         if matches.opt_present("h") {
             print_usage(&program, &opts);
             process::exit(0);
         }
-        if matches.opt_present("s") {
-            sec(&program, &opts);
+        if matches.opt_present("i") {
+            std_input::parse_input();
             process::exit(0);
         }
         if matches.opt_present("m") {
