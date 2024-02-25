@@ -1,6 +1,6 @@
 extern crate getopts;
 use getopts::Options;
-use git2::{Commit, Repository};
+use git2::{Repository};
 
 use std::env;
 use std::process;
@@ -74,6 +74,7 @@ mod std_input {
     use std::io;
     use std::process;
 
+    #[allow(dead_code)]
     pub fn parse_input() {
         let args: Vec<String> = env::args().collect();
         let program = args[0].clone();
@@ -209,7 +210,7 @@ pub fn hash(program: &str, opts: &Options) {
 pub fn main() -> Result<(), git2::Error> {
 
 
-  let this_pwd = get_pwd();
+  let _this_pwd = get_pwd();
 	//println!("this_pwd={}", this_pwd.unwrap());
 
   //gnostr_bins::hash_list();
