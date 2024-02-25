@@ -26,11 +26,12 @@ pub fn get_pwd() -> Result<String, &'static str> {
   //Ok(format!("{}", pwd().unwrap().to_string()))
   let mut no_nl = String::new();
   let mut no_nl = pwd().unwrap().to_string();
-  println!("{:?}", pwd());
-  println!("{:?}", pwd().unwrap());
-  println!("{:?}", pwd().unwrap().to_string());
-  println!("{:?}", strip_trailing_nl(&mut no_nl));
-  Ok(format!("{:?}", strip_trailing_nl(&mut no_nl)))
+
+  println!("30{:?}", pwd().unwrap());//
+  println!("31{:?}", pwd().unwrap().to_string());//
+  Ok(format!("32{}", pwd().unwrap().to_string()))
+  //Ok(format!("32{:?}", pwd().unwrap().to_string()))
+  //Ok(format!("33{:?}", strip_trailing_nl(&mut no_nl)))
 }
 
 pub fn hash_list_w_commit_message(){
