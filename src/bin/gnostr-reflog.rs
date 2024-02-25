@@ -210,14 +210,9 @@ pub fn main() -> Result<(), git2::Error> {
 
 
   let this_pwd = get_pwd();
-	println!("this_pwd={:?}", this_pwd);
-	let path = env::current_dir();
-
-	println!("path={:?}", path.unwrap());
-	println!("env::current_dir()={:?}", env::current_dir().unwrap());
-
-
-  //env::current_dir()
+  //println!("this_pwd={:?}", this_pwd.clone().unwrap());
+  //println!("this_pwd.unwrap()={:?}", gnostr_bins::strip_trailing_nl(&mut this_pwd.clone().unwrap()));
+	println!("this_pwd.unwrap()={}", this_pwd.unwrap());
 
   //gnostr_bins::hash_list();
   //process::exit(0);

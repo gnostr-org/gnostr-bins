@@ -47,13 +47,9 @@ pub fn pwd() -> Result<String, &'static str> {
 		.unwrap();
 
     let mut mutable_string = String::new();
-    mutable_string = _pwd.clone();
-    println!("51{}", mutable_string);
-    Ok(format!("52{}", mutable_string))
-    //Ok(format!("{:?}", mutable_string))
-    //Ok(format!("{:?}", _pwd.to_string()))
-    //Ok(format!("{:?}", get_pwd.stdout))
-}
+    let mut mutable_string = _pwd.clone();
+    Ok(format!("{}", mutable_string))
+}//end pwd()
 
 pub fn ref_hash_list_padded() -> Result<(), git2::Error> {
     let repo = match Repository::open(".") {
