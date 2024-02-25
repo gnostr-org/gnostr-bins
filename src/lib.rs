@@ -22,17 +22,10 @@ pub fn strip_trailing_nl(input: &mut String) {
 
 pub fn get_pwd() -> Result<String, &'static str> {
 
-  //Ok(format!("{:?}", pwd().unwrap().to_string()))
-  //Ok(format!("{}", pwd().unwrap().to_string()))
   let mut no_nl = String::new();
   let mut no_nl = pwd().unwrap().to_string();
 
-  //println!("30{:?}", pwd().unwrap());//
-  //println!("31{:?}", pwd().unwrap().to_string());//
-  //println!("32{}", pwd().unwrap().to_string());//
-  Ok(format!("33{}", pwd().unwrap().to_string()))
-  //Ok(format!("32{:?}", pwd().unwrap().to_string()))
-  //Ok(format!("33{:?}", strip_trailing_nl(&mut no_nl)))
+  Ok(format!("{}", pwd().unwrap().to_string()))
 }
 
 pub fn hash_list_w_commit_message(){
