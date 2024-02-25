@@ -16,6 +16,9 @@ use weeble::weeble;
 mod wobble;
 use wobble::wobble;
 
+mod blockheight;
+use blockheight::*;
+
 pub fn strip_trailing_nl(input: &mut String) {
     let new_len = input
         .char_indices()
@@ -46,6 +49,13 @@ pub fn get_wobble() -> Result<String, &'static str> {
 
   let mut wobble_no_nl = String::new();
   let mut wobble_no_nl = wobble().unwrap().to_string();
+
+  Ok(format!("{}", wobble().unwrap().to_string()))
+}
+pub fn get_blockheight() -> Result<String, &'static str> {
+
+  let mut blockheight_no_nl = String::new();
+  let mut blockheight_no_nl = blockheight().unwrap().to_string();
 
   Ok(format!("{}", wobble().unwrap().to_string()))
 }
