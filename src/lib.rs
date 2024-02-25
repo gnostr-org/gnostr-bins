@@ -7,6 +7,31 @@ use internal::*;
 
 mod reflog_simple;
 use reflog_simple::*;
+use reflog_simple::{pwd};
+
+pub fn strip_trailing_nl(input: &mut String) {
+    let new_len = input
+        .char_indices()
+        .rev()
+        .find(|(_, c)| !matches!(c, '\n' | '\r'))
+        .map_or(0, |(i, _)| i + 1);
+    if new_len != input.len() {
+        input.truncate(new_len);
+    }
+}
+
+pub fn get_pwd() -> Result<String, &'static str> {
+
+  //Ok(format!("{:?}", pwd().unwrap().to_string()))
+  //Ok(format!("{}", pwd().unwrap().to_string()))
+  let mut no_nl = String::new();
+  let mut no_nl = pwd().unwrap().to_string();
+  println!("{:?}", pwd());
+  println!("{:?}", pwd().unwrap());
+  println!("{:?}", pwd().unwrap().to_string());
+  println!("{:?}", strip_trailing_nl(&mut no_nl));
+  Ok(format!("{:?}", strip_trailing_nl(&mut no_nl)))
+}
 
 pub fn hash_list_w_commit_message(){
   let _ = ref_hash_list_w_commit_message();

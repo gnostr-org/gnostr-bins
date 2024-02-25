@@ -5,7 +5,7 @@ use git2::{Commit, Repository};
 use std::env;
 use std::process;
 
-use gnostr_bins;
+use gnostr_bins::{get_pwd};
 
 pub fn ref_hash_list_padded(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
     let repo = match Repository::open(".") {
@@ -207,6 +207,17 @@ pub fn hash(program: &str, opts: &Options) {
 }
 
 pub fn main() -> Result<(), git2::Error> {
+
+
+  let this_pwd = get_pwd();
+	println!("this_pwd={:?}", this_pwd);
+	let path = env::current_dir();
+
+	println!("path={:?}", path.unwrap());
+	println!("env::current_dir()={:?}", env::current_dir().unwrap());
+
+
+  //env::current_dir()
 
   //gnostr_bins::hash_list();
   //process::exit(0);
