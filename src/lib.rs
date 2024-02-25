@@ -5,6 +5,21 @@ use nostr_types::{Event, Filter, IdHex};
 mod internal;
 use internal::*;
 
+mod reflog_simple;
+use reflog_simple::*;
+
+pub fn hash_list_w_commit_message(){
+  let _ = ref_hash_list_w_commit_message();
+}
+
+pub fn hash_list(){
+  let _ = ref_hash_list();
+}
+
+pub fn hash_list_padded(){
+  let _ = ref_hash_list_padded();
+}
+
 pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
     let uri: http::Uri = url.parse::<http::Uri>().expect("Could not parse url");
     let authority = uri.authority().expect("Has no hostname").as_str();

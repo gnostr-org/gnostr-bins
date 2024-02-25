@@ -5,6 +5,8 @@ use git2::{Commit, Repository};
 use std::env;
 use std::process;
 
+use gnostr_bins;
+
 pub fn ref_hash_list_padded(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
     let repo = match Repository::open(".") {
         Ok(repo) => repo,
@@ -206,6 +208,8 @@ pub fn hash(program: &str, opts: &Options) {
 
 pub fn main() -> Result<(), git2::Error> {
 
+  //gnostr_bins::hash_list();
+  //process::exit(0);
     // COMMAND CONTEXT:
     // for m in $(gnostr-reflog -p);do echo $m; for n in $(gnostr-reflog);do echo $n;done;done
     // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)";done
@@ -217,24 +221,8 @@ pub fn main() -> Result<(), git2::Error> {
     let program = args[0].clone();
     //REF: https://docs.rs/getopts/latest/getopts/struct.Options.html
     let mut opts = Options::new();
-    opts.optopt("o", "output", "set output file name", "NAME");
-    opts.optopt(
-        "r",
-        "ref",
-        "Specify the Git reference (default: HEAD)",
-        "REF",
-    );
-    opts.optopt(
-        "n",
-        "number",
-        "Specify the maximum number of commits to show (default: 10)",
-        "NUMBER",
-    );
-
-    opts.optopt("s", "sec", "use following privkey", "SEC");
 
     opts.optflag("h", "help", "print this help menu");
-    opts.optflag("i", "stdio", "stdio");
     opts.optflag("p", "padded", "padded commit hashes");
     opts.optflag("m", "msgs", "print reflog with commit messages");
 
@@ -246,42 +234,23 @@ pub fn main() -> Result<(), git2::Error> {
                 panic!("{}", f.to_string())
             }
         };
-        if matches.opt_present("s") {
-            sec(&program, &opts);
-            process::exit(0);
-        }
         if matches.opt_present("h") {
             print_usage(&program, &opts);
             process::exit(0);
         }
-        if matches.opt_present("i") {
-            std_input::parse_input();
-            process::exit(0);
-        }
         if matches.opt_present("p") {
-            let _padded = ref_hash_list_padded(&program, &opts);
+            gnostr_bins::hash_list_padded();
             process::exit(0);
         }
         if matches.opt_present("m") {
-            let _ = ref_hash_list_w_commit_message(&program, &opts);
+            gnostr_bins::hash_list_w_commit_message();
             process::exit(0);
         } else {
-            let _ = ref_hash_list(&program, &opts);
-            process::exit(0);
+          gnostr_bins::hash_list();
+          process::exit(0);
         }
     };
 
     Ok(())
 }
 
-#[allow(dead_code)]
-fn format_commit(
-    _commit: &Commit,
-    _format_str: &str,
-    _show_date: bool,
-    _show_message: bool,
-) -> String {
-    // This function is not implemented in this example, but provides a placeholder for future enhancements
-    // It would allow more flexible output formatting based on the provided format string and boolean flags.
-    panic!("Formatting not implemented.");
-}
