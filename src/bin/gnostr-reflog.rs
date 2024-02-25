@@ -259,7 +259,7 @@ pub fn main() -> Result<(), git2::Error> {
             process::exit(0);
         }
         if matches.opt_present("p") {
-            let padded = ref_hash_list_padded(&program, &opts);
+            let _padded = ref_hash_list_padded(&program, &opts);
             process::exit(0);
         }
         if matches.opt_present("m") {
