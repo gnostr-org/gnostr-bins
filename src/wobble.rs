@@ -1,14 +1,13 @@
 #[allow(unused_imports)]
-use reqwest::{get, Error, Url};
 use std::process;
 use std::process::Command;
 
-fn check_curl() {
+pub fn check_curl() {
 
     //println!("check_curl");
 }
 
-fn main() -> Result<(), reqwest::Error> {
+pub fn wobble() -> Result<String, &'static str> {
     let now = chrono::Utc::now().timestamp();
     //println!("{}", now);
 
@@ -74,6 +73,8 @@ fn main() -> Result<(), reqwest::Error> {
     assert_eq!(mempool_weeble.is_empty(), false);
     //assert_eq!(blockchain_weeble, mempool_weeble);
 
+    let mut mutable_string = String::new();
+
     let blockchain_weeble: i64 = blockchain_weeble.trim().parse().unwrap();
     //println!("{}", blockchain_weeble + 1);
     let mempool_weeble: i64 = mempool_weeble.trim().parse().unwrap();
@@ -81,14 +82,17 @@ fn main() -> Result<(), reqwest::Error> {
 
     //
     if mempool_weeble as u64 == blockchain_weeble as u64 {
-        println!("{}", now % mempool_weeble);
+        //println!("{}", now % mempool_weeble);
+        let mut mutable_string = now % mempool_weeble;
         process::exit(0);
     }
     if mempool_weeble as u64 >= blockchain_weeble as u64 {
-        println!("{}", now % mempool_weeble);
+        //println!("{}", now % mempool_weeble);
+        let mut mutable_string = mempool_weeble.clone();
     } else {
         println!("{}", now % blockchain_weeble);
+        let mut mutable_string = blockchain_weeble.clone();
     }
 
-    Ok(())
+    Ok(format!("{}", mutable_string))
 }

@@ -1,4 +1,3 @@
-
 use http::Uri;
 use nostr_types::{Event, Filter, IdHex};
 
@@ -6,8 +5,16 @@ mod internal;
 use internal::*;
 
 mod reflog_simple;
-use reflog_simple::*;
-use reflog_simple::{pwd};
+use crate::reflog_simple::ref_hash_list_w_commit_message;
+use crate::reflog_simple::ref_hash_list_padded;
+use crate::reflog_simple::ref_hash_list;
+use crate::reflog_simple::pwd;
+
+mod weeble;
+use weeble::weeble;
+
+mod wobble;
+use wobble::wobble;
 
 pub fn strip_trailing_nl(input: &mut String) {
     let new_len = input
@@ -26,6 +33,21 @@ pub fn get_pwd() -> Result<String, &'static str> {
   let mut no_nl = pwd().unwrap().to_string();
 
   Ok(format!("{}", pwd().unwrap().to_string()))
+}
+
+pub fn get_weeble() -> Result<String, &'static str> {
+
+  let mut weeble_no_nl = String::new();
+  let mut weeble_no_nl = weeble().unwrap().to_string();
+
+  Ok(format!("{}", weeble().unwrap().to_string()))
+}
+pub fn get_wobble() -> Result<String, &'static str> {
+
+  let mut wobble_no_nl = String::new();
+  let mut wobble_no_nl = wobble().unwrap().to_string();
+
+  Ok(format!("{}", wobble().unwrap().to_string()))
 }
 
 pub fn hash_list_w_commit_message(){
