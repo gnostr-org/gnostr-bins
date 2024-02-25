@@ -45,14 +45,12 @@ pub fn pwd() -> Result<String, &'static str> {
 			String::from_utf8_lossy(non_utf8.as_bytes()).into_owned()
 		})
 		.unwrap();
-    println!("48:{:?}", _pwd);
 
     let mut mutable_string = String::new();
     mutable_string = _pwd.clone();
-    println!("49{}", mutable_string);
-    println!("49{:?}", strip_trailing_nl(&mut mutable_string));
-    println!("49{:?}", strip_trailing_nl(&mut _pwd));
-    Ok(format!("{:?}", _pwd))
+    println!("51{}", mutable_string);
+    Ok(format!("52{}", mutable_string))
+    //Ok(format!("{:?}", mutable_string))
     //Ok(format!("{:?}", _pwd.to_string()))
     //Ok(format!("{:?}", get_pwd.stdout))
 }
