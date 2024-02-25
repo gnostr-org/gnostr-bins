@@ -2,6 +2,17 @@ use std::process::Command;
 use ascii::AsciiChar;
 use git2::{Repository};
 
+pub fn strip_trailing_nl(input: &mut String) {
+    let new_len = input
+        .char_indices()
+        .rev()
+        .find(|(_, c)| !matches!(c, '\n' | '\r'))
+        .map_or(0, |(i, _)| i + 1);
+    if new_len != input.len() {
+        input.truncate(new_len);
+    }
+}
+
 pub fn pwd() -> Result<String, &'static str> {
 
   	let get_pwd = if cfg!(target_os = "windows") {
@@ -29,11 +40,18 @@ pub fn pwd() -> Result<String, &'static str> {
 			.expect("failed to execute process")
 	};
 
-	let _pwd = String::from_utf8(get_pwd.stdout)
+	let mut _pwd = String::from_utf8(get_pwd.stdout)
 		.map_err(|non_utf8| {
 			String::from_utf8_lossy(non_utf8.as_bytes()).into_owned()
 		})
 		.unwrap();
+    println!("48:{:?}", _pwd);
+
+    let mut mutable_string = String::new();
+    mutable_string = _pwd.clone();
+    println!("49{}", mutable_string);
+    println!("49{:?}", strip_trailing_nl(&mut mutable_string));
+    println!("49{:?}", strip_trailing_nl(&mut _pwd));
     Ok(format!("{:?}", _pwd))
     //Ok(format!("{:?}", _pwd.to_string()))
     //Ok(format!("{:?}", get_pwd.stdout))
