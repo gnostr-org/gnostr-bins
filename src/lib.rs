@@ -57,7 +57,7 @@ pub fn get_blockheight() -> Result<String, &'static str> {
   let mut blockheight_no_nl = String::new();
   let mut blockheight_no_nl = blockheight().unwrap().to_string();
 
-  Ok(format!("{}", wobble().unwrap().to_string()))
+  Ok(format!("{}", blockheight().unwrap().to_string()))
 }
 
 pub fn hash_list_w_commit_message(){
