@@ -17,7 +17,7 @@ fn car_cdr(s: &str) -> (&str, &str) {
     (&s[0..0], s)
 }
 
-fn oid_to_str(oid: &Oid) -> Result<String, std::fmt::Error> {
+pub fn oid_to_str(oid: &Oid) -> Result<String, &'static str> {
     // Use the format!("{:x}", oid) for full 40-character hex string.
     // For a shorter representation, use oid.short_id() which returns a Result<Buf, Error>
     // and needs further conversion to String.
@@ -48,14 +48,41 @@ fn main() -> Result<(), git2::Error> {
                 println!("{}",*oid);
                 println!("{:?}",oid_to_str(oid));
                 //format!("{:#x?}", oid)
-                let first_two_chars: String = format!("{:?}",oid_to_str(oid));
-                let first_two_chars: String = first_two_chars.chars().take(2).collect();
-                println!("First two characters: {}", first_two_chars);
-                println!("{}objects/{}",repo.path().display() ,oid);
+                let s:String = "Hello, world!".chars()
+                    .map(|x| match x {
+                        '!' => '?',
+                        'A'..='Z' => 'X',
+                        'a'..='z' => 'x',
+                        _ => x
+                    }).collect();
+                println!("{}", s);// Xxxxx, xxxxx
+                let s:String = oid_to_str(oid).expect("REASON");
+                let s:String = s.chars()
+                    .map(|x| match x {
+                        '!' => '?',
+                        'A'..='Z' => 'X',
+                        'a'..='z' => 'x',
+                        _ => x
+                    }).collect();
+                println!("{}", s);// Xxxxx, xxxxx
+                //let first_two_chars: String = format!("{:?}",oid_to_str(oid));
+                //let my_string = String::replace(first_two_chars, ['0', '3'], "");
+                let mut result = str::replace("Hello World!", "!", "?");
+                // Equivalently:
+                result = "Hello World!".replace("!", "?");
+                println!("{}", result); // => "Hello World?"
+                //println!("1:First two characters: {}", first_two_chars);
+                //let first_two_chars: String = first_two_chars.chars().take(2).collect();
+                //let first_two_chars = &first_two_chars[..2];
+                //println!("2:First two characters: {}", first_two_chars);
+                //println!("{}objects/{}",repo.path().display() ,oid);
                 //let (first_char, remainder) = car_cdr(oid_to_str(oid));
                 //let (first_char, remainder) = car_cdr(oid_to_str(oid));
                 //println!("first char: {}\n", first_char);
                 //println!("first char: {}\nremainder: {}", first_char, remainder);
+                //let my_string = String::from("Hello, world!");
+                //let first_two_chars = &my_string[..2];
+                //println!("First two characters: {}", first_two_chars);
 
         // Return true because the closure has to return a boolean
         true
