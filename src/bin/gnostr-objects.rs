@@ -3,6 +3,7 @@ use std::path::Path;
 use std::process;
 use std::ffi::OsString;
 use std::env;
+use git2::Oid;
 
 fn car_cdr(s: &str) -> (&str, &str) {
     for i in 1..5 {
@@ -14,6 +15,14 @@ fn car_cdr(s: &str) -> (&str, &str) {
     }
 
     (&s[0..0], s)
+}
+
+fn oid_to_str(oid: &Oid) -> Result<String, std::fmt::Error> {
+    // Use the format!("{:x}", oid) for full 40-character hex string.
+    // For a shorter representation, use oid.short_id() which returns a Result<Buf, Error>
+    // and needs further conversion to String.
+    Ok(format!("{:#x?}", oid))
+    //Ok(format!("{:}", oid))
 }
 
 fn main() -> Result<(), git2::Error> {
@@ -36,7 +45,17 @@ fn main() -> Result<(), git2::Error> {
 
     // Loop through objects in db
     odb.foreach(|oid| {
+                println!("{}",*oid);
+                println!("{:?}",oid_to_str(oid));
+                //format!("{:#x?}", oid)
+                let first_two_chars: String = format!("{:?}",oid_to_str(oid));
+                let first_two_chars: String = first_two_chars.chars().take(2).collect();
+                println!("First two characters: {}", first_two_chars);
                 println!("{}objects/{}",repo.path().display() ,oid);
+                //let (first_char, remainder) = car_cdr(oid_to_str(oid));
+                //let (first_char, remainder) = car_cdr(oid_to_str(oid));
+                //println!("first char: {}\n", first_char);
+                //println!("first char: {}\nremainder: {}", first_char, remainder);
 
         // Return true because the closure has to return a boolean
         true
@@ -44,12 +63,16 @@ fn main() -> Result<(), git2::Error> {
     .unwrap();
 
     let cwd = env::current_dir().unwrap();
-let my_str: String = cwd.as_os_str().to_str().unwrap().to_string();
-println!("{:?}", my_str);
+    let my_str: String = cwd.as_os_str().to_str().unwrap().to_string();
+    println!("{:?}", my_str);
 
-let (first_char, remainder) = car_cdr(&my_str);
-println!("first char: {}\n", first_char);
-println!("first char: {}\nremainder: {}", first_char, remainder);
+    let (first_char, remainder) = car_cdr(&my_str);
+    println!("first char: {}\n", first_char);
+    println!("first char: {}\nremainder: {}", first_char, remainder);
+
+
+
+
 let (first_char, remainder) = car_cdr("test");
 println!("first char: {}\nremainder: {}", first_char, remainder);
 
