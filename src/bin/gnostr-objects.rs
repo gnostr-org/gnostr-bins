@@ -73,14 +73,14 @@ fn main() -> Result<(), git2::Error> {
                 //result = "Hello World!".replace("!", "?");
                 //println!("{}", result); // => "Hello World?"
                 //println!("1:First two characters: {}", first_two_chars);
-                //let first_two_chars: String = first_two_chars.chars().take(2).collect();
+                let first_two_chars: String = s.chars().take(2).collect();
                 //let first_two_chars = &first_two_chars[..2];
-                //println!("2:First two characters: {}", first_two_chars);
+                println!("2:First two characters: {}", first_two_chars);
                 //println!("{}objects/{}",repo.path().display() ,oid);
-                //let (first_char, remainder) = car_cdr(oid_to_str(oid));
+                let (first_char, remainder) = car_cdr(&s);
                 //let (first_char, remainder) = car_cdr(oid_to_str(oid));
                 //println!("first char: {}\n", first_char);
-                //println!("first char: {}\nremainder: {}", first_char, remainder);
+                println!("first char: {}\nremainder: {}", first_char, remainder);
                 //let my_string = String::from("Hello, world!");
                 //let first_two_chars = &my_string[..2];
                 //println!("First two characters: {}", first_two_chars);
