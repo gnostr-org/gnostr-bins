@@ -45,32 +45,33 @@ fn main() -> Result<(), git2::Error> {
 
     // Loop through objects in db
     odb.foreach(|oid| {
-                println!("{}",*oid);
-                println!("{:?}",oid_to_str(oid));
+                //println!("{}",*oid);
+                //println!("{:?}",oid_to_str(oid));
                 //format!("{:#x?}", oid)
-                let s:String = "Hello, world!".chars()
-                    .map(|x| match x {
-                        '!' => '?',
-                        'A'..='Z' => 'X',
-                        'a'..='z' => 'x',
-                        _ => x
-                    }).collect();
-                println!("{}", s);// Xxxxx, xxxxx
+                //let s:String = "Hello, world!".chars()
+                //    .map(|x| match x {
+                //        '!' => '?',
+                //        'A'..='Z' => 'X',
+                //        'a'..='z' => 'x',
+                //        _ => x
+                //    }).collect();
+                //println!("{}", s);// Xxxxx, xxxxx
                 let s:String = oid_to_str(oid).expect("REASON");
                 let s:String = s.chars()
                     .map(|x| match x {
-                        '!' => '?',
-                        'A'..='Z' => 'X',
-                        'a'..='z' => 'x',
+                        '(' => ' ',
+                        ')' => ' ',
+                        'A'..='Z' => ' ',
+                        //'a'..='z' => 'x',
                         _ => x
                     }).collect();
-                println!("{}", s);// Xxxxx, xxxxx
+                println!("{}", s);
                 //let first_two_chars: String = format!("{:?}",oid_to_str(oid));
                 //let my_string = String::replace(first_two_chars, ['0', '3'], "");
-                let mut result = str::replace("Hello World!", "!", "?");
-                // Equivalently:
-                result = "Hello World!".replace("!", "?");
-                println!("{}", result); // => "Hello World?"
+                //let mut result = str::replace("Hello World!", "!", "?");
+                //// Equivalently:
+                //result = "Hello World!".replace("!", "?");
+                //println!("{}", result); // => "Hello World?"
                 //println!("1:First two characters: {}", first_two_chars);
                 //let first_two_chars: String = first_two_chars.chars().take(2).collect();
                 //let first_two_chars = &first_two_chars[..2];
@@ -89,19 +90,19 @@ fn main() -> Result<(), git2::Error> {
     })
     .unwrap();
 
-    let cwd = env::current_dir().unwrap();
-    let my_str: String = cwd.as_os_str().to_str().unwrap().to_string();
-    println!("{:?}", my_str);
+    //let cwd = env::current_dir().unwrap();
+    //let my_str: String = cwd.as_os_str().to_str().unwrap().to_string();
+    //println!("{:?}", my_str);
 
-    let (first_char, remainder) = car_cdr(&my_str);
-    println!("first char: {}\n", first_char);
-    println!("first char: {}\nremainder: {}", first_char, remainder);
-
-
+    //let (first_char, remainder) = car_cdr(&my_str);
+    //println!("first char: {}\n", first_char);
+    //println!("first char: {}\nremainder: {}", first_char, remainder);
 
 
-let (first_char, remainder) = car_cdr("test");
-println!("first char: {}\nremainder: {}", first_char, remainder);
+
+
+    //let (first_char, remainder) = car_cdr("test");
+    //println!("first char: {}\nremainder: {}", first_char, remainder);
 
     Ok(())
 }
