@@ -66,44 +66,17 @@ fn main() -> Result<(), git2::Error> {
                         _ => x
                     }).collect();
                 println!("{}", s);
-                //let first_two_chars: String = format!("{:?}",oid_to_str(oid));
-                //let my_string = String::replace(first_two_chars, ['0', '3'], "");
-                //let mut result = str::replace("Hello World!", "!", "?");
-                //// Equivalently:
-                //result = "Hello World!".replace("!", "?");
-                //println!("{}", result); // => "Hello World?"
-                //println!("1:First two characters: {}", first_two_chars);
                 let first_two_chars: String = s.chars().take(2).collect();
                 //let first_two_chars = &first_two_chars[..2];
-                println!("2:First two characters: {}", first_two_chars);
+                //println!("2:First two characters: {}", first_two_chars);
                 //println!("{}objects/{}",repo.path().display() ,oid);
                 let (first_char, remainder) = car_cdr(&s);
-                //let (first_char, remainder) = car_cdr(oid_to_str(oid));
-                //println!("first char: {}\n", first_char);
-                println!("first char: {}\nremainder: {}", first_char, remainder);
-                //let my_string = String::from("Hello, world!");
-                //let first_two_chars = &my_string[..2];
-                //println!("First two characters: {}", first_two_chars);
-
+                let (second_char, remainder) = car_cdr(&remainder);
+                println!("{}objects/{}/{}",repo.path().display(),first_two_chars,remainder);
         // Return true because the closure has to return a boolean
         true
     })
     .unwrap();
-
-    //let cwd = env::current_dir().unwrap();
-    //let my_str: String = cwd.as_os_str().to_str().unwrap().to_string();
-    //println!("{:?}", my_str);
-
-    //let (first_char, remainder) = car_cdr(&my_str);
-    //println!("first char: {}\n", first_char);
-    //println!("first char: {}\nremainder: {}", first_char, remainder);
-
-
-
-
-    //let (first_char, remainder) = car_cdr("test");
-    //println!("first char: {}\nremainder: {}", first_char, remainder);
-
     Ok(())
 }
 

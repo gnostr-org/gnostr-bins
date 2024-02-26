@@ -1,21 +1,21 @@
 use git2::{Repository, IndexAddOption};
-use std::env::args;
-use structopt::StructOpt;
+//use std::env::args;
+//use structopt::StructOpt;
 
 use std::path::Path;
 use std::process;
 
 use std::ffi::OsString;
 
-#[derive(StructOpt)]
-struct Args {
-    #[structopt(short, long)]
-    verbose: bool,
-    rest: Vec<String>,
-}
+//#[derive(StructOpt)]
+//struct Args {
+//    #[structopt(short, long)]
+//    verbose: bool,
+//    rest: Vec<String>,
+//}
 
 fn main() -> Result<(), git2::Error> {
-    let args = Args::from_args();
+    //let args = Args::from_args();
 
 
 
