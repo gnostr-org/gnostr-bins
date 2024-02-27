@@ -619,7 +619,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.11"
+version = "0.0.12"
 dependencies = [
  "ascii",
  "base64 0.21.5",
