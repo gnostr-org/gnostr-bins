@@ -21,6 +21,8 @@ fn main() {
     res.read_to_string(&mut tmp_string).unwrap();
     let tmp_u64 = tmp_string.parse::<u64>().unwrap_or(0);
 
-    let weeble = now_millis as f64 / tmp_u64 as f64;
+    //TODO:impl gnostr-weeble_millis
+    //let weeble = now_millis as f64 / tmp_u64 as f64;
+    let weeble = seconds as f64 / tmp_u64 as f64;
     println!("{}", format!("{}", weeble.floor()));
 }
