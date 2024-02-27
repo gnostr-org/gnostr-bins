@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.9"
+version = "0.0.11"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "gnostr-bins: part of the gnostr workflow commands"
@@ -26,6 +26,7 @@ license = "MIT"
 ## directory = "vendor"
 
 [dependencies]
+ascii = "1.1.0"
 base64 = "0.21"
 bech32 = "0.9"
 chrono = "0.4.34"
@@ -43,6 +44,7 @@ rpassword = "7.2"
 serde = { version = "1.0", features = [ "derive" ] }
 serde_json = "1.0"
 sha256 = "1.2.2"
+structopt = "0.3.26"
 time = "0.1.42"
 tungstenite = { version = "0.18", features = [ "rustls-tls-webpki-roots" ] }
 zeroize = "1.5"

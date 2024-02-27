@@ -1,9 +1,76 @@
-
 use http::Uri;
 use nostr_types::{Event, Filter, IdHex};
 
 mod internal;
 use internal::*;
+
+mod reflog_simple;
+use crate::reflog_simple::ref_hash_list_w_commit_message;
+use crate::reflog_simple::ref_hash_list_padded;
+use crate::reflog_simple::ref_hash_list;
+use crate::reflog_simple::pwd;
+
+mod weeble;
+use weeble::weeble;
+
+mod wobble;
+use wobble::wobble;
+
+mod blockheight;
+use blockheight::*;
+
+pub fn strip_trailing_nl(input: &mut String) {
+    let new_len = input
+        .char_indices()
+        .rev()
+        .find(|(_, c)| !matches!(c, '\n' | '\r'))
+        .map_or(0, |(i, _)| i + 1);
+    if new_len != input.len() {
+        input.truncate(new_len);
+    }
+}
+
+pub fn get_pwd() -> Result<String, &'static str> {
+
+  let mut no_nl = String::new();
+  let mut no_nl = pwd().unwrap().to_string();
+
+  Ok(format!("{}", pwd().unwrap().to_string()))
+}
+
+pub fn get_weeble() -> Result<String, &'static str> {
+
+  let mut weeble_no_nl = String::new();
+  let mut weeble_no_nl = weeble().unwrap().to_string();
+
+  Ok(format!("{}", weeble().unwrap().to_string()))
+}
+pub fn get_wobble() -> Result<String, &'static str> {
+
+  let mut wobble_no_nl = String::new();
+  let mut wobble_no_nl = wobble().unwrap().to_string();
+
+  Ok(format!("{}", wobble().unwrap().to_string()))
+}
+pub fn get_blockheight() -> Result<String, &'static str> {
+
+  let mut blockheight_no_nl = String::new();
+  let mut blockheight_no_nl = blockheight().unwrap().to_string();
+
+  Ok(format!("{}", blockheight().unwrap().to_string()))
+}
+
+pub fn hash_list_w_commit_message(){
+  let _ = ref_hash_list_w_commit_message();
+}
+
+pub fn hash_list(){
+  let _ = ref_hash_list();
+}
+
+pub fn hash_list_padded(){
+  let _ = ref_hash_list_padded();
+}
 
 pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
     let uri: http::Uri = url.parse::<http::Uri>().expect("Could not parse url");

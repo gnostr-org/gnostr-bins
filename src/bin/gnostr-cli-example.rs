@@ -1,5 +1,5 @@
-use std::io::{Read};
 use reqwest::Url;
+use std::io::Read;
 fn main() {
     let url = Url::parse("https://raw.githubusercontent.com/gnostr-org/gnostr-bins/master/src/bin/gnostr-cli-example.rs").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
@@ -9,4 +9,3 @@ fn main() {
 
     println!("{}", body);
 }
-
