@@ -1,98 +1,34 @@
-#[allow(unused_imports)]
-use std::process;
-use std::process::Command;
+use std::time::SystemTime;
+use reqwest::Url;
+use std::io::Read;
+use crate::get_blockheight;
 
 pub fn check_curl() {
 
     //println!("check_curl");
 }
 
-pub fn wobble() -> Result<String, &'static str> {
-    let now = chrono::Utc::now().timestamp();
-    //println!("{}", now);
+pub fn wobble() -> Result<f64,ascii::AsciiChar> {
 
-    check_curl();
-    #[allow(clippy::if_same_then_else)]
-    let blockchain_gnostr_weeble = if cfg!(target_os = "windows") {
-        Command::new("cmd")
-            .args(["/C", "gnostr-weeble || echo weeble"])
-            .output()
-            .expect("failed to execute process")
-    } else if cfg!(target_os = "macos") {
-        Command::new("curl")
-            .arg("https://blockchain.info/q/getblockcount")
-            .output()
-            .expect("failed to execute process")
-    } else if cfg!(target_os = "linux") {
-        Command::new("curl")
-            .arg("https://blockchain.info/q/getblockcount")
-            .output()
-            .expect("failed to execute process")
-    } else {
-        Command::new("curl")
-            .arg("https://blockchain.info/q/getblockcount")
-            .output()
-            .expect("failed to execute process")
-    };
 
-    let blockchain_weeble = String::from_utf8(blockchain_gnostr_weeble.stdout)
-        .map_err(|non_utf8| String::from_utf8_lossy(non_utf8.as_bytes()).into_owned())
-        .unwrap();
+  let since_the_epoch =
+    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error");
+    let seconds = since_the_epoch.as_secs();
+    let subsec_millis = since_the_epoch.subsec_millis() as u64;
+    let now_millis = seconds * 1000 + subsec_millis;
+    //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-    //assert_eq!(weeble.is_empty(), true); // a)
-    //
-    let mempool_gnostr_weeble = if cfg!(target_os = "windows") {
-        Command::new("cmd")
-            .args(["/C", "gnostr-weeble || echo weeble"])
-            .output()
-            .expect("failed to execute process")
-    } else if cfg!(target_os = "macos") {
-        Command::new("curl")
-            .arg("https://mempool.space/api/blocks/tip/height")
-            .output()
-            .expect("failed to execute process")
-    } else if cfg!(target_os = "linux") {
-        Command::new("curl")
-            .arg("https://mempool.space/api/blocks/tip/height")
-            .arg("https://blockchain.info/q/getblockcount")
-            .output()
-            .expect("failed to execute process")
-    } else {
-        Command::new("curl")
-            .arg("https://mempool.space/api/blocks/tip/height")
-            .arg("https://blockchain.info/q/getblockcount")
-            .output()
-            .expect("failed to execute process")
-    };
+  let _ = get_blockheight();
+    let url = Url::parse("https://mempool.space/api/blocks/tip/height").unwrap();
+    let mut res = reqwest::blocking::get(url).unwrap();
 
-    let mempool_weeble = String::from_utf8(mempool_gnostr_weeble.stdout)
-        .map_err(|non_utf8| String::from_utf8_lossy(non_utf8.as_bytes()).into_owned())
-        .unwrap();
+    let mut tmp_string = String::new();
+    res.read_to_string(&mut tmp_string).unwrap();
+    let tmp_u64 = tmp_string.parse::<u64>().unwrap_or(0);
 
-    assert_eq!(blockchain_weeble.is_empty(), false);
-    assert_eq!(mempool_weeble.is_empty(), false);
-    //assert_eq!(blockchain_weeble, mempool_weeble);
+    //TODO:impl gnostr-weeble_millis
+    //let weeble = now_millis as f64 / tmp_u64 as f64;
+    let wobble = seconds as f64 % tmp_u64 as f64;
+    return Ok(wobble.floor());
 
-    let mut mutable_string = String::new();
-
-    let blockchain_weeble: i64 = blockchain_weeble.trim().parse().unwrap();
-    //println!("{}", blockchain_weeble + 1);
-    let mempool_weeble: i64 = mempool_weeble.trim().parse().unwrap();
-    //println!("{}", mempool_weeble + 1);
-
-    //
-    if mempool_weeble as u64 == blockchain_weeble as u64 {
-        //println!("{}", now % mempool_weeble);
-        let mut mutable_string = now % mempool_weeble;
-        process::exit(0);
-    }
-    if mempool_weeble as u64 >= blockchain_weeble as u64 {
-        //println!("{}", now % mempool_weeble);
-        let mut mutable_string = mempool_weeble.clone();
-    } else {
-        println!("{}", now % blockchain_weeble);
-        let mut mutable_string = blockchain_weeble.clone();
-    }
-
-    Ok(format!("{}", mutable_string))
 }
