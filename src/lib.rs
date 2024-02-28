@@ -10,14 +10,14 @@ use crate::reflog_simple::ref_hash_list_padded;
 use crate::reflog_simple::ref_hash_list;
 use crate::reflog_simple::pwd;
 
-mod weeble;
-use weeble::weeble;
+pub mod weeble;
+pub use weeble::weeble;
 
-mod wobble;
-use wobble::wobble;
+pub mod wobble;
+pub use wobble::wobble;
 
-mod blockheight;
-use blockheight::*;
+pub mod blockheight;
+pub use blockheight::blockheight;
 
 pub fn strip_trailing_nl(input: &mut String) {
     let new_len = input
