@@ -1,13 +1,13 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.13"
+version = "0.0.14"
 edition = "2021"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "gnostr-bins: part of the gnostr workflow commands"
 repository = "https://github.com/gnostr-org/gnostr-bins"
 documentation = "https://docs.rs/gnostr-bins"
 readme = "README.md"
-keywords = [ "nostr", "gnostr", "git"]
+keywords = [ "nostr", "gnostr", "git", "nostr-watch"]
 license = "MIT"
 
 ## [source."git+https://github.com/gnostr-org/nip44?rev=e38717f86ccccb91c25ebf07881a77d66411161c"]
