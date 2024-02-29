@@ -19,6 +19,28 @@ pub use wobble::wobble;
 pub mod blockheight;
 pub use blockheight::blockheight;
 
+/// REF: https://api.nostr.watch
+/// nostr.watch API Docs
+/// 
+/// Uptime absolutely not guaranteed
+/// 
+/// Endpoints
+/// 
+/// Supported Methods: GET
+/// 
+/// Online Relays: https://api.nostr.watch/v1/online
+/// Public Relays: https://api.nostr.watch/v1/public
+/// Pay to Relays: https://api.nostr.watch/v1/paid
+/// Offline Relays: https://api.nostr.watch/v1/offline
+/// Relays by supported NIP: https://api.nostr.watch/v1/nip/X Use NIP ids without leading zeros - for example: https://api.nostr.watch/v1/nip/1
+
+pub mod relays;
+pub use relays::relays;
+pub use relays::relays_online;
+pub use relays::relays_public;
+pub use relays::relays_paid;
+pub use relays::relays_offline;
+
 pub fn strip_trailing_nl(input: &mut String) {
     let new_len = input
         .char_indices()
@@ -37,6 +59,44 @@ pub fn get_pwd() -> Result<String, &'static str> {
   return Ok(format!("{  }", no_nl));
 
 }
+
+/// get_relays
+pub fn get_relays() -> Result<String, &'static str> {
+
+  let _relays_no_nl = relays().unwrap().to_string();
+
+  Ok(format!("{}", relays().unwrap().to_string()))
+}
+/// get_relays_online
+pub fn get_relays_online() -> Result<String, &'static str> {
+
+  let _relays_no_nl = relays_public().unwrap().to_string();
+
+  Ok(format!("{}", relays_online().unwrap().to_string()))
+}
+/// get_relays_public
+pub fn get_relays_public() -> Result<String, &'static str> {
+
+  let _relays_no_nl = relays_public().unwrap().to_string();
+
+  Ok(format!("{}", relays_public().unwrap().to_string()))
+}
+/// get_relays_paid
+pub fn get_relays_paid() -> Result<String, &'static str> {
+
+  let _relays_no_nl = relays_paid().unwrap().to_string();
+
+  Ok(format!("{}", relays_public().unwrap().to_string()))
+}
+/// get_relays_offline
+pub fn get_relays_offline() -> Result<String, &'static str> {
+
+  let _relays_no_nl = relays_offline().unwrap().to_string();
+
+  Ok(format!("{}", relays_public().unwrap().to_string()))
+}
+
+
 
 pub fn get_weeble() -> Result<String, &'static str> {
 
