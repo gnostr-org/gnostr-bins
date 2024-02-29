@@ -4,6 +4,8 @@
 target/doc
 target/package
 
+.DS_Store
+*.DS_Store
 **.DS_Store
 
 #target
