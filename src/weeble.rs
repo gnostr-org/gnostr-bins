@@ -18,7 +18,8 @@ pub fn weeble() -> Result<f64,ascii::AsciiChar> {
     let now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-  let _ = get_blockheight();
+  //let bh = get_blockheight();
+  //println!("{}",bh.unwrap());
     let url = Url::parse("https://mempool.space/api/blocks/tip/height").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
 
