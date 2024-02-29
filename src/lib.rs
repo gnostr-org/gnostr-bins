@@ -32,30 +32,27 @@ pub fn strip_trailing_nl(input: &mut String) {
 
 pub fn get_pwd() -> Result<String, &'static str> {
 
-  let mut no_nl = String::new();
   let mut no_nl = pwd().unwrap().to_string();
+  no_nl.retain(|c| c != '\n');
+  return Ok(format!("{  }", no_nl));
 
-  Ok(format!("{}", pwd().unwrap().to_string()))
 }
 
 pub fn get_weeble() -> Result<String, &'static str> {
 
-  let mut weeble_no_nl = String::new();
-  let mut weeble_no_nl = weeble().unwrap().to_string();
+  let _weeble_no_nl = weeble().unwrap().to_string();
 
   Ok(format!("{}", weeble().unwrap().to_string()))
 }
 pub fn get_wobble() -> Result<String, &'static str> {
 
-  let mut wobble_no_nl = String::new();
-  let mut wobble_no_nl = wobble().unwrap().to_string();
+  let _wobble_no_nl = wobble().unwrap().to_string();
 
   Ok(format!("{}", wobble().unwrap().to_string()))
 }
 pub fn get_blockheight() -> Result<String, &'static str> {
 
-  let mut blockheight_no_nl = String::new();
-  let mut blockheight_no_nl = blockheight().unwrap().to_string();
+  let _blockheight_no_nl = blockheight().unwrap().to_string();
 
   Ok(format!("{}", blockheight().unwrap().to_string()))
 }
