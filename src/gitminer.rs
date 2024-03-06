@@ -1,5 +1,5 @@
 use super::worker::Worker;
-use git2::{Repository};
+use git2::Repository;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -116,7 +116,10 @@ impl Gitminer {
         //write the commit
         let _ = Command::new("sh")
             .arg("-c")
-            .arg(format!("cd {} && git hash-object -t commit -w --stdin < {} && git reset --hard {}", self.opts.repo, tmpfile, hash))
+            .arg(format!(
+                "cd {} && git hash-object -t commit -w --stdin < {} && git reset --hard {}",
+                self.opts.repo, tmpfile, hash
+            ))
             .output();
         //.ok()
         //.expect("Failed to generate commit");

@@ -253,9 +253,22 @@ fn main() -> io::Result<()> {
     let path = env::current_dir()?;
 
     //println!("The current directory is {}", path.display());
-    println!("{}", gnostr_bins::get_weeble().unwrap().to_string());
-    println!("{}", gnostr_bins::get_wobble().unwrap().to_string());
-    println!("{}", gnostr_bins::get_blockheight().unwrap().to_string());
+    #[cfg(debug_assertions)]
+    println!("256:{}", gnostr_bins::get_weeble().unwrap().to_string());
+    #[cfg(debug_assertions)]
+    println!("257:{}", gnostr_bins::get_wobble().unwrap().to_string());
+    #[cfg(debug_assertions)]
+    println!(
+        "258:{}",
+        gnostr_bins::get_blockheight().unwrap().to_string()
+    );
+    println!(
+        "{}/{}/{}/{}",
+        path.display(),
+        gnostr_bins::get_weeble().unwrap().to_string(),
+        gnostr_bins::get_blockheight().unwrap().to_string(),
+        gnostr_bins::get_wobble().unwrap().to_string()
+    );
 
     let mut opts = gitminer::Options {
         threads: count.try_into().unwrap(),
@@ -332,6 +345,9 @@ fn main() -> io::Result<()> {
     //shell test
     //git rev-parse --verify HEAD
     #[allow(clippy::if_same_then_else)]
+    println!("335:{:?}", gnostr_bins::get_weeble());
+    println!("336:{:?}", gnostr_bins::get_wobble());
+    println!("337:{:?}", gnostr_bins::get_blockheight());
     let event = if cfg!(target_os = "windows") {
         Command::new("cmd")
                 .args(["/C", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git diff HEAD~1 || gnostr-git diff)\" "])
