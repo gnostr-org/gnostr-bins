@@ -1,6 +1,5 @@
-
+use gnostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
 use std::env;
-use nostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
 
 fn main() {
     let mut args = env::args();
@@ -20,7 +19,7 @@ fn main() {
             Err(_) => match PublicKey::try_from_hex_string(&key, true) {
                 Ok(key) => key,
                 Err(_) => panic!("Could not parse public key"),
-            }
+            },
         },
         None => panic!("Usage: fetch_by_kind_and_author <RelayURL> <KindNumber> <PubKey>"),
     };
@@ -28,7 +27,7 @@ fn main() {
     let filter = Filter {
         kinds: vec![kind],
         authors: vec![key],
-        .. Default::default()
+        ..Default::default()
     };
 
     for event in gnostr_bins::fetch_by_filter(&relay_url, filter) {

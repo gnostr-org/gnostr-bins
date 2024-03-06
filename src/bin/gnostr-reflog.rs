@@ -1,11 +1,11 @@
 extern crate getopts;
 use getopts::Options;
-use git2::{Repository};
+use git2::Repository;
 
 use std::env;
 use std::process;
 
-use gnostr_bins::{get_pwd};
+use gnostr_bins::get_pwd;
 
 pub fn ref_hash_list_padded(_program: &str, _opts: &Options) -> Result<(), git2::Error> {
     let repo = match Repository::open(".") {
@@ -208,13 +208,11 @@ pub fn hash(program: &str, opts: &Options) {
 }
 
 pub fn main() -> Result<(), git2::Error> {
+    let _this_pwd = get_pwd();
+    //println!("this_pwd={}", this_pwd.unwrap());
 
-
-  let _this_pwd = get_pwd();
-	//println!("this_pwd={}", this_pwd.unwrap());
-
-  //gnostr_bins::hash_list();
-  //process::exit(0);
+    //gnostr_bins::hash_list();
+    //process::exit(0);
     // COMMAND CONTEXT:
     // for m in $(gnostr-reflog -p);do echo $m; for n in $(gnostr-reflog);do echo $n;done;done
     // for m in $(gnostr-reflog -p); do gnostr --sec  $m --content "$(for n in $(gnostr-reflog); do echo $n;done)";done
@@ -251,11 +249,10 @@ pub fn main() -> Result<(), git2::Error> {
             gnostr_bins::hash_list_w_commit_message();
             process::exit(0);
         } else {
-          gnostr_bins::hash_list();
-          process::exit(0);
+            gnostr_bins::hash_list();
+            process::exit(0);
         }
     };
 
     Ok(())
 }
-
