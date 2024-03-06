@@ -355,10 +355,8 @@ fn main() -> io::Result<()> {
                 .output()
                 .expect("failed to execute process")
     } else if cfg!(target_os = "macos") {
-        Command::new("sh")
+        Command::new("gnostr")
             .args([
-                "-c",
-                "gnostr",
                 "--sec",
                 "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",
                 //"$(gnostr-sha256 $(gnostr-weeble || echo))",
