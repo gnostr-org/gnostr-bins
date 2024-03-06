@@ -2,6 +2,7 @@ use nostr_types::Event;
 use std::env;
 use std::io::Read;
 use std::process;
+use std::convert::TryInto;
 
 fn main() {
     //!

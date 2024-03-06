@@ -1,7 +1,7 @@
 [package]
 name = "gnostr-bins"
 version = "0.0.15"
-edition = "2021"
+edition = "2018"
 authors = ["Mike Dilger <mike@mikedilger.com>", "gnostr <admin@gnostr.org>"]
 description = "gnostr-bins: part of the gnostr workflow commands"
 repository = "https://github.com/gnostr-org/gnostr-bins"
