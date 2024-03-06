@@ -41,6 +41,8 @@ use gnostr_bins::wobble;
 //    type_name::<T>()
 //}
 
+const BITCOIN_GENESIS: &str = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f";
+
 fn get_epoch_ms() -> u128 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -357,23 +359,28 @@ fn main() -> io::Result<()> {
     } else if cfg!(target_os = "macos") {
         Command::new("gnostr")
             .args([
+
                 "--sec",
                 "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",
+
                 "-t",
                 "gnostr",
+
                 //"--tag",
                 //"weeble",
-                //"weeble",
                 //"$(gnostr-weeble || echo weeble)",
+
                 //"--tag",
                 //"wobble",
                 //"$(gnostr-wobble || echo wobble)",
+
                 //"--tag",
                 //"blockheight",
                 //"$(gnostr-blockheight || echo blockheight)",
+
                 "--content",
-                "test"
-                //"\"$(git show HEAD)\" ",
+                "\"$(git show HEAD)\""
+
             ])
             .output()
             .expect("failed to execute process")
