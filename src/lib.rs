@@ -19,15 +19,22 @@ pub use wobble::wobble;
 pub mod blockheight;
 pub use blockheight::blockheight;
 
+pub mod gitminer;
+pub use gitminer::*;
+pub mod repo;
+pub use repo::*;
+pub mod worker;
+pub use worker::*;
+
 /// REF: https://api.nostr.watch
 /// nostr.watch API Docs
-/// 
+///
 /// Uptime absolutely not guaranteed
-/// 
+///
 /// Endpoints
-/// 
+///
 /// Supported Methods: GET
-/// 
+///
 /// Online Relays: https://api.nostr.watch/v1/online
 /// Public Relays: https://api.nostr.watch/v1/public
 /// Pay to Relays: https://api.nostr.watch/v1/paid
