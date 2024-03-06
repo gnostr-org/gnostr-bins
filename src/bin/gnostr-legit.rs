@@ -357,37 +357,10 @@ fn main() -> io::Result<()> {
                 .output()
                 .expect("failed to execute process")
     } else if cfg!(target_os = "macos") {
-        Command::new("gnostr")
-            .args([
-
-                "--sec",
-                "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f",
-
-                "-t",
-                "gnostr",
-
-                //"--tag",
-                //"weeble",
-                //"$(gnostr-weeble || echo weeble)",
-
-                //"--tag",
-                //"wobble",
-                //"$(gnostr-wobble || echo wobble)",
-
-                //"--tag",
-                //"blockheight",
-                //"$(gnostr-blockheight || echo blockheight)",
-
-                "--content ",
-                "$(echo git show HEAD)"
-
-            ])
-            .output()
-            .expect("failed to execute process")
-        //Command::new("sh")
-        //        .args(["-c", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git show HEAD)\" "])
-        //        .output()
-        //        .expect("failed to execute process")
+        Command::new("sh")
+                .args(["-c", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git diff HEAD~1 || gnostr-git diff)\" "])
+                .output()
+                .expect("failed to execute process")
     } else if cfg!(target_os = "linux") {
         Command::new("sh")
                 .args(["-c", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git diff HEAD~1 || gnostr-git diff)\" "])
