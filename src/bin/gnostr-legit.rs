@@ -378,7 +378,8 @@ fn main() -> io::Result<()> {
                 //"blockheight",
                 //"$(gnostr-blockheight || echo blockheight)",
 
-                "--content \"$(git show HEAD)\""
+                "--content ",
+                "$(echo git show HEAD)"
 
             ])
             .output()
