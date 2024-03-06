@@ -5,10 +5,10 @@ mod internal;
 use internal::*;
 
 mod reflog_simple;
-use crate::reflog_simple::ref_hash_list_w_commit_message;
-use crate::reflog_simple::ref_hash_list_padded;
-use crate::reflog_simple::ref_hash_list;
 use crate::reflog_simple::pwd;
+use crate::reflog_simple::ref_hash_list;
+use crate::reflog_simple::ref_hash_list_padded;
+use crate::reflog_simple::ref_hash_list_w_commit_message;
 
 pub mod weeble;
 pub use weeble::weeble;
@@ -19,27 +19,33 @@ pub use wobble::wobble;
 pub mod blockheight;
 pub use blockheight::blockheight;
 
+pub mod gitminer;
+pub use gitminer::*;
+pub mod repo;
+pub use repo::*;
+pub mod worker;
+pub use worker::*;
+
 /// REF: https://api.nostr.watch
 /// nostr.watch API Docs
-/// 
+///
 /// Uptime absolutely not guaranteed
-/// 
+///
 /// Endpoints
-/// 
+///
 /// Supported Methods: GET
-/// 
+///
 /// Online Relays: https://api.nostr.watch/v1/online
 /// Public Relays: https://api.nostr.watch/v1/public
 /// Pay to Relays: https://api.nostr.watch/v1/paid
 /// Offline Relays: https://api.nostr.watch/v1/offline
 /// Relays by supported NIP: https://api.nostr.watch/v1/nip/X Use NIP ids without leading zeros - for example: https://api.nostr.watch/v1/nip/1
-
 pub mod relays;
 pub use relays::relays;
-pub use relays::relays_online;
-pub use relays::relays_public;
-pub use relays::relays_paid;
 pub use relays::relays_offline;
+pub use relays::relays_online;
+pub use relays::relays_paid;
+pub use relays::relays_public;
 
 pub fn strip_trailing_nl(input: &mut String) {
     let new_len = input
@@ -53,80 +59,68 @@ pub fn strip_trailing_nl(input: &mut String) {
 }
 
 pub fn get_pwd() -> Result<String, &'static str> {
-
-  let mut no_nl = pwd().unwrap().to_string();
-  no_nl.retain(|c| c != '\n');
-  return Ok(format!("{  }", no_nl));
-
+    let mut no_nl = pwd().unwrap().to_string();
+    no_nl.retain(|c| c != '\n');
+    return Ok(format!("{  }", no_nl));
 }
 
 /// get_relays
 pub fn get_relays() -> Result<String, &'static str> {
+    let _relays_no_nl = relays().unwrap().to_string();
 
-  let _relays_no_nl = relays().unwrap().to_string();
-
-  Ok(format!("{}", relays().unwrap().to_string()))
+    Ok(format!("{}", relays().unwrap().to_string()))
 }
 /// get_relays_online
 pub fn get_relays_online() -> Result<String, &'static str> {
+    let _relays_no_nl = relays_public().unwrap().to_string();
 
-  let _relays_no_nl = relays_public().unwrap().to_string();
-
-  Ok(format!("{}", relays_online().unwrap().to_string()))
+    Ok(format!("{}", relays_online().unwrap().to_string()))
 }
 /// get_relays_public
 pub fn get_relays_public() -> Result<String, &'static str> {
+    let _relays_no_nl = relays_public().unwrap().to_string();
 
-  let _relays_no_nl = relays_public().unwrap().to_string();
-
-  Ok(format!("{}", relays_public().unwrap().to_string()))
+    Ok(format!("{}", relays_public().unwrap().to_string()))
 }
 /// get_relays_paid
 pub fn get_relays_paid() -> Result<String, &'static str> {
+    let _relays_no_nl = relays_paid().unwrap().to_string();
 
-  let _relays_no_nl = relays_paid().unwrap().to_string();
-
-  Ok(format!("{}", relays_public().unwrap().to_string()))
+    Ok(format!("{}", relays_public().unwrap().to_string()))
 }
 /// get_relays_offline
 pub fn get_relays_offline() -> Result<String, &'static str> {
+    let _relays_no_nl = relays_offline().unwrap().to_string();
 
-  let _relays_no_nl = relays_offline().unwrap().to_string();
-
-  Ok(format!("{}", relays_public().unwrap().to_string()))
+    Ok(format!("{}", relays_public().unwrap().to_string()))
 }
-
-
 
 pub fn get_weeble() -> Result<String, &'static str> {
+    let _weeble_no_nl = weeble().unwrap().to_string();
 
-  let _weeble_no_nl = weeble().unwrap().to_string();
-
-  Ok(format!("{}", weeble().unwrap().to_string()))
+    Ok(format!("{}", weeble().unwrap().to_string()))
 }
 pub fn get_wobble() -> Result<String, &'static str> {
+    let _wobble_no_nl = wobble().unwrap().to_string();
 
-  let _wobble_no_nl = wobble().unwrap().to_string();
-
-  Ok(format!("{}", wobble().unwrap().to_string()))
+    Ok(format!("{}", wobble().unwrap().to_string()))
 }
 pub fn get_blockheight() -> Result<String, &'static str> {
+    let _blockheight_no_nl = blockheight().unwrap().to_string();
 
-  let _blockheight_no_nl = blockheight().unwrap().to_string();
-
-  Ok(format!("{}", blockheight().unwrap().to_string()))
+    Ok(format!("{}", blockheight().unwrap().to_string()))
 }
 
-pub fn hash_list_w_commit_message(){
-  let _ = ref_hash_list_w_commit_message();
+pub fn hash_list_w_commit_message() {
+    let _ = ref_hash_list_w_commit_message();
 }
 
-pub fn hash_list(){
-  let _ = ref_hash_list();
+pub fn hash_list() {
+    let _ = ref_hash_list();
 }
 
-pub fn hash_list_padded(){
-  let _ = ref_hash_list_padded();
+pub fn hash_list_padded() {
+    let _ = ref_hash_list_padded();
 }
 
 pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
@@ -143,7 +137,7 @@ pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
 }
 
 pub fn fetch_by_filter(url: &str, filter: Filter) -> Vec<Event> {
-    let (host,uri) = url_to_host_and_uri(url);
+    let (host, uri) = url_to_host_and_uri(url);
     let wire = filters_to_wire(vec![filter]);
     fetch(host, uri, wire)
 }
@@ -160,15 +154,18 @@ pub fn fetch_by_id(url: &str, id: IdHex) -> Option<Event> {
 }
 
 pub fn post_event(url: &str, event: Event) {
-    let (host,uri) = url_to_host_and_uri(url);
+    let (host, uri) = url_to_host_and_uri(url);
     let wire = event_to_wire(event);
     post(host, uri, wire)
 }
 
 pub fn print_event(event: &Event) {
-    println!("{}", serde_json::to_string(event).expect("Cannot serialize event to JSON"));
+    println!(
+        "{}",
+        serde_json::to_string(event).expect("Cannot serialize event to JSON")
+    );
 }
-use sha256::{digest};
+use sha256::digest;
 use std::error::Error;
 use std::process;
 
@@ -181,14 +178,10 @@ pub fn print_type_of<T>(_: &T) -> String {
 }
 
 impl Config {
-
     pub fn build(args: &[String]) -> Result<Config, &'static str> {
-
         if args.len() == 1 {
-
             println!("{}", digest("".to_string()));
             process::exit(0);
-
         }
 
         let query = args[1].clone();
@@ -200,7 +193,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
-let mut results = Vec::new();
+    let mut results = Vec::new();
     for line in contents.lines() {
         // do something with line
         println!("{}", line);
@@ -234,7 +227,10 @@ Pick three.";
         let contents = "\
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
-        assert_eq!(vec!["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"], search(&query, contents));
+        assert_eq!(
+            vec!["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"],
+            search(&query, contents)
+        );
     }
     #[test]
     #[should_panic]
@@ -243,7 +239,10 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
         let contents = "\
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 ";
 
-        assert_eq!(vec!["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"], search(&query, contents));
+        assert_eq!(
+            vec!["e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"],
+            search(&query, contents)
+        );
     }
 }
 

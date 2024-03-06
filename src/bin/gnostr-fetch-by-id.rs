@@ -1,10 +1,8 @@
-
-use std::env;
 use nostr_types::IdHex;
+use std::env;
 
 fn main() {
-
-  //gnostr-fetch-by-id wss://relay.damus.io fc7aeb54b43215bff5b561bf59fb72128e36d67ef1092ba9c8ca7cdcfc68a439
+    //gnostr-fetch-by-id wss://relay.damus.io fc7aeb54b43215bff5b561bf59fb72128e36d67ef1092ba9c8ca7cdcfc68a439
 
     let mut args = env::args();
     let _ = args.next(); // program name

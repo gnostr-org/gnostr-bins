@@ -1,4 +1,5 @@
 use nostr_types::Event;
+use std::convert::TryInto;
 use std::env;
 use std::io::Read;
 use std::process;
