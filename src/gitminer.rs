@@ -148,16 +148,16 @@ impl Gitminer {
         //
         //Git will fail (gracefully) in case it needs to modify this file in the index e.g. when merging in a commit; thus, in case the assumed-untracked file is changed upstream, you will need to handle the situation manually.
 
-        let _ = Command::new("sh")
-            .arg("-c")
-            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
-            .output();
-        //.ok()
-        //.expect("Failed to write .gnostr/reflog");
-        let _ = Command::new("sh")
-            .arg("-c")
-            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
-            .output();
+        //let _ = Command::new("sh")
+        //    .arg("-c")
+        //    .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
+        //    .output();
+        ////.ok()
+        ////.expect("Failed to write .gnostr/reflog");
+        //let _ = Command::new("sh")
+        //    .arg("-c")
+        //    .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
+        //    .output();
         //.ok()
         //.expect("Failed to write .gnostr/reflog");
         Ok(())

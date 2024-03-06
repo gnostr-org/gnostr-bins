@@ -262,9 +262,10 @@ fn main() -> io::Result<()> {
         "258:{}",
         gnostr_bins::get_blockheight().unwrap().to_string()
     );
+    #[cfg(debug_assertions)]
     println!(
         "{}/{}/{}/{}",
-        path.display(),
+        gnostr_bins::get_pwd().unwrap().to_string(),
         gnostr_bins::get_weeble().unwrap().to_string(),
         gnostr_bins::get_blockheight().unwrap().to_string(),
         gnostr_bins::get_wobble().unwrap().to_string()
