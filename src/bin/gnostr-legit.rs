@@ -364,6 +364,7 @@ fn main() -> io::Result<()> {
                 "gnostr",
                 "--tag",
                 "weeble",
+                "weeble",
                 //"$(gnostr-weeble || echo weeble)",
                 //"--tag",
                 //"wobble",
