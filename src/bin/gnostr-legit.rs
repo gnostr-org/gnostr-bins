@@ -362,9 +362,9 @@ fn main() -> io::Result<()> {
                 "$(gnostr-sha256 $(gnostr-weeble || echo))",
                 "-t",
                 "gnostr",
-                "--tag",
-                "weeble",
-                "weeble",
+                //"--tag",
+                //"weeble",
+                //"weeble",
                 //"$(gnostr-weeble || echo weeble)",
                 //"--tag",
                 //"wobble",
@@ -373,7 +373,8 @@ fn main() -> io::Result<()> {
                 //"blockheight",
                 //"$(gnostr-blockheight || echo blockheight)",
                 "--content",
-                "\"$(git show HEAD)\" ",
+                "test"
+                //"\"$(git show HEAD)\" ",
             ])
             .output()
             .expect("failed to execute process")
