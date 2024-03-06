@@ -253,6 +253,9 @@ fn main() -> io::Result<()> {
     let path = env::current_dir()?;
 
     //println!("The current directory is {}", path.display());
+        println!("{}",gnostr_bins::get_weeble().unwrap().to_string());
+        println!("{}",gnostr_bins::get_wobble().unwrap().to_string());
+        println!("{}",gnostr_bins::get_blockheight().unwrap().to_string());
 
     let mut opts = gitminer::Options {
         threads: count.try_into().unwrap(),

@@ -46,8 +46,8 @@ pub fn pwd() -> Result<String, &'static str> {
 		})
 		.unwrap();
 
-    let mut mutable_string = String::new();
-    let mut mutable_string = _pwd.clone();
+    let _mutable_string = String::new();
+    let mutable_string = _pwd.clone();
     Ok(format!("{}", mutable_string))
 }//end pwd()
 

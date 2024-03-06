@@ -15,7 +15,7 @@ pub fn wobble() -> Result<f64,ascii::AsciiChar> {
     SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error");
     let seconds = since_the_epoch.as_secs();
     let subsec_millis = since_the_epoch.subsec_millis() as u64;
-    let now_millis = seconds * 1000 + subsec_millis;
+    let _now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
   let _ = get_blockheight();

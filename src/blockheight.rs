@@ -1,7 +1,7 @@
 use std::time::SystemTime;
 use reqwest::Url;
 use std::io::Read;
-use crate::get_blockheight;
+
 
 pub fn check_curl() {
 

@@ -64,7 +64,7 @@ impl Worker {
             let result = self.calculate(&blob);
 
             if result.starts_with(&self.target) {
-                self.tx.send((self.id, raw, result));
+                let _ = self.tx.send((self.id, raw, result));
                 break;
             }
 

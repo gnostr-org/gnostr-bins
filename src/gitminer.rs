@@ -90,7 +90,7 @@ impl Gitminer {
     }
 
     fn write_commit(&self, hash: &String, blob: &String) -> Result<(), &'static str> {
-        Command::new("sh")
+        let _ = Command::new("sh")
             .arg("-c")
             .arg(format!("mkdir -p {}.gnostr/{} && ", self.opts.repo, hash))
             .output();
@@ -114,7 +114,7 @@ impl Gitminer {
             .unwrap_or_else(|| panic!("Failed to write temporary file {}", &tmpfile));
 
         //write the commit
-        Command::new("sh")
+        let _ = Command::new("sh")
             .arg("-c")
             .arg(format!("cd {} && gnostr-git hash-object -t commit -w --stdin < {} && gnostr-git reset --hard {}", self.opts.repo, tmpfile, hash))
             .output();
@@ -122,7 +122,7 @@ impl Gitminer {
         //.expect("Failed to generate commit");
 
         //write the blob
-        Command::new("sh")
+        let _ = Command::new("sh")
             .arg("-c")
             .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/blobs/{} && git show {} > .gnostr/blobs/{}", self.opts.repo, hash, hash, hash))
             .output();
@@ -145,13 +145,13 @@ impl Gitminer {
         //
         //Git will fail (gracefully) in case it needs to modify this file in the index e.g. when merging in a commit; thus, in case the assumed-untracked file is changed upstream, you will need to handle the situation manually.
 
-        Command::new("sh")
+        let _ = Command::new("sh")
             .arg("-c")
             .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
             .output();
         //.ok()
         //.expect("Failed to write .gnostr/reflog");
-        Command::new("sh")
+        let _ = Command::new("sh")
             .arg("-c")
             .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
             .output();
@@ -203,7 +203,7 @@ impl Gitminer {
         Ok(relays)
     }
 
-    fn revparse_0(repo: &mut git2::Repository) -> Result<(String), &'static str> {
+    fn revparse_0(repo: &mut git2::Repository) -> Result<String, &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD").unwrap();
@@ -211,7 +211,7 @@ impl Gitminer {
 
         Ok(head_2)
     }
-    fn revparse_1(repo: &mut git2::Repository) -> Result<(String), &'static str> {
+    fn revparse_1(repo: &mut git2::Repository) -> Result<String, &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD~1").unwrap();
