@@ -346,9 +346,9 @@ fn main() -> io::Result<()> {
     //shell test
     //git rev-parse --verify HEAD
     #[allow(clippy::if_same_then_else)]
-    println!("349:{:?}", gnostr_bins::get_weeble());
-    println!("350:{:?}", gnostr_bins::get_wobble());
-    println!("351:{:?}", gnostr_bins::get_blockheight());
+    //println!("349:{:?}", gnostr_bins::get_weeble());
+    //println!("350:{:?}", gnostr_bins::get_wobble());
+    //println!("351:{:?}", gnostr_bins::get_blockheight());
     let event = if cfg!(target_os = "windows") {
         Command::new("cmd")
                 .args(["/C", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git diff HEAD~1 || gnostr-git diff)\" "])
