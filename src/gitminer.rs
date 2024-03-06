@@ -1,5 +1,5 @@
 use super::worker::Worker;
-use git2::*;
+use git2::{Repository};
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -116,7 +116,7 @@ impl Gitminer {
         //write the commit
         let _ = Command::new("sh")
             .arg("-c")
-            .arg(format!("cd {} && gnostr-git hash-object -t commit -w --stdin < {} && gnostr-git reset --hard {}", self.opts.repo, tmpfile, hash))
+            .arg(format!("cd {} && git hash-object -t commit -w --stdin < {} && git reset --hard {}", self.opts.repo, tmpfile, hash))
             .output();
         //.ok()
         //.expect("Failed to generate commit");
@@ -147,13 +147,13 @@ impl Gitminer {
 
         let _ = Command::new("sh")
             .arg("-c")
-            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
+            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
             .output();
         //.ok()
         //.expect("Failed to write .gnostr/reflog");
         let _ = Command::new("sh")
             .arg("-c")
-            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
+            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
             .output();
         //.ok()
         //.expect("Failed to write .gnostr/reflog");

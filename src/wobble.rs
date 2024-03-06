@@ -1,24 +1,23 @@
-use std::time::SystemTime;
+use crate::get_blockheight;
 use reqwest::Url;
 use std::io::Read;
-use crate::get_blockheight;
+use std::time::SystemTime;
 
 pub fn check_curl() {
 
     //println!("check_curl");
 }
 
-pub fn wobble() -> Result<f64,ascii::AsciiChar> {
-
-
-  let since_the_epoch =
-    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error");
+pub fn wobble() -> Result<f64, ascii::AsciiChar> {
+    let since_the_epoch = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .expect("get millis error");
     let seconds = since_the_epoch.as_secs();
     let subsec_millis = since_the_epoch.subsec_millis() as u64;
     let _now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-  let _ = get_blockheight();
+    let _ = get_blockheight();
     let url = Url::parse("https://mempool.space/api/blocks/tip/height").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
 
@@ -30,5 +29,4 @@ pub fn wobble() -> Result<f64,ascii::AsciiChar> {
     //let weeble = now_millis as f64 / tmp_u64 as f64;
     let wobble = seconds as f64 % tmp_u64 as f64;
     return Ok(wobble.floor());
-
 }

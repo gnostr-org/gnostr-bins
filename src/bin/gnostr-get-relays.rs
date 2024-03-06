@@ -1,20 +1,20 @@
+use gnostr_bins::get_relays;
 use reqwest::Url;
 use std::io::Read;
-use gnostr_bins::{get_relays};
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn main() {
-
-  let since_the_epoch =
-    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error");
+    let since_the_epoch = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .expect("get millis error");
     let seconds = since_the_epoch.as_secs();
     let subsec_millis = since_the_epoch.subsec_millis() as u64;
     let now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-  let _ = get_relays();
-  //https://api.nostr.watch/v1/online
+    let _ = get_relays();
+    //https://api.nostr.watch/v1/online
     let url = Url::parse("https://api.nostr.watch/v1/online").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
 

@@ -76,22 +76,22 @@
 //    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //    SOFTWARE.
 
+use gnostr_bins::get_blockheight;
 use reqwest::Url;
 use std::io::Read;
-use gnostr_bins::{get_blockheight};
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
 fn main() {
-
-  let since_the_epoch =
-    SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).expect("get millis error");
+    let since_the_epoch = SystemTime::now()
+        .duration_since(SystemTime::UNIX_EPOCH)
+        .expect("get millis error");
     let seconds = since_the_epoch.as_secs();
     let subsec_millis = since_the_epoch.subsec_millis() as u64;
     let now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-  let _ = get_blockheight();
+    let _ = get_blockheight();
     let url = Url::parse("https://mempool.space/api/blocks/tip/height").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
 

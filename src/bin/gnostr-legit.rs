@@ -27,11 +27,11 @@ use gnostr_bins::get_blockheight;
 use gnostr_bins::get_pwd;
 use gnostr_bins::get_weeble;
 use gnostr_bins::get_wobble;
-use gnostr_bins::post_event;
-use gnostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use gnostr_bins::gitminer;
+use gnostr_bins::post_event;
 use gnostr_bins::repo;
 use gnostr_bins::worker;
+use gnostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 
 use gnostr_bins::blockheight;
 use gnostr_bins::weeble;
@@ -253,9 +253,9 @@ fn main() -> io::Result<()> {
     let path = env::current_dir()?;
 
     //println!("The current directory is {}", path.display());
-        println!("{}",gnostr_bins::get_weeble().unwrap().to_string());
-        println!("{}",gnostr_bins::get_wobble().unwrap().to_string());
-        println!("{}",gnostr_bins::get_blockheight().unwrap().to_string());
+    println!("{}", gnostr_bins::get_weeble().unwrap().to_string());
+    println!("{}", gnostr_bins::get_wobble().unwrap().to_string());
+    println!("{}", gnostr_bins::get_blockheight().unwrap().to_string());
 
     let mut opts = gitminer::Options {
         threads: count.try_into().unwrap(),
@@ -339,9 +339,27 @@ fn main() -> io::Result<()> {
                 .expect("failed to execute process")
     } else if cfg!(target_os = "macos") {
         Command::new("sh")
-                .args(["-c", "gnostr","--sec", "$(gnostr-sha256 $(gnostr-weeble || echo))",  "-t", "gnostr", "--tag", "weeble", "$(gnostr-weeble || echo weeble)","--tag", "wobble", "$(gnostr-wobble || echo wobble)",  "--tag",  "blockheight", "$(gnostr-blockheight || echo blockheight)", "--content", "\"$(gnostr-git show HEAD)\" "])
-                .output()
-                .expect("failed to execute process")
+            .args([
+                "-c",
+                "gnostr",
+                "--sec",
+                "$(gnostr-sha256 $(gnostr-weeble || echo))",
+                "-t",
+                "gnostr",
+                "--tag",
+                "weeble",
+                "$(gnostr-weeble || echo weeble)",
+                "--tag",
+                "wobble",
+                "$(gnostr-wobble || echo wobble)",
+                "--tag",
+                "blockheight",
+                "$(gnostr-blockheight || echo blockheight)",
+                "--content",
+                "\"$(gnostr-git show HEAD)\" ",
+            ])
+            .output()
+            .expect("failed to execute process")
         //Command::new("sh")
         //        .args(["-c", "gnostr --sec $(gnostr-sha256 $(gnostr-weeble || echo)) -t gnostr --tag weeble $(gnostr-weeble || echo weeble) --tag wobble $(gnostr-wobble || echo wobble) --tag blockheight $(gnostr-blockheight || echo blockheight) --content \"$(gnostr-git show HEAD)\" "])
         //        .output()
