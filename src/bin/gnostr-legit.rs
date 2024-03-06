@@ -82,6 +82,7 @@ fn main() -> io::Result<()> {
         //println!("Debugging disabled");
     }
 
+    //println!("BTICOIN_GENESIS={}",BITCOIN_GENESIS);
     #[cfg(debug_assertions)]
     //println!("Debugging enabled");
     #[cfg(not(debug_assertions))]
@@ -273,6 +274,7 @@ fn main() -> io::Result<()> {
         gnostr_bins::get_wobble().unwrap().to_string()
     );
 
+    //TODO gnostr_event reuse weeble/blockheight/wobble
     let mut opts = gitminer::Options {
         threads: count.try_into().unwrap(),
         target: "00000".to_string(), //default 00000
