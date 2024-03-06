@@ -363,7 +363,7 @@ fn main() -> io::Result<()> {
                 "-t",
                 "gnostr",
                 "--tag",
-                //"weeble",
+                "weeble",
                 //"$(gnostr-weeble || echo weeble)",
                 //"--tag",
                 //"wobble",
