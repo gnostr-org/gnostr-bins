@@ -1,6 +1,6 @@
 use enum_iterator::{all, Sequence};
-use structopt::StructOpt;
 use std::num::ParseFloatError;
+use structopt::StructOpt;
 
 #[derive(StructOpt)]
 struct Point {
@@ -51,13 +51,13 @@ struct Circle {
 
 impl Circle {
     fn set_x(&mut self) -> f64 {
-        (self.x * self.x + self.y * self.y).sqrt()
+        (self.x * self.x + self.x * self.x).sqrt()
     }
     fn set_y(&mut self) -> f64 {
         (self.x * self.x + self.y * self.y).sqrt()
     }
-    fn set_z(&mut self) -> f64 {
-        (self.x * self.x + self.y * self.y).sqrt()
+    fn set_r(&mut self) -> f64 {
+        (self.x * self.y + self.y * self.r).sqrt()
     }
 }
 
@@ -99,29 +99,37 @@ fn detected_sec(private_key: String) {
 fn main() {
     let private_key = {};
 
-
     let string_slice = "3.14159";
 
-// Option 1: Using Result with pattern matching
-match string_slice.parse::<f64>() {
-    Ok(value) => println!("Parsed value: {}", value),
-    Err(error) => println!("Error parsing string: {}", error),
-}
+    // Option 1: Using Result with pattern matching
+    match string_slice.parse::<f64>() {
+        Ok(value) => println!("Parsed value: {}", value),
+        Err(error) => println!("Error parsing string: {}", error),
+    }
 
-// Option 2: Using `expect` (only for trusted input)
-let parsed_value: f64 = string_slice.parse().expect("Failed to parse string");
-println!("Parsed value: {}", parsed_value);
+    // Option 2: Using `expect` (only for trusted input)
+    let parsed_value: f64 = string_slice.parse().expect("Failed to parse string");
+    println!("Parsed value: {}", parsed_value);
 
     let p = Point { x: 3.0, y: 4.0 };
     let distance = p.distance_to_origin(); // Method call using dot notation
     println!("Distance to origin: {}", distance);
+
+
+
+
     let mut c = Circle {
         x: 10.0,
         y: 4.0,
         r: 1.0,
-    };
-    let distance = c.set_x(); // Method call using dot notation
-    println!("110:distance = c.set_x()={}", distance);
+    };//a "contructor"
+
+    let distance_x = c.set_x(); // Method call using dot notation
+    println!("123:distance_x = c.set_x()={}", distance_x);
+    let distance_y = c.set_y(); // Method call using dot notation
+    println!("129:distance_y = c.set_y()={}", distance_y);
+    let distance_r = c.set_r(); // Method call using dot notation
+    println!("131:distance_r = c.set_r()={}", distance_r);
 
     //let light = TrafficLight::Yellow;
     //if let TrafficLight::Red = light {
@@ -186,7 +194,4 @@ println!("Parsed value: {}", parsed_value);
     };
     let distance = c.set_x(); // Method call using dot notation
     println!("110:distance = c.set_x()={}", distance);
-
-
-
 }
