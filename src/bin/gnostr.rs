@@ -58,6 +58,10 @@ enum Cli {
     Shape(Shape),
 }
 
+fn detected_sec(private_key:String){
+
+    println!("63:private_key={}",private_key);
+}
 fn main() {
     let mut private_key = {};
 
@@ -93,9 +97,9 @@ fn main() {
     let mut result = "";
     match matches {
         Cli::Sec(sec_command) => {
-            println!("--sec={}", sec_command.private_key);
             let private_key = sec_command.private_key;
-            println!("97:--sec={}", private_key);
+            detected_sec(private_key.clone());
+            println!("102:--sec={}", private_key);
         }
         Cli::Add(add_command) => {
             let result = add_command.operand1 + add_command.operand2;
@@ -109,9 +113,9 @@ fn main() {
         }
         Cli::Shape(shape) => {
             let result = shape;
-            //println!("test: {}", result);
-            //println!("111:--sec={:?}", private_key);
+           // println!("test: {:?}", result);
+            println!("113:--sec={:?}", private_key);
         }
-        println!("result={}", result);
+        //println!("result={}", result);
     }
 }
