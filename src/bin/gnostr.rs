@@ -44,8 +44,11 @@ struct SubCommand {
 
 #[derive(StructOpt)]
 struct Circle {
+    #[structopt(name = "operand1", short = "x")]
     x: f64,
+    #[structopt(name = "operand2", short = "y")]
     y: f64,
+    #[structopt(name = "operand3", short = "r")]
     r: f64,
 }
 
@@ -63,32 +66,35 @@ impl Circle {
 
 #[derive(StructOpt)]
 enum Shape {
-    #[structopt(name = "circle")]
+    #[structopt(name = "circle", about = "Circle")]
     Circle,
-    #[structopt(name = "square")]
+    #[structopt(name = "square", about = "Square")]
     Square,
-    #[structopt(name = "triangle")]
+    #[structopt(name = "triangle", about = "Triangle")]
     Triangle,
 }
 
 #[derive(StructOpt)]
 enum TrafficLight {
     #[structopt(name = "light")]
+    #[structopt(name = "Red", about = "Red")]
     Red,
+    #[structopt(name = "Yellow")]
     Yellow,
+    #[structopt(name = "Green")]
     Green,
 }
 
 #[derive(StructOpt)]
-#[structopt(name = "gnostr", about = "gnostr: a git+nostr command line utility")]
+#[structopt(name = "gnostr", about = "gnostr: a git+nostr command line utility")]//, help = "89:HELP")]
 enum Cli {
-    #[structopt(name = "--sec", about = "<private_key>")]
+    #[structopt(name = "--sec", about = "<private_key>")]//, help = "91:HELP")]
     Sec(SecCommand),
-    #[structopt(name = "add", about = "-x <int> -y <int>")]
+    #[structopt(name = "add", about = "-x <int> -y <int>")]//, help = "93:HELP")]
     Add(AddCommand),
-    #[structopt(name = "sub", about = "55:")]
+    #[structopt(name = "sub", about = "-v <value>")]//, help = "95:HELP")]
     Sub(SubCommand),
-    #[structopt(name = "shape", about = "-x <int> -y <int>")]
+    #[structopt(name = "shape", about = "TODO")]//, help = "97:HELP")]
     Shape(Shape),
 }
 
