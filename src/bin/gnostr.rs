@@ -2,6 +2,18 @@ use enum_iterator::{all, Sequence};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
+struct Point {
+    x: f64,
+    y: f64,
+}
+
+impl Point {
+    fn distance_to_origin(&self) -> f64 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
+}
+
+#[derive(StructOpt)]
 //sec_command
 struct SecCommand {
     //#[structopt(name = "sec", short = "s")]
@@ -9,6 +21,8 @@ struct SecCommand {
     //value: i32,
     //0000000000000000000000000000000000000000000000000000000000000001
     private_key: String,
+    //#[derive(StructOpt)]
+    //point: Point,
 }
 
 #[derive(StructOpt)]
@@ -23,8 +37,27 @@ struct AddCommand {
 #[derive(StructOpt)]
 //sub_command
 struct SubCommand {
-    #[structopt(name = "value", short = "v")]
+    //#[structopt(name = "value", short = "v")]
     value: i32,
+}
+
+#[derive(StructOpt)]
+struct Circle {
+    x: f64,
+    y: f64,
+    r: f64,
+}
+
+impl Circle {
+    fn set_x(&mut self) -> f64 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
+    fn set_y(&mut self) -> f64 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
+    fn set_z(&mut self) -> f64 {
+        (self.x * self.x + self.y * self.y).sqrt()
+    }
 }
 
 #[derive(StructOpt)]
@@ -58,12 +91,23 @@ enum Cli {
     Shape(Shape),
 }
 
-fn detected_sec(private_key:String){
-
-    println!("63:private_key={}",private_key);
+fn detected_sec(private_key: String) {
+    println!("63:private_key={}", private_key);
 }
+
 fn main() {
-    let mut private_key = {};
+    let private_key = {};
+
+    let p = Point { x: 3.0, y: 4.0 };
+    let distance = p.distance_to_origin(); // Method call using dot notation
+    println!("Distance to origin: {}", distance);
+    let mut c = Circle {
+        x: 10.0,
+        y: 4.0,
+        r: 1.0,
+    };
+    let distance = c.set_x(); // Method call using dot notation
+    println!("ditance = c.set_x()={}", distance);
 
     //let light = TrafficLight::Yellow;
     //if let TrafficLight::Red = light {
@@ -94,7 +138,7 @@ fn main() {
     //}
 
     let matches = Cli::from_args();
-    let mut result = "";
+    let result = "";
     match matches {
         Cli::Sec(sec_command) => {
             let private_key = sec_command.private_key;
@@ -107,15 +151,14 @@ fn main() {
             println!("102:--sec={:?}", private_key);
         }
         Cli::Sub(sub_command) => {
-          let result = sub_command.value;
+            let result = sub_command.value;
             println!("Subcommand value: {}", sub_command.value);
             println!("106:--sec={:?}", private_key);
         }
         Cli::Shape(shape) => {
             let result = shape;
-           // println!("test: {:?}", result);
-            println!("113:--sec={:?}", private_key);
-        }
-        //println!("result={}", result);
+            // println!("test: {:?}", result);
+            println!("117:--sec={:?}", private_key);
+        } //println!("result={}", result);
     }
 }
