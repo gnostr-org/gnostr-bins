@@ -29,9 +29,11 @@ struct SubCommand {
 
 #[derive(StructOpt)]
 enum Shape {
-    #[structopt(name = "shape")]
+    #[structopt(name = "circle")]
     Circle,
+    #[structopt(name = "square")]
     Square,
+    #[structopt(name = "triangle")]
     Triangle,
 }
 
@@ -46,62 +48,70 @@ enum TrafficLight {
 #[derive(StructOpt)]
 #[structopt(name = "gnostr", about = "gnostr: a git+nostr command line utility")]
 enum Cli {
-    #[structopt(name = "--sec")]
+    #[structopt(name = "--sec", about = "<private_key>")]
     Sec(SecCommand),
-    #[structopt(name = "add")]
+    #[structopt(name = "add", about = "-x <int> -y <int>")]
     Add(AddCommand),
-    #[structopt(name = "sub")]
+    #[structopt(name = "sub", about = "55:")]
     Sub(SubCommand),
+    #[structopt(name = "shape", about = "-x <int> -y <int>")]
     Shape(Shape),
 }
 
 fn main() {
     let mut private_key = {};
 
-    let light = TrafficLight::Yellow;
-    if let TrafficLight::Red = light {
-        println!("Stop!");
-    } else if let TrafficLight::Yellow = light {
-        println!("Caution!");
-    } else {
-        println!("Go!");
-    }
+    //let light = TrafficLight::Yellow;
+    //if let TrafficLight::Red = light {
+    //    println!("Stop!");
+    //} else if let TrafficLight::Yellow = light {
+    //    println!("Caution!");
+    //} else {
+    //    println!("Go!");
+    //}
 
-    let shape = Shape::Circle;
-    if let Shape::Circle = shape {
-        println!("circle!");
-    } else if let Shape::Square = shape {
-        println!("square");
-    } else {
-        println!("must be triangle");
-    }
+    //let shape = Shape::Circle;
+    //if let Shape::Circle = shape {
+    //    println!("75:circle!");
+    //} else if let Shape::Square = shape {
+    //    println!("77:square");
+    //} else if let Shape::Triangle = shape {
+    //    println!("79:must be triangle");
+    //} else {}
 
-    let gnostr_shape = Cli::from_args();
-    //match test { Cli::Shape(..) => {
-    match gnostr_shape {
-        Cli::Shape(shape) => {
-            let result = shape;
-            //println!("test: {}", result);
-        }
-        Cli::Sec(_) | Cli::Add(_) | Cli::Sub(_) => todo!(),
-    }
+    //let gnostr_shape = Cli::from_args();
+    ////match test { Cli::Shape(..) => {
+    //match gnostr_shape {
+    //    Cli::Shape(shape) => {
+    //        let result = shape;
+    //        //println!("test: {}", result);
+    //    }
+    //    Cli::Sec(_) | Cli::Add(_) | Cli::Sub(_) => todo!(),
+    //}
 
     let matches = Cli::from_args();
+    let mut result = "";
     match matches {
         Cli::Sec(sec_command) => {
             println!("--sec={}", sec_command.private_key);
             let private_key = sec_command.private_key;
-            println!("78:--sec={}", private_key);
+            println!("97:--sec={}", private_key);
         }
         Cli::Add(add_command) => {
             let result = add_command.operand1 + add_command.operand2;
             println!("Sum: {}", result);
-            println!("58:--sec={:?}", private_key);
+            println!("102:--sec={:?}", private_key);
         }
         Cli::Sub(sub_command) => {
+          let result = sub_command.value;
             println!("Subcommand value: {}", sub_command.value);
-            println!("62:--sec={:?}", private_key);
+            println!("106:--sec={:?}", private_key);
         }
-        Cli::Shape(_) => todo!(),
+        Cli::Shape(shape) => {
+            let result = shape;
+            //println!("test: {}", result);
+            //println!("111:--sec={:?}", private_key);
+        }
+        println!("result={}", result);
     }
 }
