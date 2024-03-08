@@ -2,16 +2,6 @@ use enum_iterator::{all, Sequence};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
-#[structopt(name = "gnostr", about = "gnostr: a git+nostr command line utility")]
-enum Cli {
-    #[structopt(name = "--sec")]
-    Sec(SecCommand),
-    #[structopt(name = "add")]
-    Add(AddCommand),
-    #[structopt(name = "sub")]
-    Sub(SubCommand),
-}
-#[derive(StructOpt)]
 struct SecCommand {
     //#[structopt(name = "sec", short = "s")]
     //gnostr sec 1
@@ -33,6 +23,16 @@ struct SubCommand {
     #[structopt(name = "value", short = "v")]
     value: i32,
 }
+#[derive(StructOpt)]
+#[structopt(name = "gnostr", about = "gnostr: a git+nostr command line utility")]
+enum Cli {
+    #[structopt(name = "--sec")]
+    Sec(SecCommand),
+    #[structopt(name = "add")]
+    Add(AddCommand),
+    #[structopt(name = "sub")]
+    Sub(SubCommand),
+}
 
 #[derive(StructOpt)]
 enum Shape {
@@ -49,10 +49,9 @@ enum TrafficLight {
 }
 
 fn main() {
-    let matches = Cli::from_args();
+    let mut private_key = {};
 
     let light = TrafficLight::Yellow;
-
     if let TrafficLight::Red = light {
         println!("Stop!");
     } else if let TrafficLight::Yellow = light {
@@ -60,8 +59,8 @@ fn main() {
     } else {
         println!("Go!");
     }
-    let shape = Shape::Circle;
 
+    let shape = Shape::Circle;
     if let Shape::Circle = shape {
         println!("circle!");
     } else if let Shape::Square = shape {
@@ -70,7 +69,7 @@ fn main() {
         println!("must be triangle");
     }
 
-    let mut private_key = {};
+    let matches = Cli::from_args();
     match matches {
         Cli::Sec(sec_command) => {
             println!("--sec={}", sec_command.private_key);
