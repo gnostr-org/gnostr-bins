@@ -1,3 +1,4 @@
+use enum_iterator::{all, Sequence};
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
@@ -15,7 +16,8 @@ struct SecCommand {
     //#[structopt(name = "sec", short = "s")]
     //gnostr sec 1
     //value: i32,
-    private_key: i32,
+    //0000000000000000000000000000000000000000000000000000000000000001
+    private_key: String,
 }
 
 #[derive(StructOpt)]
@@ -32,29 +34,57 @@ struct SubCommand {
     value: i32,
 }
 
+#[derive(StructOpt)]
+enum Shape {
+    Circle,
+    Square,
+    Triangle,
+}
+
+#[derive(StructOpt)]
+enum TrafficLight {
+    Red,
+    Yellow,
+    Green,
+}
+
 fn main() {
     let matches = Cli::from_args();
 
-//help: use `_` to explicitly ignore each field
-//   |
-//37 |         Cli::Sec(_) => {
-//   |                  +
-//help: use `..` to ignore all fields
-//   |
-//37 |         Cli::Sec(..) => {
-//   |                  ++
+    let light = TrafficLight::Yellow;
 
+    if let TrafficLight::Red = light {
+        println!("Stop!");
+    } else if let TrafficLight::Yellow = light {
+        println!("Caution!");
+    } else {
+        println!("Go!");
+    }
+    let shape = Shape::Circle;
+
+    if let Shape::Circle = shape {
+        println!("circle!");
+    } else if let Shape::Square = shape {
+        println!("square");
+    } else {
+        println!("must be triangle");
+    }
+
+    let mut private_key = {};
     match matches {
         Cli::Sec(sec_command) => {
-            println!("Seccommand value: {}", sec_command.private_key);
+            println!("--sec={}", sec_command.private_key);
+            let private_key = sec_command.private_key;
+            println!("53:--sec={}", private_key);
         }
         Cli::Add(add_command) => {
             let result = add_command.operand1 + add_command.operand2;
             println!("Sum: {}", result);
+            println!("58:--sec={:?}", private_key);
         }
         Cli::Sub(sub_command) => {
             println!("Subcommand value: {}", sub_command.value);
+            println!("62:--sec={:?}", private_key);
         }
     }
 }
-
