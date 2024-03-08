@@ -1,5 +1,6 @@
 use enum_iterator::{all, Sequence};
 use structopt::StructOpt;
+use std::num::ParseFloatError;
 
 #[derive(StructOpt)]
 struct Point {
@@ -98,6 +99,19 @@ fn detected_sec(private_key: String) {
 fn main() {
     let private_key = {};
 
+
+    let string_slice = "3.14159";
+
+// Option 1: Using Result with pattern matching
+match string_slice.parse::<f64>() {
+    Ok(value) => println!("Parsed value: {}", value),
+    Err(error) => println!("Error parsing string: {}", error),
+}
+
+// Option 2: Using `expect` (only for trusted input)
+let parsed_value: f64 = string_slice.parse().expect("Failed to parse string");
+println!("Parsed value: {}", parsed_value);
+
     let p = Point { x: 3.0, y: 4.0 };
     let distance = p.distance_to_origin(); // Method call using dot notation
     println!("Distance to origin: {}", distance);
@@ -107,7 +121,7 @@ fn main() {
         r: 1.0,
     };
     let distance = c.set_x(); // Method call using dot notation
-    println!("ditance = c.set_x()={}", distance);
+    println!("110:distance = c.set_x()={}", distance);
 
     //let light = TrafficLight::Yellow;
     //if let TrafficLight::Red = light {
@@ -161,4 +175,18 @@ fn main() {
             println!("117:--sec={:?}", private_key);
         } //println!("result={}", result);
     }
+
+    let p = Point { x: 12.0, y: 4.0 };
+    let distance = p.distance_to_origin(); // Method call using dot notation
+    println!("Distance to origin: {}", distance);
+    let mut c = Circle {
+        x: 10.0,
+        y: 4.0,
+        r: 1.0,
+    };
+    let distance = c.set_x(); // Method call using dot notation
+    println!("110:distance = c.set_x()={}", distance);
+
+
+
 }
