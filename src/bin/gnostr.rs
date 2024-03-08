@@ -66,7 +66,9 @@ impl Circle {
 
 #[derive(StructOpt)]
 enum Shape {
-    #[structopt(name = "circle", about = "Circle")]
+    //gnostr shape circle help   - displays structopt derived help
+    //gnostr shape circle --help - displays help = "FORMATTED HELP"
+    #[structopt(name = "circle", about = "Circle", help = "71:\n\tUSAGE:\n\t\tHELP1\n\t\tHELP2")]
     Circle,
     #[structopt(name = "square", about = "Square")]
     Square,
