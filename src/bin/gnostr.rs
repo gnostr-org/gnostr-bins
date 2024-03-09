@@ -140,7 +140,7 @@ struct Opt {
     verbose: u8,
 
     // The number of occurrences of the `v/verbose` flag
-    // Verbose mode (-t, -tag, -tags, etc.)
+    /// Verbose mode (-t, -tag, -tags, etc.)
     #[structopt(short, long, parse(from_occurrences))]
     tag: u8,
 
@@ -151,13 +151,14 @@ struct Opt {
     /// Set private_key
     #[structopt(short, long, default_value = "0000000000000000000000000000000000000000000000000000000000000001")]
     sec: String,
+
     /// Set relay
     #[structopt(short, long, default_value = "wss://relay.damus.io")]
     relay: String,
 
-    /// Output file
-    #[structopt(short, long, parse(from_os_str))]
-    output: PathBuf,
+    ///// Output file
+    //#[structopt(short, long, parse(from_os_str))]
+    //output: PathBuf,
 
     // the long option will be translated by default to kebab case,
     // i.e. `--nb-cars`.
@@ -172,50 +173,58 @@ struct Opt {
     /// Files to process
     #[structopt(name = "FILE", parse(from_os_str))]
     files: Vec<PathBuf>,
+
+    /// Tags to process
+    #[structopt(name = "FILE", parse(from_os_str))]
+    tags: Vec<PathBuf>,
+
+    // /// Files to process
+    // #[structopt(name = "FILE", parse(from_os_str))]
+    // files: Vec<PathBuf>,
 }
 
 fn main() {
     let private_key = {};
 
     let opt = Opt::from_args();
-    println!("{:#?}]", opt);
+    println!("{:#?}", opt);
 
     let mut t_count = opt.tag;
-    println!("opt.level={:#?}]", opt.tag);
+    println!("opt.tag={:#?}", opt.tag);
     while t_count > 0 {
-        println!("t_count={}", t_count);
+        //println!("t_count={}", t_count);
         let mut l_count = 0;
-        println!("opt.level={:#?}]", opt.level);
+        //println!("opt.level={:#?}", opt.level);
         for l in &opt.level {
             if l == "3" {
-                println!("l=3 detected!! {}={:?}", l_count, l);
+                //println!("l=3 detected!! {}={:?}", l_count, l);
             }
             if l == "44" {
-                println!("l=44 detected!! {}={:?}", l_count, l);
+                //println!("l=44 detected!! {}={:?}", l_count, l);
             }
-            println!("{}={:?}", l_count, l);
+            //println!("{}={:?}", l_count, l);
             l_count = l_count + 1;
         }
 
         t_count -= 1;
     }
     let mut l_count = 0;
-    println!("opt.level={:#?}]", opt.level);
+    //println!("opt.level={:#?}]", opt.level);
     for l in &opt.level {
         if l == "3" {
-            println!("l=3 detected!! {}={:?}", l_count, l);
+            //println!("l=3 detected!! {}={:?}", l_count, l);
         }
         if l == "44" {
-            println!("l=44 detected!! {}={:?}", l_count, l);
+            //println!("l=44 detected!! {}={:?}", l_count, l);
         }
-        println!("{}={:?}", l_count, l);
+        //println!("{}={:?}", l_count, l);
         l_count = l_count + 1;
     }
 
     let mut f_count = 0;
-    println!("opt.files={:#?}]", opt.files);
+    //println!("opt.files={:#?}]", opt.files);
     for f in opt.files {
-        println!("{}={:?}", f_count, f);
+        //println!("{}={:?}", f_count, f);
         f_count = f_count + 1;
     }
     process::exit(0);
