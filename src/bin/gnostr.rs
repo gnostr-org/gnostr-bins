@@ -148,6 +148,10 @@ struct Opt {
     #[structopt(short, long, default_value = "42")]
     speed: f64,
 
+    /// Set private_key
+    #[structopt(short, long, default_value = "0000000000000000000000000000000000000000000000000000000000000001")]
+    sec: String,
+
     /// Output file
     #[structopt(short, long, parse(from_os_str))]
     output: PathBuf,
