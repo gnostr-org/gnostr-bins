@@ -190,7 +190,7 @@ fn main() {
     println!("{:#?}", opt);
 
     let mut t_count = opt.tag;
-    println!("opt.tag={:#?}", opt.tag);
+    //println!("opt.tag={:#?}", opt.tag);
     while t_count > 0 {
         //println!("t_count={}", t_count);
         let mut l_count = 0;
