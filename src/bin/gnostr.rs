@@ -140,8 +140,12 @@ struct Opt {
     verbose: u8,
 
     // The number of occurrences of the `v/verbose` flag
-    /// Verbose mode (-t, -tag, -tags, etc.)
-    #[structopt(short, long, parse(from_occurrences))]
+    // /// Verbose mode (-t, -tag, -tags, etc.)
+    /// Verbose mode (-t,-tag)
+    #[structopt(short,long, parse(from_occurrences))]
+    t: u8,
+    /// Verbose mode (-t,-tag)
+    #[structopt(short,long, parse(from_occurrences))]
     tag: u8,
 
     /// Set speed
