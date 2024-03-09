@@ -173,9 +173,34 @@ fn main() {
     let opt = Opt::from_args();
     println!("{:#?}]", opt);
 
+    let mut t_count = opt.tag;
+    println!("opt.level={:#?}]", opt.tag);
+    while t_count > 0 {
+        println!("t_count={}", t_count);
+        let mut l_count = 0;
+        println!("opt.level={:#?}]", opt.level);
+        for l in &opt.level {
+            if l == "3" {
+                println!("l=3 detected!! {}={:?}", l_count, l);
+            }
+            if l == "44" {
+                println!("l=44 detected!! {}={:?}", l_count, l);
+            }
+            println!("{}={:?}", l_count, l);
+            l_count = l_count + 1;
+        }
+
+        t_count -= 1;
+    }
     let mut l_count = 0;
     println!("opt.level={:#?}]", opt.level);
-    for l in opt.level {
+    for l in &opt.level {
+        if l == "3" {
+            println!("l=3 detected!! {}={:?}", l_count, l);
+        }
+        if l == "44" {
+            println!("l=44 detected!! {}={:?}", l_count, l);
+        }
         println!("{}={:?}", l_count, l);
         l_count = l_count + 1;
     }
