@@ -151,6 +151,9 @@ struct Opt {
     /// Set private_key
     #[structopt(short, long, default_value = "0000000000000000000000000000000000000000000000000000000000000001")]
     sec: String,
+    /// Set relay
+    #[structopt(short, long, default_value = "wss://relay.damus.io")]
+    relay: String,
 
     /// Output file
     #[structopt(short, long, parse(from_os_str))]
