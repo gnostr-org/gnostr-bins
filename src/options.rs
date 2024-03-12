@@ -20,7 +20,7 @@ pub struct Options {
     pub blockheight: String,
 }
 
-pub struct Gitminer {
+pub struct Gnostr {
     opts: Options,
     repo: git2::Repository,
     author: String,
@@ -28,8 +28,8 @@ pub struct Gitminer {
     pub relays: String,
 }
 
-impl Gitminer {
-    pub fn new(opts: Options) -> Result<Gitminer, &'static str> {
+impl Gnostr {
+    pub fn new(opts: Options) -> Result<Gnostr, &'static str> {
         let repo = match git2::Repository::open(&opts.repo) {
             Ok(r) => r,
             Err(_) => {
@@ -37,11 +37,11 @@ impl Gitminer {
             }
         };
 
-        let author = Gitminer::load_author(&repo)?;
-        let relays = Gitminer::load_gnostr_relays(&repo)?;
+        let author = Gnostr::load_author(&repo)?;
+        let relays = Gnostr::load_gnostr_relays(&repo)?;
         let pwd_hash = Default::default();
 
-        Ok(Gitminer {
+        Ok(Gnostr {
             opts,
             repo,
             author,
@@ -51,7 +51,7 @@ impl Gitminer {
     }
 
     pub fn mine(&mut self) -> Result<String, &'static str> {
-        let (tree, parent) = match Gitminer::prepare_tree(&mut self.repo) {
+        let (tree, parent) = match Gnostr::prepare_tree(&mut self.repo) {
             Ok((t, p)) => (t, p),
             Err(e) => {
                 return Err(e);
@@ -207,7 +207,7 @@ impl Gitminer {
     }
 
     fn revparse_0(repo: &mut git2::Repository) -> Result<String, &'static str> {
-        Gitminer::ensure_no_unstaged_changes(repo)?;
+        Gnostr::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD").unwrap();
         let head_2 = format!("{}", head.id());
@@ -215,7 +215,7 @@ impl Gitminer {
         Ok(head_2)
     }
     fn revparse_1(repo: &mut git2::Repository) -> Result<String, &'static str> {
-        Gitminer::ensure_no_unstaged_changes(repo)?;
+        Gnostr::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD~1").unwrap();
         let head_1 = format!("{}", head.id());
@@ -223,7 +223,7 @@ impl Gitminer {
         Ok(head_1)
     }
     fn prepare_tree(repo: &mut git2::Repository) -> Result<(String, String), &'static str> {
-        Gitminer::ensure_no_unstaged_changes(repo)?;
+        Gnostr::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD").unwrap();
         let mut index = repo.index().unwrap();

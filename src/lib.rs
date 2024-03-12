@@ -20,11 +20,14 @@ pub mod blockheight;
 pub use blockheight::blockheight;
 
 pub mod gitminer;
-pub use gitminer::*;
+pub use gitminer::{Options};
 pub mod repo;
 pub use repo::*;
 pub mod worker;
 pub use worker::*;
+
+pub mod options;
+pub use options::*;
 
 /// REF: https://api.nostr.watch
 /// nostr.watch API Docs
