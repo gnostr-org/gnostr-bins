@@ -221,15 +221,15 @@ fn main() -> io::Result<()> {
 
     //println!("The current directory is {}", path.display());
     #[cfg(debug_assertions)]
-    println!("256:{}", gnostr_bins::get_weeble().unwrap().to_string());
+    println!("224:{}", gnostr_bins::get_weeble().unwrap().to_string());
     #[cfg(debug_assertions)]
-    println!("257:{}", gnostr_bins::get_wobble().unwrap().to_string());
+    println!("226:{}", gnostr_bins::get_wobble().unwrap().to_string());
     #[cfg(debug_assertions)]
     println!(
-        "258:{}",
+        "229:{}",
         gnostr_bins::get_blockheight().unwrap().to_string()
     );
-    #[cfg(debug_assertions)]
+    //#[cfg(debug_assertions)]
     println!(
         "{}/{}/{}/{}",
         gnostr_bins::get_pwd().unwrap().to_string(),
@@ -257,7 +257,7 @@ fn main() -> io::Result<()> {
         //.duration_since(SystemTime::UNIX_EPOCH)
     };
 
-    //parse_args_or_exit(&mut opts);
+    parse_args_or_exit(&mut opts);
 
 
     let mut hasher = Sha256::new();
@@ -272,10 +272,10 @@ fn main() -> io::Result<()> {
     //println!("hash after pad: {:?}", hash);
     //println!("&hash before: {:?}", &hash);
     //println!("&hash after pad: {:?}", &hash);
-    //println!("gnostr_sec before pad: {:?}", gnostr_sec);
-    //println!("gnostr_sec after pad: {:?}", gnostr_sec.pad(64, '0', Alignment::Right, true));
-    //println!("&gnostr_sec before pad: {:?}", &gnostr_sec);
-    //println!("&gnostr_sec after pad: {:?}", &gnostr_sec.pad(64, '0', Alignment::Right, true));
+    println!("gnostr_sec before pad: {:?}", gnostr_sec);
+    println!("gnostr_sec after pad: {:?}", gnostr_sec.pad(64, '0', Alignment::Right, true));
+    println!("&gnostr_sec before pad: {:?}", &gnostr_sec);
+    println!("&gnostr_sec after pad: {:?}", &gnostr_sec.pad(64, '0', Alignment::Right, true));
 
     //let s = "12345".pad(64, '0', Alignment::Right, true);
     //println!("s: {:?}", s);
