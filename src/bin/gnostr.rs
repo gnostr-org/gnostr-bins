@@ -250,9 +250,9 @@ fn main() -> io::Result<()> {
         message: cwd.unwrap(),
         repo: ".".to_string(),
         timestamp: time::now(),
-        weeble: "0".to_string(),//gnostr_bins::get_weeble().unwrap().to_string(),
-        wobble: "0".to_string(),//gnostr_bins::get_wobble().unwrap().to_string(),
-        blockheight: "0".to_string(),//gnostr_bins::get_blockheight().unwrap().to_string(),
+        weeble: "0".to_string(), //gnostr_bins::get_weeble().unwrap().to_string(),
+        wobble: "0".to_string(), //gnostr_bins::get_wobble().unwrap().to_string(),
+        blockheight: "0".to_string(), //gnostr_bins::get_blockheight().unwrap().to_string(),
     };
 
     //#[cfg(debug_assertions)]
@@ -359,8 +359,7 @@ fn parse_args_or_exit(opts: &mut gnostr_bins::options::Options) {
         .add_option(&["-c", "--content"], Store, "Nostr EVENT content");
     //.required();
 
-    ap.refer(&mut opts.t)
-        .add_option(&["-t"], Store, "Nostr -t");
+    ap.refer(&mut opts.t).add_option(&["-t"], Store, "Nostr -t");
     //.required();
 
     ap.refer(&mut opts.tag)
