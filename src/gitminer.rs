@@ -1,5 +1,5 @@
 use super::worker::Worker;
-//use git2::Repository;
+use git2::Repository;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
@@ -7,6 +7,7 @@ use std::process;
 use std::process::Command;
 use std::sync::mpsc::channel;
 use std::thread;
+use std::error::Error;
 
 pub struct Options {
     pub threads: u32,
@@ -233,6 +234,46 @@ impl Gitminer {
         let tree_s = format!("{}", tree);
 
         Ok((tree_s, head_s))
+    }
+
+    fn print_status(repo: &Repository) -> Result<(), Box<dyn Error>> {
+        let mut statuses = repo.statuses(None)?;
+
+        for status in statuses.iter() {
+            let path = status.path().expect("REASON").to_string();
+            let status_str = match status.status() {
+                git2::Status::CURRENT => "-",
+                git2::Status::INDEX_NEW => "A",        // Added to index
+                git2::Status::INDEX_MODIFIED => "M",   // Modified in index
+                git2::Status::INDEX_DELETED => "D",    // Deleted from index
+                git2::Status::INDEX_RENAMED => "R",    // Renamed in index
+                git2::Status::INDEX_TYPECHANGE => "T", // Type changed in index
+                git2::Status::WT_NEW => "✚",           // New in working directory
+                git2::Status::WT_MODIFIED => "M",      // Modified in working directory
+                git2::Status::WT_DELETED => "!",       // Deleted in working directory
+                git2::Status::WT_RENAMED => "R",       // Renamed in working directory
+                git2::Status::WT_TYPECHANGE => "T",    // Type changed in working directory
+                git2::Status::IGNORED => "I",          // Ignored
+                git2::Status::CONFLICTED => "C",       // Conflicted
+                _ => "?",                             // Unknown status
+            };
+
+            //// Optional: Include index and working directory details
+            //let head_str = if status.all().is_some() {
+            //    "index "
+            //} else {
+            //    ""
+            //};
+            //let working_str = if status.wt().is_some() {
+            //    "working directory "
+            //} else {
+            //    ""
+            //};
+            //println!("{}: {}({}) ({})", path, status_str, head_str, working_str);
+            println!("{}({})", path, status_str);
+        }
+
+        Ok(())
     }
 
     //repo status CLEAN not enough
