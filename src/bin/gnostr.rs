@@ -220,16 +220,16 @@ fn main() -> io::Result<()> {
     //let path = env::current_dir()?;
 
     //println!("The current directory is {}", path.display());
-    //#[cfg(debug_assertions)]
+    #[cfg(debug_assertions)]
     println!("224:{}", gnostr_bins::get_weeble().unwrap().to_string());
-    //#[cfg(debug_assertions)]
+    #[cfg(debug_assertions)]
     println!("226:{}", gnostr_bins::get_wobble().unwrap().to_string());
-    //#[cfg(debug_assertions)]
+    #[cfg(debug_assertions)]
     println!(
         "229:{}",
         gnostr_bins::get_blockheight().unwrap().to_string()
     );
-    //#[cfg(debug_assertions)]
+    #[cfg(debug_assertions)]
     println!(
         "{}/{}/{}/{}",
         gnostr_bins::get_pwd().unwrap().to_string(),
@@ -244,15 +244,15 @@ fn main() -> io::Result<()> {
         target: "00000".to_string(), //default pow target 00000
         secret: "0000000000000000000000000000000000000000000000000000000000000001".to_string(),
         content: "".to_string(),
-        t: "".to_string(),
+        t: "gnostr".to_string(),
         tag: "".to_string(),
         pwd_hash: pwd_hash.clone(),
         message: cwd.unwrap(),
         repo: ".".to_string(),
         timestamp: time::now(),
-        weeble: gnostr_bins::get_weeble().unwrap().to_string(),
-        wobble: gnostr_bins::get_wobble().unwrap().to_string(),
-        blockheight: gnostr_bins::get_blockheight().unwrap().to_string(),
+        weeble: "0".to_string(),//gnostr_bins::get_weeble().unwrap().to_string(),
+        wobble: "0".to_string(),//gnostr_bins::get_wobble().unwrap().to_string(),
+        blockheight: "0".to_string(),//gnostr_bins::get_blockheight().unwrap().to_string(),
     };
 
     //#[cfg(debug_assertions)]
@@ -375,7 +375,8 @@ fn parse_args_or_exit(opts: &mut gnostr_bins::options::Options) {
     //.required();
 
     ap.refer(&mut opts.threads).add_option(
-        &["-t", "--threads"],
+        //&["-t", "--threads"],
+        &["--threads"],
         Store,
         "Number of worker threads to use (default 8)",
     );
