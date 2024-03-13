@@ -20,7 +20,7 @@ pub mod blockheight;
 pub use blockheight::blockheight;
 
 pub mod gitminer;
-pub use gitminer::{Options};
+pub use gitminer::Options;
 pub mod repo;
 pub use repo::*;
 pub mod worker;

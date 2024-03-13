@@ -11,6 +11,8 @@ use std::thread;
 pub struct Options {
     pub threads: u32,
     pub target: String,
+    pub secret: String,
+    pub content: String,
     pub message: String,
     pub pwd_hash: String,
     pub repo: String,
@@ -18,6 +20,8 @@ pub struct Options {
     pub weeble: String,
     pub wobble: String,
     pub blockheight: String,
+    pub t: String,
+    pub tag: String,
 }
 
 pub struct Gnostr {
@@ -25,6 +29,10 @@ pub struct Gnostr {
     repo: git2::Repository,
     author: String,
     pwd_hash: String,
+    pub secret: String,
+    pub content: String,
+    pub t: String,
+    pub tag: String,
     pub relays: String,
 }
 
@@ -40,11 +48,19 @@ impl Gnostr {
         let author = Gnostr::load_author(&repo)?;
         let relays = Gnostr::load_gnostr_relays(&repo)?;
         let pwd_hash = Default::default();
+        let secret = Default::default();
+        let content = Default::default();
+        let t = Default::default();
+        let tag = Default::default();
 
         Ok(Gnostr {
             opts,
             repo,
             author,
+            secret,
+            content,
+            t,
+            tag,
             pwd_hash,
             relays,
         })
