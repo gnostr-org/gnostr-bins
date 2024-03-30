@@ -53,6 +53,7 @@ time = "0.1.42"
 tungstenite = { version = "0.18", features = [ "rustls-tls-webpki-roots" ] }
 zeroize = "1.5"
 argparse    = "0.2.2"
+num-bigint = "0.4.4"
 #crypto      = "0.4.0"
 
 [workspace]
