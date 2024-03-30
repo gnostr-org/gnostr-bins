@@ -37,6 +37,7 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
+        if: ${{ !env.ACT }}
 
   # Deployment job
   deploy:
@@ -49,3 +50,4 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        if: ${{ !env.ACT }}
