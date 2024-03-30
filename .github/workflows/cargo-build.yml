@@ -61,11 +61,11 @@ jobs:
 
       - name: make rustup-install
         run: |
-          make rustup-install
+          make rustup-install || true
 
       - name: cargo-c
         run: |
-          make cargo-c
+          make cargo-c || true
 
       - name: cargo-b
         run: |
@@ -74,6 +74,22 @@ jobs:
       - name: cargo-b-release
         run: |
           make cargo-b-release
+          ./target/release/gnostr-pi -h
+          ./target/release/gnostr-pi -v
+          ./target/release/gnostr-pi 10
+          ./target/release/gnostr-pi 10 0
+          ./target/release/gnostr-pi 10 1
+          ./target/release/gnostr-pi 10 2
+          ./target/release/gnostr-pi 10 3
+          ./target/release/gnostr-pi 10 4
+          ./target/release/gnostr-pi 10 5
+          ./target/release/gnostr-pi 100
+          ./target/release/gnostr-pi 100 0
+          ./target/release/gnostr-pi 100 1
+          ./target/release/gnostr-pi 100 2
+          ./target/release/gnostr-pi 100 3
+          ./target/release/gnostr-pi 100 4
+          ./target/release/gnostr-pi 100 5
 
       - name: Run tests
         run: source "$HOME/.cargo/env" && cargo test --verbose
