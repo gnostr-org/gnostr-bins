@@ -2,7 +2,7 @@ use tokio::runtime::Runtime;
 
 use std::{io::Read, time::Instant};
 
-const URL: &str = "http://example.com";
+const URL: &str = "https://mempool.space/api/blocks/tip/height";
 
 fn main() {
     let n = 100;
