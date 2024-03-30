@@ -31,7 +31,7 @@ fn main() {
         }
     }
     if (args.len() - 1) == 1 {
-        let depth = u64::from_str(&args[1]).unwrap()*5+1;
+        let depth = u64::from_str(&args[1]).unwrap() * 5 + 1;
         //println!("depth={}\n", depth);
         calc_pi(depth as u64);
         process::exit(0);
@@ -43,15 +43,15 @@ fn main() {
     //    help();
     //}
     if (args.len() - 1) == 2 {
-        let depth = u64::from_str(&args[1]).unwrap()*5+1;
+        let depth = u64::from_str(&args[1]).unwrap() * 5 + 1;
         //println!("depth={}\n", depth);
         let offset = u64::from_str(&args[2]).unwrap() * 5 + 1;
         //println!("offset={}\n", offset);
 
         if offset <= 1 {
-        //TODO handle negative offset simular to gnostr-pi.c
-        calc_pi(depth as u64);
-        process::exit(0);
+            //TODO handle negative offset simular to gnostr-pi.c
+            calc_pi(depth as u64);
+            process::exit(0);
         } else {
             calc_pi_with_offset(depth as u64, offset as u64);
         }
@@ -90,14 +90,12 @@ fn calc_pi_with_offset(depth: u64, offset: u64) {
                 //augment depth to limit + offset
 
                 if count >= offset && offset >= 5 {
-
-                //print!("\n{}\n", n);
-                //print!("count={}\n", count);
-                //print!("offset={}\n", offset);
-                //print!("n={}\n", n);
-                print!("{}", n);
+                    //print!("\n{}\n", n);
+                    //print!("count={}\n", count);
+                    //print!("offset={}\n", offset);
+                    //print!("n={}\n", n);
+                    print!("{}", n);
                 }
-
             }
             let nr = (&r - &n * &t) * 10;
             n = (&q * 3 + &r) * 10 / &t - &n * 10;
