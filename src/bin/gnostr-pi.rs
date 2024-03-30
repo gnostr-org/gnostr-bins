@@ -36,19 +36,19 @@ fn main() {
         calc_pi(depth as u64);
         process::exit(0);
     }
-    let limit = u64::from_str(&args[1]).unwrap();
-    if limit <= 5 {
-        //println!("limit={}", limit);
-        //TODO print usage
-        help();
-    }
+    //let limit = u64::from_str(&args[1]).unwrap();
+    //if limit <= 5 {
+    //    //println!("limit={}", limit);
+    //    //TODO print usage
+    //    help();
+    //}
     if (args.len() - 1) == 2 {
         let depth = u64::from_str(&args[1]).unwrap()*5+1;
-        println!("depth={}\n", depth);
+        //println!("depth={}\n", depth);
         let offset = u64::from_str(&args[2]).unwrap() * 5 + 1;
         //println!("offset={}\n", offset);
 
-        if offset <= 0 {
+        if offset <= 1 {
         //TODO handle negative offset simular to gnostr-pi.c
         calc_pi(depth as u64);
         process::exit(0);
