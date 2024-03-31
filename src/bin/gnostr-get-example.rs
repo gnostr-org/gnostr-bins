@@ -2,12 +2,17 @@ use tokio::runtime::Runtime;
 
 use std::{io::Read, time::Instant};
 
+use gnostr_bins::get_blockheight;
+use reqwest::Url;
+
+use std::time::{SystemTime, UNIX_EPOCH};
+
 //use ureq::get;
 
 const URL: &str = "https://mempool.space/api/blocks/tip/height";
 
 fn main() {
-    let n = 100;
+    let n = 1;
     {
         let start = Instant::now();
         let res = blocking(n);
@@ -49,6 +54,29 @@ async fn non_blocking(n: usize) -> usize {
         .into_iter()
         .map(|_| {
             tokio::spawn(async move {
+                let since_the_epoch = SystemTime::now()
+                    .duration_since(SystemTime::UNIX_EPOCH)
+                    .expect("get millis error");
+                let seconds = since_the_epoch.as_secs();
+                let subsec_millis = since_the_epoch.subsec_millis() as u64;
+                let now_millis = seconds * 1000 + subsec_millis;
+                //println!("now millis: {}", seconds * 1000 + subsec_millis);
+
+                let _ = get_blockheight();
+                let url = Url::parse(URL).unwrap();
+                let mut res = reqwest::blocking::get(url).unwrap();
+
+                let mut tmp_string = String::new();
+                res.read_to_string(&mut tmp_string).unwrap();
+                //println!("{}", format!("{:?}", res));
+                let tmp_u64 = tmp_string.parse::<u64>().unwrap_or(0);
+                println!("{}", format!("{:?}", tmp_u64));
+
+                //TODO:impl gnostr-weeble_millis
+                //let weeble = now_millis as f64 / tmp_u64 as f64;
+                //let weeble = seconds as f64 / tmp_u64 as f64;
+                //println!("{}", format!("{}", weeble.floor()));
+
                 let body = reqwest::get(URL).await.unwrap().bytes();
                 body.await.unwrap().len()
                 // print block count from mempool.space or panic
