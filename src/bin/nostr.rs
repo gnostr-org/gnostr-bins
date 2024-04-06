@@ -42,7 +42,7 @@ fn main() {
     // Run a new thread to handle messages
     let nostr_clone = nostr_client.clone();
     let handle_thread = thread::spawn(move || {
-        println!("Listening...");
+        // println!("Listening...");
         let events = nostr_clone.lock().unwrap().next_data().unwrap();
 
         for (relay_url, message) in events.iter() {
