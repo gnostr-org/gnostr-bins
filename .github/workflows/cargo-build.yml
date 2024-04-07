@@ -65,15 +65,15 @@ jobs:
 
       - name: cargo-c
         run: |
-          make cargo-c || true
-
-      - name: cargo-b
+          source "$HOME/.cargo/env" && cargo c --config workspace.exclude=1 || true
+      - name: cargo b --config workspace=1
         run: |
-          make cargo-b
+          source "$HOME/.cargo/env" && cargo b --config workspace.exclude=1
 
       - name: cargo-b-release
         run: |
-          make cargo-b-release
+          source "$HOME/.cargo/env" && cargo b -r --config workspace.exclude=1
+          #make cargo-b-release
           ./target/release/gnostr-pi -h
           ./target/release/gnostr-pi -v
           ./target/release/gnostr-pi 10
