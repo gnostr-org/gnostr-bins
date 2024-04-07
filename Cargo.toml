@@ -25,24 +25,35 @@ license = "MIT"
 ## directory = "vendor"
 
 [dependencies]
+anyhow.workspace = true
 argparse    = "0.2.2"
 ascii = "1.1.0"
+async-std = { version = "1.12.0", features = ["futures-core"] }
 base64 = "0.21"
 bech32 = "0.9"
 chrono = "0.4.34"
+env_logger = "0.11.3"
+futures-lite = "2.3.0"
 getopts = "0.2.21"
 git2 = "^0.18"
 gnostr-types = "0.7.1-unstable"
 hex = "0.4"
 http = "0.2"
+hypercore-protocol = { git = "http://github.com/gnostr-org/gnostr-core.git", version = "0.4.2-alpha.1", features = ["async-std", "cache", "wasm-bindgen", "js_interop_tests"] }
 #insta.workspace = true
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
+log = "0.4.21"
 nip44 = { package = "gnip44", git = "https://github.com/gnostr-org/gnip44", version = "0.1.1" }
 nostr_rust = { git = "https://github.com/gnostr-org/gnostr_rs.git", version = "0.20.3" }
 num-bigint = "0.4.4"
 pad = "0.1.6"
 rand = "0.8"
 rand_core = "0.6"
+random-access-storage = "5.0.0"
+
+random-access-disk = { version = "3.0.0", default-features = false }
+random-access-memory = "3.0.0"
+
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls-webpki-roots"] }
 rpassword = "7.2"
 rust-crypto = "0.2.36"
