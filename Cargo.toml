@@ -25,7 +25,7 @@ license = "MIT"
 ## directory = "vendor"
 
 [dependencies]
-#anyhow.workspace = true
+anyhow.workspace = true
 argparse    = "0.2.2"
 ascii = "1.1.0"
 async-std = { version = "1.12.0", features = ["futures-core"] }
