@@ -25,13 +25,18 @@ license = "MIT"
 ## directory = "vendor"
 
 [dependencies]
+
+crossterm = { version = "0.19", features = [ "serde" ] }
+tui = { version = "0.14", default-features = false, features = ['crossterm', 'serde'] }
+thiserror = "1.0"
+
 anyhow.workspace = true
 argparse    = "0.2.2"
 ascii = "1.1.0"
 async-std = { version = "1.12.0", features = ["futures-core"] }
 base64 = "0.21"
 bech32 = "0.9"
-chrono = "0.4.34"
+chrono = { version = "0.4.34", features = ["serde"] }
 env_logger = "0.11.3"
 futures-lite = "2.3.0"
 getopts = "0.2.21"
@@ -47,7 +52,7 @@ nip44 = { package = "gnip44", git = "https://github.com/gnostr-org/gnip44", vers
 nostr_rust = { git = "https://github.com/gnostr-org/gnostr_rs.git", version = "0.20.3" }
 num-bigint = "0.4.4"
 pad = "0.1.6"
-rand = "0.8"
+rand = { version = "0.7.3", default-features = false, features = ["std"] }
 rand_core = "0.6"
 random-access-storage = "5.0.0"
 
