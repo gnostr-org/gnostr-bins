@@ -8,31 +8,31 @@ async fn parse_urls(urls_str: &str) -> Result<Vec<String>, url::ParseError> {
     let mut collected = Vec::new();
     let mut char_iter = urls_str.chars();
     for url_str in urls_str.chars() {
+        print!("___________________{}",url_str);
+
         if char_iter.next() == Some('[') {
-            println!("{}", url_str);
-            println!("{}", url_str);
-            println!("{}", url_str);
-            println!("{}", url_str);
-            let comma: String = ",".to_string();
-            collected.push(comma.clone());
-            collected.push(comma.clone());
-            collected.push(comma.clone());
-            collected.push(comma.clone());
-            collected.push(comma.clone());
+            //println!("{}", url_str);
+            //let comma: String = ",".to_string();
+            //collected.push(comma.clone());
+            //let skipped: String = "".to_string();
+            //collected.push(skipped);
         }
 
         loop {
             //match char_iter.next().ok_or(/* ... */)? {
             match char_iter.next() {
                 Some(']') => {
-                    collected.push(part);
+                    //let skipped: String = "".to_string();
+                    //collected.push(skipped);
+                    //collected.push(part);
                     //let comma: String = ",".to_string();
                     //collected.push(comma);
                     return std::result::Result::Ok(collected);
                 }
                 Some(',') | Some(' ') => {
                     if !part.is_empty() {
-                        collected.push(part);
+                        collected.push(part.clone());
+                        print!("{}\n",part.clone());
                         part = String::new();
                     }
                 }
@@ -54,7 +54,7 @@ async fn print_relay_list() {
     let vec_relay_list = parse_urls(&gnostr_bins::get_relays_public().unwrap().as_str()).await;
     //let vec_relay_list = parse_urls(gnostr_bins::get_relays_public().unwrap());
     //    print!("{:}", format!("{}",vec_relay_list.unwrap()));
-    println!("{:?}", vec_relay_list.unwrap());
+    //println!("{:?}", vec_relay_list.unwrap());
     //print!("{:#}", gnostr_bins::get_relays_public().unwrap());
     print!("{:}", gnostr_bins::get_relays_public().unwrap());
 }
