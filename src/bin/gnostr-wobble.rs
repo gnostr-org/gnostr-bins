@@ -77,12 +77,14 @@
 //    SOFTWARE.
 
 use gnostr_bins::get_blockheight;
-use reqwest::Url;
+use reqwest::{Url};
 use std::io::Read;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
-fn main() {
+use futures::executor::block_on;
+
+async fn print_wobble() {
     let since_the_epoch = SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
         .expect("get millis error");
@@ -102,5 +104,10 @@ fn main() {
     //TODO:impl gnostr-wobble_millis
     //let wobble = now_millis as f64 % tmp_u64 as f64;
     let wobble = seconds as f64 % tmp_u64 as f64;
-    println!("{}", format!("{}", wobble.floor()));
+    print!("{}", format!("{}", wobble.floor()));
+}
+
+fn main() {
+    let future = print_wobble(); // Nothing is printed
+    block_on(future);
 }
