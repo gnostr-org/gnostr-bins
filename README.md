@@ -2,6 +2,11 @@
 
 ### Some command-line tools for nostr.
 
+##### cargo add
+```sh
+cargo add gnostr-bins --rename gnostr_bins
+```
+
 ##### make
 
 ![](./gnostr-bins-make.png)
