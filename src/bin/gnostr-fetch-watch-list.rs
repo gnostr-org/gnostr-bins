@@ -32,7 +32,7 @@ async fn parse_urls(urls_str: &str) -> Result<Vec<String>, url::ParseError> {
                 Some(',') | Some(' ') => {
                     if !part.is_empty() {
                         collected.push(part.clone());
-                        print!("{}\n",part.clone());
+                        print!("{:}\n",part.clone().to_string());
                         part = String::new();
                     }
                 }
