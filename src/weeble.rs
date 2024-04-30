@@ -2,11 +2,6 @@ use reqwest::Url;
 use std::io::Read;
 use std::time::SystemTime;
 
-pub fn check_curl() {
-
-    //println!("check_curl");
-}
-
 pub fn weeble() -> Result<f64, ascii::AsciiChar> {
     let since_the_epoch = SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
@@ -16,8 +11,6 @@ pub fn weeble() -> Result<f64, ascii::AsciiChar> {
     let _now_millis = seconds * 1000 + subsec_millis;
     //println!("now millis: {}", seconds * 1000 + subsec_millis);
 
-    //let bh = get_blockheight();
-    //println!("{}",bh.unwrap());
     let url = Url::parse("https://mempool.space/api/blocks/tip/height").unwrap();
     let mut res = reqwest::blocking::get(url).unwrap();
 
@@ -26,6 +19,7 @@ pub fn weeble() -> Result<f64, ascii::AsciiChar> {
     let tmp_u64 = tmp_string.parse::<u64>().unwrap_or(0);
 
     //TODO:impl gnostr-weeble_millis
+    //gnostr-chat uses millis
     //let weeble = now_millis as f64 / tmp_u64 as f64;
     let weeble = seconds as f64 / tmp_u64 as f64;
     return Ok(weeble.floor());
