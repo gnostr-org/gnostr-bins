@@ -77,12 +77,14 @@
 //    SOFTWARE.
 
 use gnostr_bins::get_blockheight;
-use reqwest::Url;
+use reqwest::{Url};
 use std::io::Read;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
-fn main() {
+use futures::executor::block_on;
+
+async fn print_weeble() {
     let since_the_epoch = SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
         .expect("get millis error");
@@ -102,5 +104,10 @@ fn main() {
     //TODO:impl gnostr-weeble_millis
     //let weeble = now_millis as f64 / tmp_u64 as f64;
     let weeble = seconds as f64 / tmp_u64 as f64;
-    println!("{}", format!("{}", weeble.floor()));
+    print!("{}", format!("{}", weeble.floor()));
+}
+
+fn main() {
+    let future = print_weeble(); // Nothing is printed
+    block_on(future);
 }
