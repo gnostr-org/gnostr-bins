@@ -77,7 +77,7 @@
 //    SOFTWARE.
 
 use gnostr_bins::get_blockheight;
-use reqwest::{Url};
+use reqwest::Url;
 use std::io::Read;
 
 use std::time::{SystemTime, UNIX_EPOCH};
