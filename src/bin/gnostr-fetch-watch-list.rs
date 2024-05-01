@@ -1,40 +1,6 @@
 use futures::executor::block_on;
-use url::Url;
-
-async fn parse_urls(urls_str: &str) -> Result<Vec<String>, url::ParseError> {
-    let mut urls: Vec<String> = Vec::new();
-    let mut part = String::new();
-    let mut collected = Vec::new();
-    let mut char_iter = urls_str.chars();
-    for url_str in urls_str.chars() {
-        if char_iter.next() == Some('[') {}
-        loop {
-            match char_iter.next() {
-                Some(']') => {
-                    return std::result::Result::Ok(collected);
-                }
-                Some(',') | Some(' ') => {
-                    if !part.is_empty() {
-                        collected.push(part.clone());
-                        print!("{:}\n", part.clone().to_string());
-                        part = String::new();
-                    }
-                }
-                x => part.push(x.expect("REASON")),
-            }
-        } //end loop
-    }
-    Ok(urls)
-}
-
 async fn print_relay_list() {
-    //let mut vic = vec![String::from("Element 1"), String::from("Element 2")];
-    //for element in vic.iter_mut() {
-    //    element.push_str(" - modified"); // Example modification within the loop
-    //    println!("The modified element is: {}", element);
-    //}
-    //let relay_list: &str = gnostr_bins::get_relays_public().unwrap().as_str();
-    let mut vec_relay_list = parse_urls(&gnostr_bins::get_relays_public().unwrap().as_str()).await;
+    print!("{:#}", gnostr_bins::get_relays_public().unwrap());
 }
 fn main() {
     let future = print_relay_list(); // Nothing is printed
