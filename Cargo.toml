@@ -30,7 +30,7 @@ crossterm = { version = "0.19", features = [ "serde" ] }
 tui = { version = "0.14", default-features = false, features = ['crossterm', 'serde'] }
 thiserror = "1.0"
 
-anyhow.workspace = true
+## anyhow.workspace = true ## gnostr-core
 argparse    = "0.2.2"
 ascii = "1.1.0"
 async-std = { version = "1.12.0", features = ["futures-core"] }
@@ -73,7 +73,8 @@ tungstenite = { version = "0.18", features = [ "rustls-tls-webpki-roots" ] }
 ureq = "2.9.6"
 zeroize = "1.5"
 libp2p = { version = "0.53.2", features = ["full"] }
-futures = { workspace = true, features = ["futures-executor"] }
+futures = { features = ["futures-executor"] }
 nip44 = { version = "0.1.1", package = "gnip44" }
 url = { version = "2.5.0", features = ["serde"] }
 #crypto      = "0.4.0"
+[workspace]
