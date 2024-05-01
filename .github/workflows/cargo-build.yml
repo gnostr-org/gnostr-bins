@@ -38,13 +38,21 @@ jobs:
           set-safe-directory: 'true'
 
       - name: Restore build/ext
-        id: cache-ext-restore
+        id: cache-target-restore
+        uses: actions/cache/restore@v3
+        if: ${{ !env.ACT }}
+        with:
+          path: |
+            target
+          key: ${{ runner.os }}-target
+      - name: Restore build/ext
+        id: cache-cargo-restore
         uses: actions/cache/restore@v3
         if: ${{ !env.ACT }}
         with:
           path: |
             ~/.cargo
-          key: ${{ runner.os }}-ext
+          key: ${{ runner.os }}-cargo
 
       - name: printenv
         run: |
@@ -95,7 +103,15 @@ jobs:
         run: source "$HOME/.cargo/env" && cargo test --verbose
 
       - name: Save build/ext
-        id: cache-ext-save
+        id: cache-target-save
+        uses: actions/cache/save@v3
+        if: ${{ !env.ACT }}
+        with:
+          path: |
+            target
+          key: ${{ steps.cache-deps-restore.outputs.cache-primary-key }}
+      - name: Save build/ext
+        id: cache-cargo-save
         uses: actions/cache/save@v3
         if: ${{ !env.ACT }}
         with:
