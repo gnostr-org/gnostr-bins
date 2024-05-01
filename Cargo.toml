@@ -30,7 +30,7 @@ crossterm = { version = "0.19", features = [ "serde" ] }
 tui = { version = "0.14", default-features = false, features = ['crossterm', 'serde'] }
 thiserror = "1.0"
 
-anyhow.workspace = true
+## anyhow.workspace = true ## gnostr-core
 argparse    = "0.2.2"
 ascii = "1.1.0"
 async-std = { version = "1.12.0", features = ["futures-core"] }
