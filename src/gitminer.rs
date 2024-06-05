@@ -1,12 +1,13 @@
-use super::worker::Worker;
-use git2::Repository;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
-use std::process;
 use std::process::Command;
 use std::sync::mpsc::channel;
-use std::thread;
+use std::{process, thread};
+
+use git2::*;
+
+use super::worker::Worker;
 
 pub struct Options {
     pub threads: u32,
@@ -90,7 +91,7 @@ impl Gitminer {
     }
 
     fn write_commit(&self, hash: &String, blob: &String) -> Result<(), &'static str> {
-        let _ = Command::new("sh")
+        Command::new("sh")
             .arg("-c")
             .arg(format!("mkdir -p {}.gnostr/{} && ", self.opts.repo, hash))
             .output();
@@ -114,10 +115,11 @@ impl Gitminer {
             .unwrap_or_else(|| panic!("Failed to write temporary file {}", &tmpfile));
 
         //write the commit
-        let _ = Command::new("sh")
+        Command::new("sh")
             .arg("-c")
             .arg(format!(
-                "cd {} && git hash-object -t commit -w --stdin < {} && git reset --hard {}",
+                "cd {} && gnostr-git hash-object -t commit -w --stdin < {} && gnostr-git reset \
+                 --hard {}",
                 self.opts.repo, tmpfile, hash
             ))
             .output();
@@ -125,16 +127,21 @@ impl Gitminer {
         //.expect("Failed to generate commit");
 
         //write the blob
-        let _ = Command::new("sh")
+        Command::new("sh")
             .arg("-c")
-            .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/blobs/{} && git show {} > .gnostr/blobs/{}", self.opts.repo, hash, hash, hash))
+            .arg(format!(
+                "cd {} && mkdir -p .gnostr && touch -f .gnostr/blobs/{} && git show {} > \
+                 .gnostr/blobs/{}",
+                self.opts.repo, hash, hash, hash
+            ))
             .output();
         //.ok()
         //.expect("Failed to write .gnostr/blobs/<hash>");
 
         //REF:
-        //gnostr-git reflog --format='wss://{RELAY}/{REPO}/%C(auto)%H/%<|(17)%gd:commit:%s'
-        //gnostr-git-reflog -f
+        //gnostr-git reflog
+        // --format='wss://{RELAY}/{REPO}/%C(auto)%H/%<|(17)%gd:commit:%s'
+        // gnostr-git-reflog -f
         //write the reflog
         //the new reflog is associated with a commit
         //we will use gnostr-git-reflog -f
@@ -144,20 +151,37 @@ impl Gitminer {
 
         //gnostr-git update-index --assume-unchanged .gnostr/reflog
         //--[no-]assume-unchanged
-        //When this flag is specified, the object names recorded for the paths are not updated. Instead, this option sets/unsets the "assume unchanged" bit for the paths. When the "assume unchanged" bit is on, the user promises not to change the file and allows Git to assume that the working tree file matches what is recorded in the index. If you want to change the working tree file, you need to unset the bit to tell Git. This is sometimes helpful when working with a big project on a filesystem that has very slow lstat(2) system call (e.g. cifs).
+        //When this flag is specified, the object names recorded for the paths are not
+        // updated. Instead, this option sets/unsets the "assume unchanged" bit for the
+        // paths. When the "assume unchanged" bit is on, the user promises not to change
+        // the file and allows Git to assume that the working tree file matches what is
+        // recorded in the index. If you want to change the working tree file, you need
+        // to unset the bit to tell Git. This is sometimes helpful when working with a
+        // big project on a filesystem that has very slow lstat(2) system call (e.g.
+        // cifs).
         //
-        //Git will fail (gracefully) in case it needs to modify this file in the index e.g. when merging in a commit; thus, in case the assumed-untracked file is changed upstream, you will need to handle the situation manually.
+        //Git will fail (gracefully) in case it needs to modify this file in the index
+        // e.g. when merging in a commit; thus, in case the assumed-untracked file is
+        // changed upstream, you will need to handle the situation manually.
 
-        //let _ = Command::new("sh")
-        //    .arg("-c")
-        //    .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git reflog --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog", self.opts.repo, "{RELAY}", "{REPO}"))
-        //    .output();
-        ////.ok()
-        ////.expect("Failed to write .gnostr/reflog");
-        //let _ = Command::new("sh")
-        //    .arg("-c")
-        //    .arg(format!("cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && git update-index --assume-unchaged .gnostr/reflog", self.opts.repo))
-        //    .output();
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!(
+                "cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git reflog \
+                 --format='wss://{}/{}/%C(auto)%H/%<|(17)%gd:commit:%s' > .gnostr/reflog",
+                self.opts.repo, "{RELAY}", "{REPO}"
+            ))
+            .output();
+        //.ok()
+        //.expect("Failed to write .gnostr/reflog");
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!(
+                "cd {} && mkdir -p .gnostr && touch -f .gnostr/reflog && gnostr-git update-index \
+                 --assume-unchaged .gnostr/reflog",
+                self.opts.repo
+            ))
+            .output();
         //.ok()
         //.expect("Failed to write .gnostr/reflog");
         Ok(())
@@ -206,7 +230,7 @@ impl Gitminer {
         Ok(relays)
     }
 
-    fn revparse_0(repo: &mut git2::Repository) -> Result<String, &'static str> {
+    fn revparse_0(repo: &mut git2::Repository) -> Result<(String), &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD").unwrap();
@@ -214,7 +238,7 @@ impl Gitminer {
 
         Ok(head_2)
     }
-    fn revparse_1(repo: &mut git2::Repository) -> Result<String, &'static str> {
+    fn revparse_1(repo: &mut git2::Repository) -> Result<(String), &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD~1").unwrap();

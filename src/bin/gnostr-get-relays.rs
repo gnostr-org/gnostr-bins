@@ -1,30 +1,123 @@
-use gnostr_bins::get_relays;
-use reqwest::Url;
-use std::io::Read;
+use std::env;
 
-use std::time::{SystemTime, UNIX_EPOCH};
+use futures::executor::block_on;
+use gnostr_bins::{get_stripped_urls, get_watch_list, get_watch_list_json, print_watch_list};
 
+pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::Error>> {
+    let _ = args.next(); // program name
+    let command = args.next().unwrap(); // must be there or we would not have been called
+
+    #[cfg(debug_assertions)]
+    println!("\n*** gnostr-gui is running in command mode ***");
+    #[cfg(debug_assertions)]
+    println!("*** COMMAND = {} ***\n", command);
+
+    match &*command {
+        //json
+        "-j" => json(),
+        "--json" => json(),
+        "json" => json(),
+        //print
+        "-p" => print(),
+        "--print" => print(),
+        "print" => print(),
+        //get
+        "-g" => get(),
+        "--get" => get(),
+        "get" => get(),
+        //stripped
+        "-s" => stripped(),
+        "--stripped" => stripped(),
+        "stripped" => stripped(),
+
+        //version
+        "-V" => version(),
+        //support help2man
+        "-v" => version(),
+        "--version" => version(),
+        "version" => version(),
+        //help
+        "-h" => help(),
+        "--help" => help(),
+        "help" => help(),
+        //other
+        other => println!("Unknown command {}", other),
+    }
+    Ok(true)
+}
+fn default() {
+    json();
+    use std::process;
+    process::exit(0);
+}
+fn json() {
+    let future = get_watch_list_json();
+    let _ = block_on(future);
+}
+fn print() {
+    let future = print_watch_list();
+    let _ = block_on(future);
+}
+fn get() {
+    let future = get_watch_list();
+    let _ = block_on(future);
+}
+//TODO: return length in watch_list?
+fn stripped() {
+    let future = get_stripped_urls();
+    let length = block_on(future);
+    //print!("{}",format!("{:?}",length.unwrap()));
+    print!("{}", format!("{:?}", length.expect("REASON").len()));
+}
+fn help() {
+    use std::process;
+
+    let crate_name = env!("CARGO_CRATE_NAME");
+    let version = env!("CARGO_PKG_VERSION");
+    print!("\n{} v{}\n\n", crate_name.replace("_", "-"), version);
+    print!("{} get\n", crate_name.replace("_", "-"));
+    print!("       <csv_relay_list>\n");
+    print!("{} json\n", crate_name.replace("_", "-"));
+    print!("       <json_relay_list>\n");
+    print!("{} stripped\n", crate_name.replace("_", "-"));
+    print!("       <string_relay_list> <int_length_last>\n");
+    process::exit(0);
+}
+fn version() {
+    use std::process;
+
+    print!("");
+
+    let version = env!("CARGO_PKG_VERSION");
+    let crate_name = env!("CARGO_CRATE_NAME");
+    //let name = env!("CARGO_PKG_NAME");
+    //let author = env!("CARGO_PKG_AUTHORS");
+
+    //println!("Program Name: {}", name);
+    //println!("Program Version: {}", version);
+    println!("{} v{}", crate_name.replace("_", "-"), version);
+    //println!("Program Version: {}", version);
+    //println!("Program Author: {}", author);
+
+    process::exit(0);
+}
 fn main() {
-    let since_the_epoch = SystemTime::now()
-        .duration_since(SystemTime::UNIX_EPOCH)
-        .expect("get millis error");
-    let seconds = since_the_epoch.as_secs();
-    let subsec_millis = since_the_epoch.subsec_millis() as u64;
-    let now_millis = seconds * 1000 + subsec_millis;
-    //println!("now millis: {}", seconds * 1000 + subsec_millis);
-
-    let _ = get_relays();
-    //https://api.nostr.watch/v1/online
-    let url = Url::parse("https://api.nostr.watch/v1/online").unwrap();
-    let mut res = reqwest::blocking::get(url).unwrap();
-
-    let mut tmp_string = String::new();
-    res.read_to_string(&mut tmp_string).unwrap().to_string();
-    //let tmp_u64 = tmp_string.parse::<u64>().unwrap_or(0);
-
-    //TODO:impl gnostr-weeble_millis
-    //let weeble = now_millis as f64 / tmp_u64 as f64;
-    //let weeble = seconds as f64 / tmp_u64 as f64;
-    //println!("{}", format!("{}", weeble.floor()));
-    println!("{}", format!("{  }", tmp_string));
+    use std::process;
+    // If we were handed a command, execute the command and return
+    let args = env::args();
+    if args.len() > 1 {
+        let _ = handle_command(env::args());
+    } else {
+        default();
+    }
+    //if args.len() > 1 {
+    //    for arg in args {
+    //        if arg == "json" {json();process::exit(0)}
+    //        if arg == "get" {get();process::exit(0)}
+    //        if arg == "print" {print();process::exit(0)} else {
+    //           let _ = handle_command(env::args()); process::exit(0);
+    //        }
+    //    }
+    //}
+    process::exit(0);
 }
