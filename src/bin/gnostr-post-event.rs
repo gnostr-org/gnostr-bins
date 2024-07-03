@@ -43,7 +43,7 @@ fn main() {
                 //catch version
                 if args_vector[1] == "-v" {
                     const VERSION: &str = env!("CARGO_PKG_VERSION");
-                    println!("v{}",VERSION);
+                    println!("v{}", VERSION);
                     process::exit(0);
                 }
                 if args_vector[1] == "--version" {
