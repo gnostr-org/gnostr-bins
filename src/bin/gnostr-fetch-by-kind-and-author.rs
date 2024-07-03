@@ -10,16 +10,6 @@ fn main() {
         None => panic!("Usage: fetch-by-kind-and-author <RelayURL> <PubKey> <KindNumber>"),
     };
 
-
-
-    let kind_number = match args.next() {
-        Some(num) => num.parse::<u32>().unwrap(),
-        None => panic!("Usage: fetch-by-kind-and-author <RelayURL> <PubKey> <KindNumber>"),
-    };
-    let kind: EventKind = kind_number.into();
-
-
-
     let author_key = match args.next() {
         Some(key) => match PublicKey::try_from_bech32_string(&key, true) {
             Ok(key) => key,
@@ -31,6 +21,11 @@ fn main() {
         None => panic!("Usage: fetch-by-kind-and-author <RelayURL> <PubKey> <KindNumber>"),
     };
 
+    let kind_number = match args.next() {
+        Some(num) => num.parse::<u32>().unwrap(),
+        None => panic!("Usage: fetch-by-kind-and-author <RelayURL> <PubKey> <KindNumber>"),
+    };
+    let kind: EventKind = kind_number.into();
 
     let key: PublicKeyHex = author_key.into();
     let filter = Filter {
