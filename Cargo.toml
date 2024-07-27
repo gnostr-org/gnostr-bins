@@ -48,7 +48,6 @@ futures-lite = "2.3.0"
 #futures = { workspace = true, default-features = false, features = ["async-await","futures-executor"] }
 getopts = "0.2.21"
 git2 = "^0.18"
-gnostr-types = "0.7.1-unstable"
 hex = "0.4"
 homedir = "0.2.1"
 http = "0.2"
@@ -91,6 +90,7 @@ zeroize = "1.5"
 bytes = "0.5"
 futures = { version = "0.3.6", default-features = false, features = ["async-await"] }
 tokio = { version = "0.2", features = ["macros", "rt-threaded"] }
+gnostr-types = { git = "https://github.com/gnostr-org/gnostr-types.git", version = "0.7.1-unstable" }
 
 
 
