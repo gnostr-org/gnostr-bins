@@ -6,8 +6,9 @@ git = "https://github.com/mikedilger/nip44"
 rev = "e6ab1bc4480fd53aa854814bbacacf200c51af14"
 replace-with = "vendored-sources"
 
-[source."git+https://github.com/mikedilger/nostr-types"]
-git = "https://github.com/mikedilger/nostr-types"
+[source."git+https://github.com/mikedilger/speedy?rev=b8b713a7006958616dd3ef3ba63217740b4b09c2"]
+git = "https://github.com/mikedilger/speedy"
+rev = "b8b713a7006958616dd3ef3ba63217740b4b09c2"
 replace-with = "vendored-sources"
 
 [source.vendored-sources]
