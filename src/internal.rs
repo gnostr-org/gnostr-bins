@@ -1,6 +1,6 @@
-
 use base64::Engine;
 use http::Uri;
+use nostr_types::RelayMessageV3;
 use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use tungstenite::protocol::Message;
 
@@ -15,7 +15,6 @@ pub(crate) fn event_to_wire(event: Event) -> String {
 }
 
 pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
-
     let mut events: Vec<Event> = Vec::new();
 
     let key: [u8; 16] = rand::random();
@@ -51,12 +50,10 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
 
         match message {
             Message::Text(s) => {
-                println!("RAW MESSAGE: {}", s);
-                let relay_message: RelayMessage =
-                    serde_json::from_str(&s).expect(&s);
+                let relay_message: RelayMessage = serde_json::from_str(&s).expect(&s);
                 match relay_message {
+                    RelayMessageV3::Closed(_, _) => todo!(),
                     RelayMessage::Event(_, e) => events.push(*e),
-                    RelayMessage::Closed(_, msg) => println!("CLOSED: {}", msg),
                     RelayMessage::Notice(s) => println!("NOTICE: {}", s),
                     RelayMessage::Eose(_) => {
                         let message = ClientMessage::Close(SubscriptionId("111".to_owned()));
@@ -86,12 +83,14 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
                 }
             }
             Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),
-            Message::Ping(vec) => if let Err(e) = websocket.write_message(Message::Pong(vec)) {
-                println!("Unable to pong: {}", e);
+            Message::Ping(vec) => {
+                if let Err(e) = websocket.write_message(Message::Pong(vec)) {
+                    println!("Unable to pong: {}", e);
+                }
             }
             Message::Pong(_) => println!("IGNORING PONG"),
             Message::Close(_) => {
-                println!("Closing");
+                //println!("Closing");
                 break;
             }
             Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),
@@ -136,24 +135,27 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
 
     match message {
         Message::Text(s) => {
-            let relay_message: RelayMessage =
-                serde_json::from_str(&s).expect(&s);
+            let relay_message: RelayMessage = serde_json::from_str(&s).expect(&s);
             match relay_message {
-                RelayMessage::Event(_, e) => println!("EVENT: {}", serde_json::to_string(&e).unwrap()),
-                RelayMessage::Closed(_, msg) => println!("CLOSED: {}", msg),
+                RelayMessage::Event(_, e) => {
+                    println!("EVENT: {}", serde_json::to_string(&e).unwrap())
+                }
                 RelayMessage::Notice(s) => println!("NOTICE: {}", s),
                 RelayMessage::Eose(_) => println!("EOSE"),
                 RelayMessage::Ok(_id, ok, reason) => println!("OK: ok={} reason={}", ok, reason),
                 RelayMessage::Auth(challenge) => println!("AUTH: {}", challenge),
+                RelayMessageV3::Closed(_, _) => todo!(),
             }
         }
         Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),
-        Message::Ping(vec) => if let Err(e) = websocket.write_message(Message::Pong(vec)) {
-            println!("Unable to pong: {}", e);
+        Message::Ping(vec) => {
+            if let Err(e) = websocket.write_message(Message::Pong(vec)) {
+                println!("Unable to pong: {}", e);
+            }
         }
         Message::Pong(_) => println!("IGNORING PONG"),
         Message::Close(_) => {
-            println!("Closing");
+            //println!("Closing");
             return;
         }
         Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),

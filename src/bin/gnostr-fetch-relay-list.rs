@@ -1,6 +1,5 @@
-
+use nostr_types::{EventKind, Filter, PublicKeyHex};
 use std::env;
-use gnostr_types::{EventKind, Filter, PublicKeyHex};
 
 fn main() {
     let mut args = env::args();
@@ -20,7 +19,7 @@ fn main() {
     filter.add_author(&pkh);
     filter.add_event_kind(EventKind::RelayList);
     let events = gnostr_bins::fetch_by_filter(&relay_url, filter);
-    if ! events.is_empty() {
+    if !events.is_empty() {
         gnostr_bins::print_event(&events[0]);
     } else {
         println!("Not found");

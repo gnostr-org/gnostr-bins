@@ -1,7 +1,7 @@
 use std::env;
 
 use bech32::FromBase32;
-use gnostr_types::{NostrBech32, PrivateKey};
+use nostr_types::{NostrBech32, PrivateKey};
 
 fn main() {
     let mut args = env::args();

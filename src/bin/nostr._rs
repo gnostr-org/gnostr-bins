@@ -3,11 +3,11 @@ use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::{env, thread};
 
-use nostr_rust::events::extract_events_ws;
-use nostr_rust::nostr_client::Client;
-use nostr_rust::req::ReqFilter;
-use nostr_rust::utils::parse_content_tags;
-use nostr_rust::{Identity, Message};
+use gnostr_bins::events::extract_events_ws;
+use gnostr_bins::nostr_client::Client;
+use gnostr_bins::req::ReqFilter;
+use gnostr_bins::utils::parse_content_tags;
+use gnostr_bins::{Identity, Message};
 use structopt::StructOpt;
 
 fn handle_message(relay_url: &String, message: &Message) -> Result<(), String> {
