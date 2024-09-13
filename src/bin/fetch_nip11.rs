@@ -15,7 +15,7 @@ fn main() {
         None => panic!("Usage: fetch_nip11 <RelayURL>"),
     };
 
-    let (host,uri) = nostr_bins::url_to_host_and_uri(&url);
+    let (host,uri) = gnostr_bins::url_to_host_and_uri(&url);
 
     let scheme = match uri.scheme() {
         Some(refscheme) => match refscheme.as_str() {

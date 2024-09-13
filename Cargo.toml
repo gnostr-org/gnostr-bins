@@ -1,13 +1,13 @@
 [package]
-name = "nostr-bins"
-version = "0.1.0-unstable"
+name = "gnostr-bins"
+version = "0.1.0"
 edition = "2021"
-authors = ["Mike Dilger <mike@mikedilger.com>"]
-description = "Binaries for nostr"
-repository = "https://github.com/mikedilger/nostr-bins"
-documentation = "https://docs.rs/nostr-bins"
+authors = ["gnostr <admin@gnostr.org>", "Mike Dilger <mike@mikedilger.com>"]
+description = "gnostr: a git+nostr workflow utility"
+repository = "https://github.com/gnostr-org/gnostr-bins"
+documentation = "https://docs.rs/gnostr-bins"
 readme = "README.md"
-keywords = [ "nostr" ]
+keywords = [ "nostr", "gnostr" ]
 license = "MIT"
 
 [dependencies]

@@ -16,5 +16,5 @@ fn main() {
 
     let event: Event = serde_json::from_str(&s).unwrap();
 
-    nostr_bins::post_event(&relay_url, event);
+    gnostr_bins::post_event(&relay_url, event);
 }
