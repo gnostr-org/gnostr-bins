@@ -58,7 +58,7 @@ jobs:
           args: -- --check
 
       - name: temporary workaround - fmt all files under src
-        run: cargo fmt -- --check $(find . -name '*.rs' -print)
+        run: cargo fmt -- --check $(find ./src -name '*.rs' -print)
 
   test:
     name: ${{ matrix.name }}
