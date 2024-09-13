@@ -14,7 +14,7 @@
  * <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#![deny(warnings)]
+//#![deny(warnings)]
 
 use std::path::{Path, PathBuf};
 

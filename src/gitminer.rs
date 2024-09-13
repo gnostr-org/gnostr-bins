@@ -5,8 +5,6 @@ use std::process::Command;
 use std::sync::mpsc::channel;
 use std::{process, thread};
 
-use git2::*;
-
 use super::worker::Worker;
 
 pub struct Options {
@@ -230,7 +228,7 @@ impl Gitminer {
         Ok(relays)
     }
 
-    fn revparse_0(repo: &mut git2::Repository) -> Result<(String), &'static str> {
+    fn revparse_0(repo: &mut git2::Repository) -> Result<String, &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD").unwrap();
@@ -238,7 +236,7 @@ impl Gitminer {
 
         Ok(head_2)
     }
-    fn revparse_1(repo: &mut git2::Repository) -> Result<(String), &'static str> {
+    fn revparse_1(repo: &mut git2::Repository) -> Result<String, &'static str> {
         Gitminer::ensure_no_unstaged_changes(repo)?;
 
         let head = repo.revparse_single("HEAD~1").unwrap();
