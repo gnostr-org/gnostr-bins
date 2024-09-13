@@ -755,6 +755,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4d7a1385599cc149"
 
 [[package]]
+name = "memoffset"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d61c719bcfbcf5d62b3a09efa6088de8c54bc0bfcd3ea7ae39fcc186108b8de1"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -783,6 +792,21 @@ dependencies = [
 [[package]]
 name = "nip44"
 version = "0.1.0"
+dependencies = [
+ "base64 0.21.7",
+ "chacha20",
+ "constant_time_eq",
+ "hkdf",
+ "hmac",
+ "rand_core",
+ "secp256k1 0.28.1",
+ "sha2",
+ "thiserror",
+]
+
+[[package]]
+name = "nip44"
+version = "0.1.0"
 source = "git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14#e6ab1bc4480fd53aa854814bbacacf200c51af14"
 dependencies = [
  "base64 0.21.7",
@@ -805,6 +829,7 @@ dependencies = [
  "hex",
  "http",
  "k256",
+ "nip44 0.1.0",
  "nostr-types",
  "rand",
  "rand_core",
@@ -819,7 +844,6 @@ dependencies = [
 [[package]]
 name = "nostr-types"
 version = "0.7.0-unstable"
-source = "git+https://github.com/mikedilger/nostr-types#d05ca006415152552f74a8d7b9132cfd481e6a4a"
 dependencies = [
  "aes",
  "base64 0.21.7",
@@ -836,7 +860,7 @@ dependencies = [
  "lazy_static",
  "lightning-invoice",
  "linkify",
- "nip44",
+ "nip44 0.1.0 (git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14)",
  "num_cpus",
  "pbkdf2",
  "rand",
@@ -847,6 +871,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "speedy",
  "thiserror",
  "thread-priority",
  "url",
@@ -1391,6 +1416,25 @@ checksum = "7b5fac59a5cb5dd637972e5fca70daf0523c9067fcdc4842f053dae04a18f8e9"
 dependencies = [
  "libc",
  "windows-sys",
+]
+
+[[package]]
+name = "speedy"
+version = "0.8.6"
+source = "git+https://github.com/mikedilger/speedy?rev=b8b713a7006958616dd3ef3ba63217740b4b09c2#b8b713a7006958616dd3ef3ba63217740b4b09c2"
+dependencies = [
+ "memoffset",
+ "speedy-derive",
+]
+
+[[package]]
+name = "speedy-derive"
+version = "0.8.6"
+source = "git+https://github.com/mikedilger/speedy?rev=b8b713a7006958616dd3ef3ba63217740b4b09c2#b8b713a7006958616dd3ef3ba63217740b4b09c2"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.48",
 ]
 
 [[package]]

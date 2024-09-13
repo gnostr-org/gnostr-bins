@@ -16,7 +16,8 @@ bech32 = "0.9"
 hex = "0.4"
 http = "0.2"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
-nostr-types = { git = "https://github.com/mikedilger/nostr-types" }
+nip44 = { version = "0.1.0", path = "vendor/nip44" }
+nostr-types = { version = "0.7.0-unstable", path = "vendor/nostr-types", features = ["speedy"] }
 rand = "0.8"
 rand_core = "0.6"
 reqwest = { version = "0.11", default-features = false, features = [ "blocking", "json", "rustls-tls-webpki-roots"  ] }
