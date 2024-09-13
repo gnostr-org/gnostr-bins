@@ -1,8 +1,6 @@
 use std::ffi::OsString;
-use std::path::Path;
-use std::process;
 
-use git2::{IndexAddOption, Repository};
+use git2::Repository;
 
 fn main() -> Result<(), git2::Error> {
     // Get path to git repo via command line args or assume current directory

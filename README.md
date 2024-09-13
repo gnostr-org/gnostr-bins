@@ -1,6 +1,25 @@
-# nostr-bins
+## gnostr-bins
 
-THIS REPO IS DEAD.
+### Some command-line tools for nostr.
 
-Consider its replacement: https://github.com/mikedilger/nostr-probe
+##### cargo add
+```sh
+cargo add gnostr-bins --rename gnostr_bins
+```
 
+##### make
+
+![](./gnostr-bins-make.png)
+
+#### Usage:
+#### In context of other gnostr utilities
+
+```
+gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) \
+-t gnostr \
+--tag weeble $(gnostr-weeble) \
+--tag wobble $(gnostr-wobble) \
+--tag blockheight $(gnostr-blockheight) \
+--content 'gnostr/$(gnostr-weeble)/$(gnostr-blockheight)/$(shell gnostr-wobble))' \
+| gnostr-post-event --relay wss://nos.lol
+```

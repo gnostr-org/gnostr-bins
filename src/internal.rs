@@ -1,7 +1,6 @@
 use base64::Engine;
-use gnostr_types::RelayMessageV3;
-//use nostr_types::RelayMessageV3;
-use gnostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
+use nostr_types::RelayMessageV3;
+use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use http::Uri;
 use tungstenite::protocol::Message;
 
