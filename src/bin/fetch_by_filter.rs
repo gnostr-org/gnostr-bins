@@ -16,7 +16,7 @@ fn main() {
         },
         None => panic!("Usage: fetch_by_kind_and_author <RelayURL> <FilterJSON>"),
     };
-    for event in nostr_bins::fetch_by_filter(&relay_url, filter) {
-        nostr_bins::print_event(&event);
+    for event in gnostr_bins::fetch_by_filter(&relay_url, filter) {
+        gnostr_bins::print_event(&event);
     }
 }

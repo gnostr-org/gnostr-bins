@@ -16,8 +16,8 @@ fn main() {
 
     let idhex = IdHex::try_from_str(&id).unwrap();
 
-    if let Some(event) = nostr_bins::fetch_by_id(&relay_url, idhex) {
-        nostr_bins::print_event(&event);
+    if let Some(event) = gnostr_bins::fetch_by_id(&relay_url, idhex) {
+        gnostr_bins::print_event(&event);
     } else {
         println!("Not found");
     }

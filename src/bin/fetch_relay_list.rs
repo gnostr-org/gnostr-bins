@@ -19,9 +19,9 @@ fn main() {
     let mut filter = Filter::new();
     filter.add_author(&pkh);
     filter.add_event_kind(EventKind::RelayList);
-    let events = nostr_bins::fetch_by_filter(&relay_url, filter);
+    let events = gnostr_bins::fetch_by_filter(&relay_url, filter);
     if ! events.is_empty() {
-        nostr_bins::print_event(&events[0]);
+        gnostr_bins::print_event(&events[0]);
     } else {
         println!("Not found");
     }

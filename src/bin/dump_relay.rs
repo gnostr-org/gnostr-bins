@@ -13,8 +13,8 @@ fn main() {
     };
 
     let filter = Filter::new();
-    let events = nostr_bins::fetch_by_filter(&relay_url, filter);
+    let events = gnostr_bins::fetch_by_filter(&relay_url, filter);
     for event in events {
-        nostr_bins::print_event(&event);
+        gnostr_bins::print_event(&event);
     }
 }
