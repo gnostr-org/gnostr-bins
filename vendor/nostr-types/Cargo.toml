@@ -58,8 +58,8 @@ version = "0.1"
 features = ["std"]
 
 [dependencies.nip44]
-git = "https://github.com/mikedilger/nip44"
-rev = "e6ab1bc4480fd53aa854814bbacacf200c51af14"
+path = "../nip44"
+version = "0.1.0"
 
 [dependencies.pbkdf2]
 version = "0.12"

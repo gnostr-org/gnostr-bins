@@ -498,7 +498,7 @@ dependencies = [
  "hex",
  "http",
  "k256",
- "nip44 0.1.0",
+ "nip44",
  "nostr-types",
  "rand",
  "rand_core",
@@ -826,22 +826,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nip44"
-version = "0.1.0"
-source = "git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14#e6ab1bc4480fd53aa854814bbacacf200c51af14"
-dependencies = [
- "base64 0.21.7",
- "chacha20",
- "constant_time_eq",
- "hkdf",
- "hmac",
- "rand_core",
- "secp256k1 0.28.1",
- "sha2",
- "thiserror",
-]
-
-[[package]]
 name = "nostr-types"
 version = "0.7.0-unstable"
 dependencies = [
@@ -860,7 +844,7 @@ dependencies = [
  "lazy_static",
  "lightning-invoice",
  "linkify",
- "nip44 0.1.0 (git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14)",
+ "nip44",
  "num_cpus",
  "pbkdf2",
  "rand",

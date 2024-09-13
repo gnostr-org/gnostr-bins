@@ -423,7 +423,6 @@ dependencies = [
 [[package]]
 name = "nip44"
 version = "0.1.0"
-source = "git+https://github.com/mikedilger/nip44?rev=e6ab1bc4480fd53aa854814bbacacf200c51af14#e6ab1bc4480fd53aa854814bbacacf200c51af14"
 dependencies = [
  "base64",
  "chacha20",
