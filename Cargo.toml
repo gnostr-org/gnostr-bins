@@ -1,14 +1,20 @@
 [package]
 name = "gnostr-bins"
-version = "0.1.0"
 edition = "2021"
-authors = ["gnostr <admin@gnostr.org>", "Mike Dilger <mike@mikedilger.com>"]
-description = "gnostr: a git+nostr workflow utility"
-repository = "https://github.com/gnostr-org/gnostr-bins"
-documentation = "https://docs.rs/gnostr-bins"
-readme = "README.md"
-keywords = ["nostr", "gnostr"]
-license = "MIT"
+                                                                                                                                                                                                                                                                                                                                                             ## [source."git+https://github.com/gnostr-org/nip44?rev=e38717f86ccccb91c25ebf07881a77d66411161c"]
+## git = "https://github.com/mikedilger/nip44"
+## version = "0.1.0"
+## rev = "e38717f86ccccb91c25ebf07881a77d66411161c"
+## replace-with = "vendored-sources"
+##
+## [source."git+https://github.com/gnostr-org/gnostr-types?rev=c9f82eb8935c51d912dcbada79c8990029114930"]
+## git = "https://github.com/mikedilger/nostr-types"
+## version = "0.7.0-unstable"
+## rev = "a7aabd3de577de87f2bf8034b24b490e4ba0aa02"
+## replace-with = "vendored-sources"
+##
+## [source.vendored-sources]
+## directory = "vendor"
 
 [dependencies]
 anstream = { version = "0.6.14", features = ["wincon"] }
@@ -20,22 +26,24 @@ async-std = { version = "1.12.0", features = ["futures-core"] }
 async-trait = "0.1"
 base64 = "0.21"
 bech32 = "0.9"
+
+bytes = "0.5"
 #bytes = "0.5"
 chrono = { version = "0.4.34", features = ["serde"] }
 clearscreen = "3.0.0"
 
 crossterm = { version = "0.19", features = [ "serde" ] }
+futures = { version = "0.3.6", features = ["async-await", "futures-executor"] }
 #env_logger = { workspace = true, version = "0.11"}
 
 futures-lite = "2.3.0"
-futures = { version = "0.3.6", features = ["async-await", "futures-executor"] }
 getopts = "0.2.21"
 git2 = "^0.18"
 hex = "0.4"
 homedir = "0.2.1"
 http = "0.2"
-hypercore-protocol = { version = "0.4.2-alpha.1", package = "gnostr-core", features = ["async-std", "cache", "wasm-bindgen", "js_interop_tests"] }
 hyper = "0.13"
+hypercore-protocol = { version = "0.4.2-alpha.1", package = "gnostr-core", features = ["async-std", "cache", "wasm-bindgen", "js_interop_tests"] }
 #insta.workspace = true
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 libp2p = { version = "0.53.2", features = ["full"] }
@@ -69,11 +77,7 @@ tungstenite = { version = "0.18", features = [ "rustls-tls-webpki-roots" ] }
 ureq = "2.9.6"
 url = { version = "2.5.0", features = ["serde"] }
 zeroize = "1.5"
-
-bytes = "0.5"
-#futures = { version = "0.3.6", default-features = false, features = ["async-await"] }
-#tokio = { version = "0.2", features = ["macros", "rt-threaded"] }
-#gnostr-types = { git = "https://github.com/gnostr-org/gnostr-types.git", version = "0.7.1-unstable" }
+#futures = { version = "0.3.6", default-features = false, features = ["async-await"] }#tokio = { version = "0.2", features = ["macros", "rt-threaded"] }#gnostr-types = { git = "https://github.com/gnostr-org/gnostr-types.git", version = "0.7.1-unstable" }
 
 
 
