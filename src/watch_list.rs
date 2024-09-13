@@ -1,6 +1,3 @@
-//use futures::executor::block_on;
-//use url::Url;
-
 use serde::{Deserialize, Serialize};
 use serde_json::Result;
 
@@ -11,6 +8,8 @@ struct Relay {
     url: String,
 }
 
+/// pub async fn parse_json(urls_str: &str) -> Result<Vec<String>>
+///
 pub async fn parse_json(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
     let mut collected = Vec::new();
@@ -44,6 +43,8 @@ pub async fn parse_json(urls_str: &str) -> Result<Vec<String>> {
     }
     Ok(collected)
 }
+/// pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>>
+///
 pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
     let mut collected = Vec::new();
@@ -71,6 +72,8 @@ pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>> {
     }
     Ok(collected)
 }
+/// pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>>
+///
 pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
     let mut collected = Vec::new();
