@@ -45,7 +45,7 @@ url = { version = "2.5.0", features = ["serde"] }
 zeroize = "1.5"
 
 [dev-dependencies]
-cargo-dist = "0.14.0"
+cargo-dist = "0.21.1"
 
 # The profile that 'cargo dist' will build with
 [profile.dist]
