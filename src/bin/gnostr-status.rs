@@ -43,10 +43,10 @@ struct Args {
     /// show ignored files as well
     flag_ignored: bool,
     #[structopt(name = "opt-modules", long = "untracked-files")]
-    /// setting for showing untracked files [no|normal|all]
+    /// setting for showing untracked files \[no|normal|all\]
     flag_untracked_files: Option<String>,
     #[structopt(name = "opt-files", long = "ignore-submodules")]
-    /// setting for ignoring submodules [all]
+    /// setting for ignoring submodules \[all\]
     flag_ignore_submodules: Option<String>,
     #[structopt(name = "dir", long = "git-dir")]
     /// git directory to analyze

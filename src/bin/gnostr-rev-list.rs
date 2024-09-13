@@ -31,7 +31,7 @@ struct Args {
     /// sort commits in reverse
     flag_reverse: bool,
     #[structopt(name = "not")]
-    /// don't show <spec>
+    /// don't show \<spe\c>
     flag_not: Vec<String>,
     #[structopt(name = "spec", last = true)]
     arg_spec: Vec<String>,
