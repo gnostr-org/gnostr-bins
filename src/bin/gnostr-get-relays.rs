@@ -175,7 +175,7 @@ fn gnostr_get_relays_stripped() {
 fn gnostr_get_relays_handle_command() {
     let args = env::args();
     if args.len() > 1 {
-        handle_command(args);
+        let _ = handle_command(args);
     }
     println!();
 }

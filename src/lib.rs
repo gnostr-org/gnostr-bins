@@ -244,27 +244,27 @@ mod tests {
     use super::*;
     #[test]
     fn test_get_relays_paid() {
-        get_relays_paid();
+        let _ = get_relays_paid();
     }
     #[test]
     fn test_get_relays_public() {
-        get_relays_public();
+        let _ = get_relays_public();
     }
     #[test]
     fn test_get_relays_online() {
-        get_relays_online();
+        let _ = get_relays_online();
     }
     #[test]
     fn test_get_relays_by_nip() {
-        get_relays_by_nip(&"0");
+        let _ = get_relays_by_nip(&"0");
     }
     #[test]
     fn test_get_relays_offline() {
-        get_relays_offline();
+        let _ = get_relays_offline();
     }
     #[test]
     fn test_get_relays() {
-        get_relays();
+        let _ = get_relays();
     }
 
     #[test]
