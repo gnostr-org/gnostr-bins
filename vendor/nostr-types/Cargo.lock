@@ -466,6 +466,7 @@ dependencies = [
  "serde_json",
  "sha2",
  "speedy",
+ "speedy-derive",
  "thiserror",
  "thread-priority",
  "url",
@@ -763,7 +764,6 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 [[package]]
 name = "speedy"
 version = "0.8.6"
-source = "git+https://github.com/mikedilger/speedy?rev=b8b713a7006958616dd3ef3ba63217740b4b09c2#b8b713a7006958616dd3ef3ba63217740b4b09c2"
 dependencies = [
  "memoffset",
  "speedy-derive",
@@ -772,7 +772,6 @@ dependencies = [
 [[package]]
 name = "speedy-derive"
 version = "0.8.6"
-source = "git+https://github.com/mikedilger/speedy?rev=b8b713a7006958616dd3ef3ba63217740b4b09c2#b8b713a7006958616dd3ef3ba63217740b4b09c2"
 dependencies = [
  "proc-macro2",
  "quote",

@@ -1,6 +1,5 @@
-
-use std::env;
 use nostr_types::IdHex;
+use std::env;
 
 fn main() {
     let mut args = env::args();

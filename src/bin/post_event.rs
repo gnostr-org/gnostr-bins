@@ -1,7 +1,6 @@
-
+use nostr_types::Event;
 use std::env;
 use std::io::Read;
-use nostr_types::Event;
 
 fn main() {
     let mut args = env::args();
