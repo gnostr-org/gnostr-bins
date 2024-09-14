@@ -1,5 +1,5 @@
 #![recursion_limit = "128"]
-
+#![allow(clippy::all)]
 use std::collections::HashMap;
 use std::u32;
 
