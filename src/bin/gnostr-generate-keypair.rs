@@ -6,7 +6,7 @@
 
 #![allow(clippy::uninlined_format_args)]
 use k256::schnorr::SigningKey;
-use nostr_types::{PrivateKey, PublicKey};
+use gnostr_types::{PrivateKey, PublicKey};
 use zeroize::Zeroize;
 
 fn main() {

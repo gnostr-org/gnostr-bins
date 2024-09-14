@@ -1,4 +1,4 @@
-use nostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
+use gnostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
 use std::env;
 
 fn main() {

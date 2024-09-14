@@ -1,4 +1,4 @@
-use nostr_types::Filter;
+use gnostr_types::Filter;
 use std::env;
 
 fn main() {

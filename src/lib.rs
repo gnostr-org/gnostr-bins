@@ -1,5 +1,5 @@
 use http::Uri;
-use nostr_types::{Event, Filter, IdHex};
+use gnostr_types::{Event, Filter, IdHex};
 
 mod internal;
 use internal::*;
@@ -186,7 +186,8 @@ pub fn post_event(url: &str, event: Event) {
     let wire = event_to_wire(event);
     post(host, uri, wire)
 }
-use nostr_types::EventV2;
+/// use gnostr_types::EventV2;
+use gnostr_types::EventV2;
 /// pub fn post_event_v2(url: &str, event: EventV2)
 pub fn post_event_v2(url: &str, event: EventV2) {
     let (host, uri) = url_to_host_and_uri(url);

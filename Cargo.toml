@@ -26,7 +26,7 @@ hex = "0.4"
 http = "0.2"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 log = "0.4.21"
-nostr-types = { version = "0.7.0-unstable", path = "vendor/nostr-types", features = ["speedy"] }
+gnostr-types = { version = "0.7.0-unstable", path = "vendor/nostr-types", features = ["speedy"] }
 num-bigint = "0.4.4"
 pad = "0.1.6"
 rand = { version = "0.7.3", default-features = false, features = ["std"] }

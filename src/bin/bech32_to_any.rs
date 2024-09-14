@@ -1,5 +1,5 @@
 use bech32::FromBase32;
-use nostr_types::{NostrBech32, PrivateKey};
+use gnostr_types::{NostrBech32, PrivateKey};
 use std::env;
 
 fn main() {

@@ -1,4 +1,4 @@
-use nostr_types::IdHex;
+use gnostr_types::IdHex;
 use std::env;
 
 fn main() {

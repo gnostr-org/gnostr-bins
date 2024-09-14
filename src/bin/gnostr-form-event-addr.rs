@@ -1,6 +1,6 @@
 use std::env;
 
-use nostr_types::{EventAddr, EventKind, NostrUrl, PublicKey, UncheckedUrl};
+use gnostr_types::{EventAddr, EventKind, NostrUrl, PublicKey, UncheckedUrl};
 
 fn main() {
     let mut args = env::args();

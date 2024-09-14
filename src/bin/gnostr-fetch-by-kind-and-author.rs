@@ -1,6 +1,6 @@
 use std::env;
 
-use nostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
+use gnostr_types::{EventKind, Filter, PublicKey, PublicKeyHex};
 
 fn main() {
     let mut args = env::args();

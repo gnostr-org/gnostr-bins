@@ -1,4 +1,4 @@
-use nostr_types::{EventAddr, EventKind, NostrUrl, PublicKey, UncheckedUrl};
+use gnostr_types::{EventAddr, EventKind, NostrUrl, PublicKey, UncheckedUrl};
 use std::env;
 
 fn main() {

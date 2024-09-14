@@ -3,7 +3,7 @@
 
 use std::env;
 
-use nostr_types::Filter;
+use gnostr_types::Filter;
 
 fn main() {
     let mut args = env::args();

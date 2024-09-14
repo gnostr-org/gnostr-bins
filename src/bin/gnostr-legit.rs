@@ -26,7 +26,7 @@ use gnostr_bins::{
     blockheight, get_blockheight, get_pwd, get_weeble, get_wobble, gitminer, post_event, repo,
     weeble, wobble, worker,
 };
-use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
+use gnostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 
 //fn type_of<T>(_: T) -> &'static str {
 //    type_name::<T>()
