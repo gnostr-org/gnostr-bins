@@ -54,8 +54,8 @@ pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>> {
         loop {
             match char_iter.next() {
                 Some(']') => {
-                    print!("\"wss://relay.gnostr.org\", ");
-                    print!("\"wss://proxy.gnostr.org\"");
+                    print!("wss://relay.gnostr.org, ");
+                    print!("wss://proxy.gnostr.org");
                     return std::result::Result::Ok(collected);
                 }
                 Some(',') | Some(' ') => {
@@ -84,6 +84,8 @@ pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>> {
         loop {
             match char_iter.next() {
                 Some(']') => {
+                    print!("wss://relay.gnostr.org ");
+                    print!("wss://proxy.gnostr.org ");
                     return std::result::Result::Ok(collected);
                 }
                 Some(' ') | Some(',') => {
