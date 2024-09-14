@@ -26,8 +26,8 @@ repository = "https://github.com/koute/speedy"
 [package.metadata.docs.rs]
 features = ["external_doc"]
 
-[profile.release]
-panic = "abort"
+## [profile.release]
+## panic = "abort"
 
 [dependencies]
 memoffset = "0.8"
@@ -72,9 +72,9 @@ tempfile = "3"
 default = ["speedy-derive"]
 external_doc = []
 
-[workspace]
-members = [
-    ".",
-    "speedy-derive",
-    "static-tests",
-]
+## [workspace]
+## members = [
+##     ".",
+##     "speedy-derive",
+##     "static-tests",
+## ]
