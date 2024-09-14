@@ -2,20 +2,14 @@ use std::env;
 
 use futures::executor::block_on;
 use gnostr_bins::watch_list::{parse_json, parse_urls, stripped_urls};
-use gnostr_bins::{get_stripped_urls, get_watch_list, get_watch_list_json, get_relays_by_nip, print_watch_list};
+use gnostr_bins::{
+    get_relays_by_nip, get_stripped_urls, get_watch_list, get_watch_list_json, print_watch_list,
+};
 pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::Error>> {
     let _ = args.next(); // program name
     let nip: String;
     let relays: String;
-    //--nip intercept
     //default json output
-    //if args.next().unwrap() == "--nip" {
-    //    nip = String::from("1");
-    //    relays = gnostr_bins::get_relays_by_nip(&nip)?;
-    //    let relays_json = parse_json(&relays);
-    //    let _ = block_on(relays_json);
-    //    std::process::exit(0);
-    //}
     if args.len() >= 3 && args.next().unwrap() == "--nip" {
         nip = String::from(args.next().unwrap());
         relays = gnostr_bins::get_relays_by_nip(&nip)?;
@@ -37,12 +31,12 @@ pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::E
         }
         std::process::exit(0);
     }
-    let command = args.next().unwrap(); // must be there or we would not have been called
+    let flag = args.next().unwrap(); // must be there or we would not have been called
 
     #[cfg(debug_assertions)]
-    println!("*** COMMAND = {} ***\n", command);
+    println!("flag={}\n", flag);
 
-    match &*command {
+    match &*flag {
         //nip
         "-n" => by_nip(&args.next().unwrap_or(String::from("1"))),
         "--nip" => by_nip(&args.next().unwrap_or(String::from("1"))),
@@ -101,32 +95,35 @@ fn get() {
     log::info!("{:?}", result.unwrap());
 }
 fn by_nip(nip: &str) {
-    print!("by_nip {}", nip);
     let relays = gnostr_bins::get_relays_by_nip(&nip).clone();
-    print!("{}",relays.unwrap());
-    //let relays_json = parse_json(relays.unwrap());
-    //let _ = block_on(relays_json);
+    print!("{}", relays.unwrap());
     std::process::exit(0);
 }
 //TODO: return length in watch_list?
 fn stripped() {
     let future = get_stripped_urls();
     let length = block_on(future);
-    print!("{}", format!("{:?}", length.expect("REASON").len()));
+    print!(
+        "{}",
+        format!("{:?}", length.expect("stripped relay list length").len())
+    );
 }
 fn help(other: &str) {
     use std::process;
     let crate_name = env!("CARGO_CRATE_NAME");
     let version = env!("CARGO_PKG_VERSION");
     println!("{} v{}", crate_name.replace('_', "-"), version);
-    println!("{} get [-g, --get]", crate_name.replace('_', "-"));
+    println!(
+        "{} get [-g, -p, --get, --print]",
+        crate_name.replace('_', "-")
+    );
     println!("       <csv_relay_list>");
     println!("{} json [-j, --json]", crate_name.replace('_', "-"));
     println!("       <json_relay_list>");
     println!("{} stripped [-s, --stripped]", crate_name.replace('_', "-"));
-    println!("       <string_relay_list> <int_length_last>");
+    println!("       <stripped_relay_list> <list_length>");
     if other.len() > 0 {
-    print!("\n{} {} error!",crate_name, other);
+        print!("\n{} {} error!", crate_name, other);
     }
     process::exit(0);
 }
