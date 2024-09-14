@@ -81,3 +81,4 @@ test-gnostr-bounce-event:## 	test-gnostr-bounce-event
 	make test-gnostr-fetch-first-commit | gnostr-post-event
 
 -include Makefile
+-include cargo.mk
