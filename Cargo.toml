@@ -22,11 +22,11 @@ chrono = { version = "0.4.34", features = ["serde"] }
 futures = { version = "0.3.6", features = ["async-await", "futures-executor"] }
 getopts = "0.2.21"
 git2 = "^0.18"
+gnostr-types = { version = "0.7.0-unstable", path = "vendor/nostr-types", features = ["speedy"] }
 hex = "0.4"
 http = "0.2"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 log = "0.4.21"
-gnostr-types = { version = "0.7.0-unstable", path = "vendor/nostr-types", features = ["speedy"] }
 num-bigint = "0.4.4"
 pad = "0.1.6"
 rand = { version = "0.7.3", default-features = false, features = ["std"] }
