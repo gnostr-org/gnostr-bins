@@ -11,7 +11,7 @@
 
 [package]
 edition = "2021"
-name = "nostr-types"
+name = "gnostr-types"
 version = "0.7.0-unstable"
 authors = ["Mike Dilger <mike@mikedilger.com>"]
 description = "Types for nostr protocol handling"
