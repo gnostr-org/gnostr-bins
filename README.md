@@ -14,7 +14,7 @@ cargo add gnostr-bins --rename gnostr_bins
 #### Usage:
 #### In context of other gnostr utilities
 
-```
+```sh
 gnostr --sec $(gnostr-sha256 $(gnostr-weeble)) \
 -t gnostr \
 --tag weeble $(gnostr-weeble) \

@@ -8,7 +8,7 @@ struct Relay {
     url: String,
 }
 
-/// pub async fn parse_json(urls_str: &str) -> Result<Vec<String>>
+/// pub async fn parse_json(urls_str: &str) -> Result\<Vec\<String\>\>
 ///
 pub async fn parse_json(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
@@ -43,7 +43,7 @@ pub async fn parse_json(urls_str: &str) -> Result<Vec<String>> {
     }
     Ok(collected)
 }
-/// pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>>
+/// pub async fn parse_urls(urls_str: &str) -> Result\<Vec\<String\>\>
 ///
 pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
@@ -72,7 +72,7 @@ pub async fn parse_urls(urls_str: &str) -> Result<Vec<String>> {
     }
     Ok(collected)
 }
-/// pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>>
+/// pub async fn stripped_urls(urls_str: &str) -> Result\<Vec\<String\>\>
 ///
 pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>> {
     let mut part = String::new();
@@ -111,18 +111,22 @@ pub async fn stripped_urls(urls_str: &str) -> Result<Vec<String>> {
     Ok(collected)
 }
 
+/// pub async fn print_watch_list() -> Result\<Vec\<String\>\>
 pub async fn print_watch_list() -> Result<Vec<String>> {
     let vec_relay_list = parse_urls(&get_relays_public().unwrap().as_str()).await;
     vec_relay_list //.expect("REASON")
 }
+/// pub async fn get_watch_list() -> Result\<Vec\<String\>\>
 pub async fn get_watch_list() -> Result<Vec<String>> {
     let vec_relay_list = parse_urls(&get_relays_public().unwrap().as_str()).await;
     vec_relay_list //.expect("REASON")
 }
+/// pub async fn get_watch_list_json() -> Result\<Vec\<String\>\>
 pub async fn get_watch_list_json() -> Result<Vec<String>> {
     let vec_relay_list = parse_json(&get_relays_public().unwrap().as_str()).await;
     vec_relay_list //.expect("REASON")
 }
+/// pub async fn get_stripped_urls() -> Result\<Vec\<String\>\>
 pub async fn get_stripped_urls() -> Result<Vec<String>> {
     let vec_relay_list = stripped_urls(&get_relays_public().unwrap().as_str()).await;
     vec_relay_list //.expect("REASON")

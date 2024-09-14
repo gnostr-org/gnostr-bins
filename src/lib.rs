@@ -25,7 +25,7 @@ pub use repo::*;
 pub mod worker;
 pub use worker::*;
 
-/// REF: https://api.nostr.watch
+/// REF: <https://api.nostr.watch>
 /// nostr.watch API Docs
 ///
 /// Uptime absolutely not guaranteed
@@ -34,11 +34,11 @@ pub use worker::*;
 ///
 /// Supported Methods: GET
 ///
-/// Online Relays: https://api.nostr.watch/v1/online
-/// Public Relays: https://api.nostr.watch/v1/public
-/// Pay to Relays: https://api.nostr.watch/v1/paid
-/// Offline Relays: https://api.nostr.watch/v1/offline
-/// Relays by supported NIP: https://api.nostr.watch/v1/nip/X Use NIP ids without leading zeros - for example: https://api.nostr.watch/v1/nip/1
+/// Online Relays: <https://api.nostr.watch/v1/online>
+/// Public Relays: <https://api.nostr.watch/v1/public>
+/// Pay to Relays: <https://api.nostr.watch/v1/paid>
+/// Offline Relays: <https://api.nostr.watch/v1/offline>
+/// Relays by supported NIP: <https://api.nostr.watch/v1/nip/X> Use NIP ids without leading zeros - for example: <https://api.nostr.watch/v1/nip/1>
 pub mod relays;
 use futures::executor::block_on;
 pub use relays::{
@@ -132,18 +132,22 @@ pub fn get_blockheight() -> Result<String, &'static str> {
     Ok(format!("{}", blockheight().unwrap().to_string()))
 }
 
+/// pub fn hash_list_w_commit_message()
 pub fn hash_list_w_commit_message() {
     let _ = ref_hash_list_w_commit_message();
 }
 
+/// pub fn hash_list()
 pub fn hash_list() {
     let _ = ref_hash_list();
 }
 
+/// pub fn hash_list_padded()
 pub fn hash_list_padded() {
     let _ = ref_hash_list_padded();
 }
 
+/// pub fn url_to_host_and_uri(url: &str) -> (String, Uri)
 pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
     let uri: http::Uri = url.parse::<http::Uri>().expect("Could not parse url");
     let authority = uri.authority().expect("Has no hostname").as_str();
@@ -157,12 +161,14 @@ pub fn url_to_host_and_uri(url: &str) -> (String, Uri) {
     (host.to_owned(), uri)
 }
 
+/// pub fn fetch_by_filter(url: &str, filter: Filter) -> Vec\<Event\>
 pub fn fetch_by_filter(url: &str, filter: Filter) -> Vec<Event> {
     let (host, uri) = url_to_host_and_uri(url);
     let wire = filters_to_wire(vec![filter]);
     fetch(host, uri, wire)
 }
 
+/// pub fn fetch_by_id(url: &str, id: IdHex) -> Option\<Event\>
 pub fn fetch_by_id(url: &str, id: IdHex) -> Option<Event> {
     let mut filter = Filter::new();
     filter.add_id(&id);
@@ -174,18 +180,21 @@ pub fn fetch_by_id(url: &str, id: IdHex) -> Option<Event> {
     }
 }
 
+/// pub fn post_event(url: &str, event: Event)
 pub fn post_event(url: &str, event: Event) {
     let (host, uri) = url_to_host_and_uri(url);
     let wire = event_to_wire(event);
     post(host, uri, wire)
 }
 use nostr_types::EventV2;
+/// pub fn post_event_v2(url: &str, event: EventV2)
 pub fn post_event_v2(url: &str, event: EventV2) {
     let (host, uri) = url_to_host_and_uri(url);
     let wire = event_to_wire(event);
     post(host, uri, wire)
 }
 
+/// pub fn print_event(event: &Event)
 pub fn print_event(event: &Event) {
     print!(
         "{}",
@@ -197,15 +206,20 @@ use std::process;
 
 use sha256::digest;
 
+/// pub struct Config
 pub struct Config {
+    /// pub query: String
     pub query: String,
 }
 
+/// pub fn print_type_of\<T\>(_: &T) -> String
 pub fn print_type_of<T>(_: &T) -> String {
     format!("{}", std::any::type_name::<T>())
 }
 
+/// impl Config {
 impl Config {
+    /// pub fn build(args: &\[String\]) -> Result\<Config, &'static str\>
     pub fn build(args: &[String]) -> Result<Config, &'static str> {
         if args.len() == 1 {
             println!("{}", digest("".to_string()));
@@ -216,10 +230,12 @@ impl Config {
         Ok(Config { query })
     }
 }
+/// pub fn run(config: Config) -> Result\<(), Box\<dyn Error\>\>
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     println!("{}", digest(config.query));
     Ok(())
 }
+/// pub fn search\<'a\>(query: &str, contents: &'a str) -> Vec\<&'a str\> {
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     let mut results = Vec::new();
     for line in contents.lines() {

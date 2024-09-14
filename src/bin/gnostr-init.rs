@@ -32,10 +32,10 @@ struct Args {
     /// initialize a new bare repository
     flag_bare: bool,
     #[structopt(name = "dir", long = "template")]
-    /// use <dir> as an initialization template
+    /// use \<dir\> as an initialization template
     flag_template: Option<String>,
     #[structopt(name = "separate-git-dir", long)]
-    /// use <dir> as the .git directory
+    /// use \<dir\> as the .git directory
     flag_separate_git_dir: Option<String>,
     #[structopt(name = "initial-commit", long)]
     /// create an initial empty commit

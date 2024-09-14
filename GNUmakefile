@@ -37,9 +37,10 @@ cargo-c:## 	cargo-c
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) c
 cargo-d:cargo-doc## 	cargo-d
 cargo-doc:## 	cargo-doc
-##cargo doc --all-features
+##cargo doc --no-deps --document-private-items --all-features
 	[ -x "$(shell command -v $(RUSTC))" ] || $(MAKE) rustup-install-stable
-	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) doc --all-features --no-deps --bins
+	[ -x "$(shell command -v $(CARGO))" ] && \
+	$(CARGO) doc --no-deps --document-private-items --all-features
 cargo-i:## 	cargo-i
 ##cargo install
 	[ -x "$(shell command -v $(RUSTC))" ] || $(MAKE) rustup-install-stable
