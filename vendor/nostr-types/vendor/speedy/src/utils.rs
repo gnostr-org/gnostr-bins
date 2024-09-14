@@ -14,34 +14,38 @@ macro_rules! unsafe_is_length {
             // in certain cases.
             unsafe { std::hint::unreachable_unchecked() }
         }
-    }
+    };
 }
 
 // TODO: Remove the T parameter once #![feature(trivial_bounds)] is stable.
-pub unsafe trait ZeroCopyable< C, T > where T: ?Sized {}
-unsafe impl< C, T > ZeroCopyable< C, T > for i8 {}
-unsafe impl< C, T > ZeroCopyable< C, T > for u8 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for i16 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for u16 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for i32 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for u32 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for i64 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for u64 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for i128 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for u128 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for f32 {}
-unsafe impl< T > ZeroCopyable< crate::context::NativeContext, T > for f64 {}
+pub unsafe trait ZeroCopyable<C, T>
+where
+    T: ?Sized,
+{
+}
+unsafe impl<C, T> ZeroCopyable<C, T> for i8 {}
+unsafe impl<C, T> ZeroCopyable<C, T> for u8 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for i16 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for u16 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for i32 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for u32 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for i64 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for u64 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for i128 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for u128 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for f32 {}
+unsafe impl<T> ZeroCopyable<crate::context::NativeContext, T> for f64 {}
 
 pub trait SwapBytes {
-    fn swap_bytes( self ) -> Self;
+    fn swap_bytes(self) -> Self;
 }
 
 impl SwapBytes for f32 {
     #[inline(always)]
-    fn swap_bytes( self ) -> Self {
+    fn swap_bytes(self) -> Self {
         union Union {
             float: f32,
-            int: u32
+            int: u32,
         }
 
         unsafe {
@@ -54,10 +58,10 @@ impl SwapBytes for f32 {
 
 impl SwapBytes for f64 {
     #[inline(always)]
-    fn swap_bytes( self ) -> Self {
+    fn swap_bytes(self) -> Self {
         union Union {
             float: f64,
-            int: u64
+            int: u64,
         }
 
         unsafe {
