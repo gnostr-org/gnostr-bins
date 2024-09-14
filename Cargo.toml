@@ -9,7 +9,7 @@ homepage = "https://github.com/gnostr-org/gnostr-bins"
 repository = "https://github.com/gnostr-org/gnostr-bins"
 documentation = "https://github.com/gnostr-org/gnostr/bins"
 categories = ["version-control", "development-tools", "gnostr", "nostr"]
-keywords = ["command-line-utilities", "network-programming"]
+keywords = ["network-programming"]
 description = "git+nostr workflow utility"
 authors = ["gnostr <admin@gnostr.org>", "Mike Dilger <mike@mikedilger.com>", "DanConwayDev <DanConwayDev@protonmail.com>", "Max Inden <mail@max-inden.de>", "fiatjaf <fiatjaf@gmail.com>", "Nate Levin <natelevincycling@gmail.com>", "Nethanja Focking <nethanja@nethanja.de>", "Daniele Tonon <tonon@vitamino.it>", "jeremyd (@jeremyd)", "Sebastian Thiel <sebastian.thiel@icloud.com>"]
 
@@ -71,7 +71,7 @@ installers = ["shell", "powershell", "homebrew"]
 # A GitHub repo to push Homebrew formulas to
 tap = "gnostr-org/homebrew-gnostr-org"
 # Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+targets = ["x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
 # Path that installers should place binaries in
 install-path = "CARGO_HOME"
 # Publish jobs to run in CI
