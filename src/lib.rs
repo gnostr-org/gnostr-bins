@@ -1,5 +1,5 @@
-use http::Uri;
 use gnostr_types::{Event, Filter, IdHex};
+use http::Uri;
 
 mod internal;
 use internal::*;

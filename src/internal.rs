@@ -1,7 +1,7 @@
 use base64::Engine;
-use http::Uri;
 use gnostr_types::RelayMessageV3;
 use gnostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
+use http::Uri;
 use tungstenite::protocol::Message;
 
 pub(crate) fn filters_to_wire(filters: Vec<Filter>) -> String {

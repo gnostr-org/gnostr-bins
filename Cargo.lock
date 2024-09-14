@@ -1382,11 +1382,11 @@ dependencies = [
  "futures",
  "getopts",
  "git2",
+ "gnostr-types",
  "hex",
  "http 0.2.12",
  "k256",
  "log 0.4.22",
- "nostr-types",
  "num-bigint",
  "pad",
  "rand 0.7.3",
@@ -1401,6 +1401,43 @@ dependencies = [
  "structopt",
  "time 0.1.45",
  "tungstenite",
+ "url",
+ "zeroize",
+]
+
+[[package]]
+name = "gnostr-types"
+version = "0.7.0-unstable"
+dependencies = [
+ "aes",
+ "base64 0.21.7",
+ "bech32",
+ "cbc",
+ "chacha20",
+ "chacha20poly1305",
+ "core-net",
+ "derive_more",
+ "hex",
+ "hmac",
+ "http 0.2.12",
+ "inout",
+ "lazy_static",
+ "lightning-invoice",
+ "linkify",
+ "nip44",
+ "num_cpus",
+ "pbkdf2 0.12.2",
+ "rand 0.8.5",
+ "rand_core 0.6.4",
+ "regex",
+ "scrypt",
+ "secp256k1 0.28.2",
+ "serde",
+ "serde_json",
+ "sha2",
+ "speedy",
+ "thiserror",
+ "thread-priority",
  "url",
  "zeroize",
 ]
@@ -2306,43 +2343,6 @@ checksum = "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
 dependencies = [
  "memchr",
  "minimal-lexical",
-]
-
-[[package]]
-name = "nostr-types"
-version = "0.7.0-unstable"
-dependencies = [
- "aes",
- "base64 0.21.7",
- "bech32",
- "cbc",
- "chacha20",
- "chacha20poly1305",
- "core-net",
- "derive_more",
- "hex",
- "hmac",
- "http 0.2.12",
- "inout",
- "lazy_static",
- "lightning-invoice",
- "linkify",
- "nip44",
- "num_cpus",
- "pbkdf2 0.12.2",
- "rand 0.8.5",
- "rand_core 0.6.4",
- "regex",
- "scrypt",
- "secp256k1 0.28.2",
- "serde",
- "serde_json",
- "sha2",
- "speedy",
- "thiserror",
- "thread-priority",
- "url",
- "zeroize",
 ]
 
 [[package]]
