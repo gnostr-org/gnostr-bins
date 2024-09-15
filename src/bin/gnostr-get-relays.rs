@@ -5,15 +5,29 @@ use gnostr_bins::watch_list::{parse_json, parse_urls, stripped_urls};
 use gnostr_bins::{
     get_relays_by_nip, get_stripped_urls, get_watch_list, get_watch_list_json, print_watch_list,
 };
-pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::Error>> {
-    let _ = args.next(); // program name
-    let nip: String;
-    let relays: String;
-    //default json output
-    if args.len() >= 3 && args.next().unwrap() == "--nip" {
-        nip = String::from(args.next().unwrap());
-        relays = gnostr_bins::get_relays_by_nip(&nip)?;
-        let output_type = args.next().unwrap();
+pub fn handle_command() -> Result<bool, Box<dyn std::error::Error>> {
+    let mut args = env::args().peekable();
+    println!("args.len()={:?}", args.len());
+    let mut nip: String;
+    let mut relays: String;
+    let mut output_type = String::from("-j"); //default case
+    let program = args.next().unwrap();
+    println!("program={}", program);
+    println!("LINE:16:3:args.len()={}", args.len());
+    //gnostr-get-relays --nip <nip> ?
+    if args.len() == 3 && args.peek().unwrap() == "--nip" || args.peek().unwrap() == "-n" {
+        println!("\n\nLINE:19:4:args.len()={}\n\n", args.len());
+        //println!("{}",args.peek().unwrap());
+        let _ = String::from(args.next().unwrap());
+        //println!("{}",args.peek().unwrap());
+        //relays = gnostr_bins::get_relays_by_nip(&args.next().unwrap())?;
+        relays = gnostr_bins::get_relays_by_nip(&args.next().unwrap())?;
+        //println!("relays:{}",relays);
+        //println!("-p -j -g --- {}",args.peek().unwrap());
+        //if args.len() == 4 {
+        //output_type = args.next();
+        output_type = args.next().expect("REASON");
+        //}
         if output_type == "-h" || output_type == "--help" {
             help("");
         }
@@ -28,9 +42,30 @@ pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::E
         if output_type == "-s" {
             let relays_json = stripped_urls(&relays);
             let _ = block_on(relays_json);
+        } else {
+            let relays_json = parse_json(&relays);
+            let _ = block_on(relays_json);
         }
+        //std::process::exit(nip.parse::<i32>().unwrap());
+        std::process::exit(0);
+    } else if args.len() == 2 && args.peek().unwrap() == "--nip" || args.peek().unwrap() == "-n" {
+        println!("2:args.len()={}", args.len());
+        println!("\n\nLINE:19:4:args.len()={}\n\n", args.len());
+        println!("{}", args.peek().unwrap());
+        let _ = String::from(args.next().unwrap());
+        println!("{}", args.peek().unwrap());
+        relays = gnostr_bins::get_relays_by_nip(&args.next().unwrap())?;
+        println!("relays:{}", relays);
+        //println!("-p -j -g --- {}",args.peek().unwrap());
+
+        //case
+        //gnostr-get-relays --nip 111
+        //default output_type is json
+
         std::process::exit(0);
     }
+    //case args.len() == 2
+    //gnostr-get-relays [-j -p -s -g --nip]
     let flag = args.next().unwrap(); // must be there or we would not have been called
 
     #[cfg(debug_assertions)]
@@ -38,9 +73,9 @@ pub fn handle_command(mut args: env::Args) -> Result<bool, Box<dyn std::error::E
 
     match &*flag {
         //nip
-        "-n" => by_nip(&args.next().unwrap_or(String::from("1"))),
-        "--nip" => by_nip(&args.next().unwrap_or(String::from("1"))),
-        "nip" => by_nip(&args.next().unwrap_or(String::from("1"))),
+        "-n" => by_nip(&String::from("1")),
+        "--nip" => by_nip(&String::from("1")),
+        "nip" => by_nip(&String::from("1")),
         //json
         "-j" => json(),
         "--json" => json(),
@@ -113,6 +148,11 @@ fn help(other: &str) {
     let crate_name = env!("CARGO_CRATE_NAME");
     let version = env!("CARGO_PKG_VERSION");
     println!("{} v{}", crate_name.replace('_', "-"), version);
+
+    //gnostr-get-relays --nip 111 -s
+
+    println!("{} --nip <int>", crate_name.replace('_', "-"));
+    println!("{} --nip <int> [-j, -s, -p]", crate_name.replace('_', "-"));
     println!(
         "{} get [-g, -p, --get, --print]",
         crate_name.replace('_', "-")
@@ -148,21 +188,12 @@ fn version() {
 fn main() {
     use std::process;
     // If we were handed a command, execute the command and return
-    let args = env::args();
+    let mut args = env::args().peekable();
     if args.len() > 1 {
-        let _ = handle_command(env::args());
+        let _ = handle_command();
     } else {
         default();
     }
-    //if args.len() > 1 {
-    //    for arg in args {
-    //        if arg == "json" {json();process::exit(0)}
-    //        if arg == "get" {get();process::exit(0)}
-    //        if arg == "print" {print();process::exit(0)} else {
-    //           let _ = handle_command(env::args()); process::exit(0);
-    //        }
-    //    }
-    //}
     process::exit(0);
 }
 /// cargo       test --bin gnostr-get-relays -- --nocapture
@@ -191,7 +222,7 @@ fn gnostr_get_relays_stripped() {
 fn gnostr_get_relays_handle_command() {
     let args = env::args();
     if args.len() > 1 {
-        let _ = handle_command(args);
+        let _ = handle_command();
     }
     println!();
 }
