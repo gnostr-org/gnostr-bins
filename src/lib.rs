@@ -283,6 +283,18 @@ mod tests {
     fn test_get_relays() {
         let _ = get_relays();
     }
+    #[test]
+    fn test_get_weeble() {
+        let _ = get_weeble();
+    }
+    #[test]
+    fn test_get_wobble() {
+        let _ = get_wobble();
+    }
+    #[test]
+    fn test_get_blockheight() {
+        let _ = get_blockheight();
+    }
 
     #[test]
     fn one_result() {
