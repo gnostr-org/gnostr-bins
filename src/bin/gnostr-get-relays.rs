@@ -38,7 +38,7 @@ pub fn handle_command() -> Result<bool, Box<dyn std::error::Error>> {
     } else if args.len() == 2 && args.peek().unwrap() == "--nip" || args.peek().unwrap() == "-n" {
         let _ = String::from(args.next().unwrap());
         relays = gnostr_bins::get_relays_by_nip(&args.next().unwrap())?;
-        println!("relays:{}", relays);
+        println!("{}", relays);
         std::process::exit(0);
     }
     let flag = args.next().unwrap(); // must be there or we would not have been called
