@@ -15,6 +15,9 @@ pub use weeble::weeble;
 pub mod wobble;
 pub use wobble::wobble;
 
+pub mod blockhash;
+pub use blockhash::blockhash;
+
 pub mod blockheight;
 pub use blockheight::blockheight;
 
@@ -130,6 +133,12 @@ pub fn get_blockheight() -> Result<String, &'static str> {
     let _blockheight_no_nl = blockheight().unwrap().to_string();
 
     Ok(format!("{}", blockheight().unwrap().to_string()))
+}
+/// pub fn get_blockhash() -> Result<String, &'static str>
+pub fn get_blockhash() -> Result<String, &'static str> {
+    let _blockhash_no_nl = blockhash().unwrap().to_string();
+
+    Ok(format!("{}", blockhash().unwrap().to_string()))
 }
 
 /// pub fn hash_list_w_commit_message()
@@ -294,6 +303,10 @@ mod tests {
     #[test]
     fn test_get_blockheight() {
         let _ = get_blockheight();
+    }
+    #[test]
+    fn test_get_blockhash() {
+        let _ = get_blockhash();
     }
 
     #[test]
