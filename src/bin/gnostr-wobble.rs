@@ -173,6 +173,7 @@ async fn print_wobble() {
         "get_blockheight(): {}",
         gnostr_bins::get_blockheight().unwrap()
     );
+    #[cfg(debug_assertions)]
     println!("\ndelta_millis: {}", stop_millis - start_millis);
 }
 
