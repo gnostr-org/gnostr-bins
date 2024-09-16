@@ -1387,7 +1387,7 @@ checksum = "b5418c17512bdf42730f9032c74e1ae39afc408745ebb2acf72fbc4691c17945"
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.55"
+version = "0.0.56"
 dependencies = [
  "argparse",
  "ascii",
