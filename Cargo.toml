@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.53"
+version = "0.0.54"
 license = "Apache-2.0"
 rust-version = "1.79"
 edition = "2021"
