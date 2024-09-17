@@ -273,7 +273,6 @@ vendor/ring-0.16.20/
 vendor/ring/
 vendor/rpassword/
 vendor/rtoolbox/
-vendor/rust-crypto/
 vendor/rustc-cfg/
 vendor/rustc-demangle/
 vendor/rustc-hash/
