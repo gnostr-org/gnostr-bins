@@ -5,10 +5,6 @@ vendor/autocfg/
 vendor/base64/
 vendor/base64ct/
 vendor/bech32/
-vendor/bitcoin-internals/
-vendor/bitcoin_hashes-0.11.0/
-vendor/bitcoin_hashes/
-vendor/bitflags/
 vendor/block-buffer/
 vendor/block-padding/
 vendor/byteorder/
@@ -41,8 +37,6 @@ vendor/inout/
 vendor/itoa/
 vendor/lazy_static/
 vendor/libc/
-vendor/lightning-invoice/
-vendor/lightning/
 vendor/linkify/
 vendor/log/
 vendor/memchr/
@@ -68,15 +62,10 @@ vendor/rustversion/
 vendor/ryu/
 vendor/salsa20/
 vendor/scrypt/
-vendor/secp256k1-0.24.3/
-vendor/secp256k1-sys-0.6.1/
-vendor/secp256k1-sys/
-vendor/secp256k1/
 vendor/semver/
 vendor/serde/
 vendor/serde_derive/
 vendor/serde_json/
-vendor/sha2/
 vendor/shlex/
 vendor/subtle/
 vendor/syn/

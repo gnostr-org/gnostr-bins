@@ -21,6 +21,9 @@ pub use blockhash::blockhash;
 pub mod blockheight;
 pub use blockheight::blockheight;
 
+pub mod hash;
+pub use hash::hash;
+
 pub mod gitminer;
 pub use gitminer::*;
 pub mod repo;
