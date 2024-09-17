@@ -1393,6 +1393,7 @@ dependencies = [
  "ascii",
  "base64 0.21.7",
  "bech32",
+ "bitcoin_hashes 0.11.0",
  "cargo-dist",
  "chrono",
  "futures",
