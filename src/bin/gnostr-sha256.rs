@@ -4,7 +4,6 @@ use gnostr_bins::run;
 use gnostr_bins::Config;
 use std::io::Result;
 use std::path::PathBuf;
-use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::{env, process};
 
