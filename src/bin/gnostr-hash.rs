@@ -19,7 +19,6 @@ fn main() {
                 std::process::exit(0);
             };
             if args.len() == 2 {
-                let mut s: String = String::new();
                 let res = hash::hash(&args[1]);
                 print!("{}", res.unwrap());
                 std::process::exit(0);
