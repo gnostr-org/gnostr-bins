@@ -24,9 +24,11 @@ fn get_epoch_millisecs() -> f64 {
         * 1000f64
     //.as_millis()
 }
+/// fn get_current_working_dir() -> std::io::Result\<PathBuf\>
 fn get_current_working_dir() -> std::io::Result<PathBuf> {
     env::current_dir()
 }
+/// fn strip_trailing_newline(input: &str) -> &str
 fn strip_trailing_newline(input: &str) -> &str {
     input
         .strip_suffix("\r\n")
@@ -35,21 +37,26 @@ fn strip_trailing_newline(input: &str) -> &str {
 }
 fn main() -> Result<()> {
     if cfg!(debug_assertions) {
-    let mut start = get_epoch_millisecs();
-    println!("{}", start);
-    let mut start_test = get_epoch_millisecs();
-    println!("{}", start_test);
-
-    start = get_epoch_secs();
-    println!("{}", start);
-    start_test = get_epoch_secs();
-    println!("{}", start_test);
-    match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(n) => println!("1970-01-01 00:00:00 UTC was {} milliseconds ago!", n.as_millis()),
-        Err(_) => panic!("SystemTime before UNIX EPOCH!"),
-    }
-    assert!(start_test != start);
+        let mut start = get_epoch_millisecs();
+        println!("{}", start);
+        let mut start_test = get_epoch_millisecs();
+        println!("{}", start_test);
+        start = get_epoch_secs();
+        println!("{}", start);
+        start_test = get_epoch_secs();
+        println!("{}", start_test);
+        match SystemTime::now().duration_since(SystemTime::UNIX_EPOCH) {
+            Ok(n) => println!(
+                "1970-01-01 00:00:00 UTC was {} milliseconds ago!",
+                n.as_millis()
+            ),
+            Err(_) => panic!("SystemTime before UNIX EPOCH!"),
+        }
+        assert!(start_test != start);
+        let cwd = get_current_working_dir();
+        println!("cwd={:#?}", cwd);
     } else {
+        //
     }
 
     let args: Vec<String> = env::args().collect();
@@ -62,25 +69,18 @@ fn main() -> Result<()> {
         process::exit(0);
     }
     if cfg!(debug_assertions) {
+        let version = env!("CARGO_PKG_VERSION");
+        let name = env!("CARGO_PKG_NAME");
+        let crate_name = env!("CARGO_CRATE_NAME");
+        let author = env!("CARGO_PKG_AUTHORS");
+        println!("Program Name: {}", name);
+        println!("Crate Name: {}", crate_name.replace("_", "-"));
+        println!("Crate Name: {}", crate_name);
+        println!("Program Version: {}", version);
+        println!("Program Autor: {}", author);
     } else {
+        //
     }
-
-    let epoch = get_epoch_millisecs();
-    let system_time = SystemTime::now();
-
-    let version = env!("CARGO_PKG_VERSION");
-    let name = env!("CARGO_PKG_NAME");
-    let crate_name = env!("CARGO_CRATE_NAME");
-    let author = env!("CARGO_PKG_AUTHORS");
-
-    println!("Program Name: {}", name);
-    println!("Crate Name: {}", crate_name.replace("_", "-"));
-    println!("Crate Name: {}", crate_name);
-    println!("Program Version: {}", version);
-    println!("Program Autor: {}", author);
-
-    let cwd = get_current_working_dir();
-    println!("cwd={:#?}", cwd);
 
     if args[1] == "-h" || args[1] == "--help" {
         let crate_name = env!("CARGO_CRATE_NAME");
@@ -104,10 +104,8 @@ fn main() -> Result<()> {
         println!("Application error: {e}");
         process::exit(1);
     }
-
-
     Ok(())
-} //end main
+}
 
 #[cfg(test)]
 mod tests {
