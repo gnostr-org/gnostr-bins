@@ -97,8 +97,14 @@ fn main() -> Result<()> {
         process::exit(0);
     });
 
-    println!("{}", strip_trailing_newline(&config.query));
-    println!("{}", config.query);
+    if cfg!(debug_assertions) {
+        println!("from args:\n{}", config.query);
+        println!(
+            "from strip_trailing_newline:{}\n",
+            strip_trailing_newline(&config.query)
+        );
+        println!("to gnostr_bins::run(config):{}\n", config.query);
+    }
 
     if let Err(e) = gnostr_bins::run(config) {
         println!("Application error: {e}");
