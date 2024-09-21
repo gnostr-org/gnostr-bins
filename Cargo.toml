@@ -2,7 +2,7 @@
 name = "gnostr-bins"
 version = "0.0.57"
 license = "Apache-2.0"
-rust-version = "1.79"
+rust-version = "1.74"
 edition = "2021"
 readme = "README.md"
 homepage = "https://github.com/gnostr-org/gnostr-bins"
