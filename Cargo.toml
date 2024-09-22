@@ -2,7 +2,7 @@
 name = "gnostr-bins"
 version = "0.0.58"
 license = "Apache-2.0"
-rust-version = "1.74"
+rust-version = "1.75"
 edition = "2021"
 readme = "README.md"
 homepage = "https://github.com/gnostr-org/gnostr-bins"
@@ -41,7 +41,7 @@ sha2 = "0.10.8"
 sha256 = "1.2.2"
 structopt = "0.3.26"
 time = "0.1.42"
-tungstenite = { version = "0.18", features = [ "rustls-tls-webpki-roots" ] }
+tungstenite = { version = "^0.20", features = [ "rustls-tls-webpki-roots" ] }
 url = { version = "2.5.0", features = ["serde"] }
 zeroize = "1.5"
 
