@@ -6,12 +6,13 @@ authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "Command line tools for nostr"
 repository = "https://github.com/gnostr-org/gnostr-bins"
 documentation = "https://github.com/gnostr-org/gnostr-bins"
-keywords = [ "gnostr", "nostr" ]
+keywords = ["gnostr", "nostr"]
 license = "MIT"
 
 [dependencies]
 base64 = "0.21"
 bech32 = "0.11"
+cfg-if = { git = "https://github.com/rust-lang/cfg-if.git", version = "1.0.0" }
 colorful = "0.2"
 dirs = "5.0"
 futures-util = "0.3"
