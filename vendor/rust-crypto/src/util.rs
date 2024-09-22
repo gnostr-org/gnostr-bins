@@ -7,34 +7,27 @@
 use libc;
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-extern {
+extern "C" {
     pub fn rust_crypto_util_supports_aesni() -> u32;
 }
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub fn supports_aesni() -> bool {
-    unsafe {
-        rust_crypto_util_supports_aesni() != 0
-    }
+    unsafe { rust_crypto_util_supports_aesni() != 0 }
 }
 
-extern {
+extern "C" {
     pub fn rust_crypto_util_fixed_time_eq_asm(
-            lhsp: *const u8,
-            rhsp: *const u8,
-            count: libc::size_t) -> u32;
-    pub fn rust_crypto_util_secure_memset(
-            dst: *mut u8,
-            val: libc::uint8_t,
-            count: libc::size_t);
+        lhsp: *const u8,
+        rhsp: *const u8,
+        count: libc::size_t,
+    ) -> u32;
+    pub fn rust_crypto_util_secure_memset(dst: *mut u8, val: libc::uint8_t, count: libc::size_t);
 }
 
 pub fn secure_memset(dst: &mut [u8], val: u8) {
     unsafe {
-        rust_crypto_util_secure_memset(
-            dst.as_mut_ptr(),
-            val,
-            dst.len() as libc::size_t);
+        rust_crypto_util_secure_memset(dst.as_mut_ptr(), val, dst.len() as libc::size_t);
     }
 }
 

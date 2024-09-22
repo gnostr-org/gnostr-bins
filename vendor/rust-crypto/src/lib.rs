@@ -6,10 +6,10 @@
 
 #![cfg_attr(feature = "with-bench", feature(test))]
 
+extern crate libc;
 extern crate rand;
 extern crate rustc_serialize as serialize;
 extern crate time;
-extern crate libc;
 
 #[cfg(all(test, feature = "with-bench"))]
 extern crate test;
@@ -34,8 +34,8 @@ pub mod ed25519;
 pub mod fortuna;
 pub mod ghash;
 pub mod hc128;
-pub mod hmac;
 pub mod hkdf;
+pub mod hmac;
 pub mod mac;
 pub mod md5;
 pub mod pbkdf2;
