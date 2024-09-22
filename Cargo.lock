@@ -899,7 +899,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.62-rc8"
+version = "0.0.62-rc9"
 dependencies = [
  "ascii",
  "base64 0.21.7",
@@ -913,6 +913,7 @@ dependencies = [
  "futures-util",
  "getopts",
  "git2",
+ "gnostr-types",
  "hex",
  "http 1.1.0",
  "k256",
@@ -920,7 +921,6 @@ dependencies = [
  "lightning",
  "log",
  "nip44",
- "nostr-types",
  "num-bigint",
  "rand",
  "rand_core",
@@ -934,6 +934,43 @@ dependencies = [
  "tokio",
  "tokio-tungstenite",
  "tungstenite",
+ "zeroize",
+]
+
+[[package]]
+name = "gnostr-types"
+version = "0.8.0-unstable"
+dependencies = [
+ "aes",
+ "base64 0.22.1",
+ "bech32 0.11.0",
+ "cbc",
+ "chacha20",
+ "chacha20poly1305",
+ "core-net",
+ "derive_more",
+ "hex",
+ "hmac",
+ "lazy_static",
+ "lightning",
+ "lightning-invoice",
+ "linkify",
+ "nip44",
+ "num_cpus",
+ "pbkdf2",
+ "rand",
+ "rand_core",
+ "regex",
+ "scrypt",
+ "secp256k1 0.29.0",
+ "serde",
+ "serde_json",
+ "sha2",
+ "speedy",
+ "thiserror",
+ "thread-priority",
+ "unicode-normalization",
+ "url",
  "zeroize",
 ]
 
@@ -1439,43 +1476,6 @@ dependencies = [
  "serde_json",
  "sha2",
  "thiserror",
-]
-
-[[package]]
-name = "nostr-types"
-version = "0.8.0-unstable"
-dependencies = [
- "aes",
- "base64 0.22.1",
- "bech32 0.11.0",
- "cbc",
- "chacha20",
- "chacha20poly1305",
- "core-net",
- "derive_more",
- "hex",
- "hmac",
- "lazy_static",
- "lightning",
- "lightning-invoice",
- "linkify",
- "nip44",
- "num_cpus",
- "pbkdf2",
- "rand",
- "rand_core",
- "regex",
- "scrypt",
- "secp256k1 0.29.0",
- "serde",
- "serde_json",
- "sha2",
- "speedy",
- "thiserror",
- "thread-priority",
- "unicode-normalization",
- "url",
- "zeroize",
 ]
 
 [[package]]
