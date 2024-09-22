@@ -3,6 +3,7 @@ vendor/aead/
 vendor/aho-corasick/
 vendor/arrayvec/
 vendor/autocfg/
+vendor/base64/Cargo.lock
 vendor/bitcoin-private/
 vendor/bitcoin_hashes-0.12.0/
 vendor/bitcoin_hashes/
@@ -18,6 +19,7 @@ vendor/constant_time_eq/
 vendor/convert_case/
 vendor/cpufeatures/
 vendor/crypto-common/
+vendor/derive_more/Cargo.lock
 vendor/digest/
 vendor/form_urlencoded/
 vendor/generic-array/
@@ -30,12 +32,13 @@ vendor/hkdf/
 vendor/idna/
 vendor/inout/
 vendor/itoa/
+vendor/lazy_static/Cargo.lock
 vendor/libc/
 vendor/log/
 vendor/memchr/
 vendor/memoffset/
 vendor/musig2/
-vendor/nip44/
+vendor/num_cpus/Cargo.lock
 vendor/opaque-debug/
 vendor/password-hash/
 vendor/pbkdf2/
