@@ -1,4 +1,4 @@
-use nostr_probe::{Command, Probe};
+use gnostr_bins::{Command, Probe};
 use nostr_types::{Event, RelayMessage};
 use std::env;
 use std::io::Read;

@@ -1,5 +1,5 @@
 use base64::Engine;
-use nostr_probe::{Command, Probe};
+use gnostr_bins::{Command, Probe};
 use nostr_types::{
     ContentEncryptionAlgorithm, Event, EventKind, Filter, KeySigner, PreEvent, PrivateKey,
     PublicKey, RelayMessage, RelayUrl, Signer, SubscriptionId, Tag, Unixtime,

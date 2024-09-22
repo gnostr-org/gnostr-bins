@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => panic!("Usage: fetch_nip11 <RelayURL>"),
     };
 
-    let (host, uri) = nostr_probe::url_to_host_and_uri(&relay_url);
+    let (host, uri) = gnostr_bins::url_to_host_and_uri(&relay_url);
 
     let scheme = match uri.scheme() {
         Some(refscheme) => match refscheme.as_str() {

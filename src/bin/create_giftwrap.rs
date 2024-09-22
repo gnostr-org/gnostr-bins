@@ -25,7 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Update creation stamp
     pre_event.created_at = Unixtime::now();
 
-    let signer = nostr_probe::load_signer()?;
+    let signer = gnostr_bins::load_signer()?;
 
     let event = signer.giftwrap(pre_event, pubkey)?;
 

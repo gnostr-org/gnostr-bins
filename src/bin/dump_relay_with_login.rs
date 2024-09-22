@@ -1,4 +1,4 @@
-use nostr_probe::{Command, Probe};
+use gnostr_bins::{Command, Probe};
 use nostr_types::{Filter, RelayMessage};
 use std::env;
 
@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => panic!("Usage: dump_relay_with_login <RelayURL>"),
     };
 
-    let signer = nostr_probe::load_signer()?;
+    let signer = gnostr_bins::load_signer()?;
 
     let (to_probe, from_main) = tokio::sync::mpsc::channel::<Command>(100);
     let (to_main, from_probe) = tokio::sync::mpsc::channel::<RelayMessage>(100);
@@ -25,7 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let filter = Filter::new();
 
-    nostr_probe::req(&relay_url, signer, filter, to_probe, from_probe).await?;
+    gnostr_bins::req(&relay_url, signer, filter, to_probe, from_probe).await?;
 
     Ok(join_handle.await?)
 }

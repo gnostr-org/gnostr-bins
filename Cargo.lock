@@ -555,6 +555,33 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "40ecd4077b5ae9fd2e9e169b102c6c330d0605168eb0e8bf79952b256dbefffd"
 
 [[package]]
+name = "gnostr-bins"
+version = "0.2.0"
+dependencies = [
+ "base64 0.21.7",
+ "bech32 0.11.0",
+ "colorful",
+ "dirs",
+ "futures-util",
+ "hex",
+ "http 1.1.0",
+ "k256",
+ "lazy_static",
+ "nostr-types",
+ "rand",
+ "rand_core",
+ "reqwest",
+ "rpassword",
+ "secp256k1 0.29.0",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tokio-tungstenite",
+ "tungstenite",
+ "zeroize",
+]
+
+[[package]]
 name = "group"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -911,33 +938,6 @@ dependencies = [
  "secp256k1 0.29.0",
  "sha2",
  "thiserror",
-]
-
-[[package]]
-name = "nostr-probe"
-version = "0.2.0"
-dependencies = [
- "base64 0.21.7",
- "bech32 0.11.0",
- "colorful",
- "dirs",
- "futures-util",
- "hex",
- "http 1.1.0",
- "k256",
- "lazy_static",
- "nostr-types",
- "rand",
- "rand_core",
- "reqwest",
- "rpassword",
- "secp256k1 0.29.0",
- "serde",
- "serde_json",
- "tokio",
- "tokio-tungstenite",
- "tungstenite",
- "zeroize",
 ]
 
 [[package]]

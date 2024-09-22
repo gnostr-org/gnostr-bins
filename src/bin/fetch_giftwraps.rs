@@ -1,4 +1,4 @@
-use nostr_probe::{Command, Probe};
+use gnostr_bins::{Command, Probe};
 use nostr_types::{EventKind, Filter, PublicKeyHex, RelayMessage, Signer};
 use std::env;
 
@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         None => panic!("Usage: fetch_by_kind_and_author <RelayURL>"),
     };
 
-    let signer = nostr_probe::load_signer()?;
+    let signer = gnostr_bins::load_signer()?;
     let pubkey = signer.public_key();
 
     let (to_probe, from_main) = tokio::sync::mpsc::channel::<Command>(100);
@@ -31,7 +31,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
     filter.add_tag_value('p', key.as_str().to_owned());
 
-    nostr_probe::req(&relay_url, signer, filter, to_probe, from_probe).await?;
+    gnostr_bins::req(&relay_url, signer, filter, to_probe, from_probe).await?;
 
     Ok(join_handle.await?)
 }

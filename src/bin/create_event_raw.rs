@@ -19,7 +19,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let kind = format!("{}", obj.get("kind").unwrap());
     let tags: Vec<Tag> = serde_json::from_value(obj.get("tags").unwrap().clone())?;
     let content = obj.get("content").unwrap().as_str().unwrap().to_owned();
-    let signer = nostr_probe::load_signer()?;
+    let signer = gnostr_bins::load_signer()?;
 
     // Event pubkey must match our signer
 
