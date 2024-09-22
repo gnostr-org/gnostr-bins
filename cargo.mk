@@ -45,7 +45,7 @@ cargo-bench:### 	cargo-bench
 cargo-t: cargo-test
 cargo-test:### 	cargo-test
 	@. $(HOME)/.cargo/env
-	#@cargo test -- --nocapture
+	@cargo test --no-default-features -- --nocapture
 	@cargo test -- --nocapture
 cargo-report:### 	cargo-report
 	@. $(HOME)/.cargo/env
