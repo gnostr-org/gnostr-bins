@@ -9,7 +9,7 @@ export RUSTUP
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 help:## 	help
 	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /'
-rustup-install:rustup-install-stable## 	rustup-install
+rustup-install: rustup-install-stable## 	rustup-install
 rustup-install-stable:## 	rustup-install-stable
 ##rustup-install-stable:
 ##	install rustup && rustup default stable
@@ -25,8 +25,8 @@ cargo-b:## 	cargo-b
 ##cargo build
 	[ -x "$(shell command -v $(RUSTUP))" ] || $(MAKE) rustup-install-stable
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) build
-cargo-br:cargo-build-release
-cargo-build-release:cargo-b-release
+cargo-br: cargo-build-release
+cargo-build-release: cargo-b-release
 cargo-b-release:## 	cargo-b-release
 ##cargo build --releae --path .
 	[ -x "$(shell command -v $(RUSTUP))" ] || $(MAKE) rustup-install-stable
@@ -35,7 +35,7 @@ cargo-c:## 	cargo-c
 ##cargo check
 	[ -x "$(shell command -v $(RUSTC))" ] || $(MAKE) rustup-install-stable
 	[ -x "$(shell command -v $(CARGO))" ] && $(CARGO) c
-cargo-d:cargo-doc## 	cargo-d
+cargo-d: cargo-doc## 	cargo-d
 cargo-doc:## 	cargo-doc
 ##cargo doc --no-deps --document-private-items --all-features
 	[ -x "$(shell command -v $(RUSTC))" ] || $(MAKE) rustup-install-stable
@@ -48,12 +48,12 @@ cargo-i:## 	cargo-i
 cargo-publish:## cargo publish
 	cargo publish --registry crates-io
 
-t:cargo-i
+t: cargo-i
 	gnostr-get-relays --nip 111 -s ## args.len() == 4
 	gnostr-get-relays --nip 111    ## args.len() == 3
 	gnostr-get-relays --nip        ## args.len() == 2
 	gnostr-get-relays              ## args.len() == 1
-all-tests:test-loop-back test-gnostr-get-relays## 	all-tests
+all-tests: test-loop-back test-gnostr-get-relays## 	all-tests
 test-loop-back:##  test-loop-back
 	gnostr-fetch-metadata wss://relay.damus.io a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd | gnostr-post-event
 test-gnostr-get-relays:## 	test-gnostr-get-relays
