@@ -4,6 +4,7 @@ use futures_util::stream::FusedStream;
 use futures_util::{SinkExt, StreamExt};
 use http::Uri;
 use lazy_static::lazy_static;
+//use nostr_types::RelayMessageV5;
 use nostr_types::{
     ClientMessage, EncryptedPrivateKey, Event, EventKind, Filter, Id, KeySigner, PreEvent,
     RelayMessage, Signer, SubscriptionId, Tag, Unixtime, Why,
@@ -182,6 +183,8 @@ impl Probe {
                             reason
                         );
                     }
+                    //use nostr_types::RelayMessageV5;
+                    //RelayMessageV5::Notify(_) => todo!(),
                 }
             }
             Message::Binary(_) => {
@@ -350,6 +353,8 @@ pub async fn req(
                     }
                 }
             }
+            //use nostr_types::RelayMessageV5;
+            //RelayMessageV5::Notify(_) => todo!(),
         }
     }
 

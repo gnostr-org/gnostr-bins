@@ -66,6 +66,7 @@ fn main() {
             NostrBech32::Relay(url) => {
                 println!("Relay URL: {}", url.0);
             }
+            //NostrBech32::CryptSec(_) => todo!(),
         }
     } else if let Ok(mut key) = PrivateKey::try_from_bech32_string(bech32) {
         println!("Private Key: {}", key.as_hex_string());
