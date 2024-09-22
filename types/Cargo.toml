@@ -25,9 +25,9 @@ derive_more = "0.99"
 hex = "0.4"
 hmac = "0.12"
 lazy_static = "1.4"
-lightning-invoice = { git = "https://github.com/mikedilger/rust-lightning", rev = "7a62cb4106d449bc4d1724920b73918d501bb3a9" }
+lightning-invoice = { path = "../lightning/lightning-invoice", version = "0.31.0-beta" }
 linkify = "0.10"
-nip44 = { git = "https://github.com/mikedilger/nip44", rev="a55cd3850634d7e462c107a37a068f829670d6a2" }
+nip44 = { path = "../nip44", version = "0.1.0" }
 num_cpus = "1"
 pbkdf2 = { version = "0.12", default-features = false, features = [ "hmac", "sha2", "std" ] }
 rand_core = "0.6"
@@ -44,6 +44,7 @@ thread-priority = "1.0"
 unicode-normalization = "0.1"
 url = "2.5"
 zeroize = "1.7"
+lightning = { version = "0.0.123-beta", path = "../lightning/lightning" }
 
 ## # Force scrypt to build with release-like speed even in dev mode
 ## [profile.dev.package.scrypt]

@@ -899,7 +899,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.62-rc6"
+version = "0.0.62-rc7"
 dependencies = [
  "ascii",
  "base64 0.21.7",
@@ -917,9 +917,9 @@ dependencies = [
  "http 1.1.0",
  "k256",
  "lazy_static",
- "lightning 0.0.123-beta",
+ "lightning",
  "log",
- "nip44 0.1.0",
+ "nip44",
  "nostr-types",
  "num-bigint",
  "rand",
@@ -1337,24 +1337,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "lightning"
-version = "0.0.123-beta"
-source = "git+https://github.com/mikedilger/rust-lightning?rev=7a62cb4106d449bc4d1724920b73918d501bb3a9#7a62cb4106d449bc4d1724920b73918d501bb3a9"
-dependencies = [
- "bitcoin",
- "hex-conservative 0.1.2",
- "musig2",
-]
-
-[[package]]
 name = "lightning-invoice"
 version = "0.31.0-beta"
-source = "git+https://github.com/mikedilger/rust-lightning?rev=7a62cb4106d449bc4d1724920b73918d501bb3a9#7a62cb4106d449bc4d1724920b73918d501bb3a9"
 dependencies = [
  "bech32 0.9.1",
  "bitcoin",
- "lightning 0.0.123-beta (git+https://github.com/mikedilger/rust-lightning?rev=7a62cb4106d449bc4d1724920b73918d501bb3a9)",
+ "hashbrown 0.13.2",
+ "hex-conservative 0.1.2",
+ "lightning",
  "secp256k1 0.27.0",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -1449,22 +1442,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nip44"
-version = "0.1.0"
-source = "git+https://github.com/mikedilger/nip44?rev=a55cd3850634d7e462c107a37a068f829670d6a2#a55cd3850634d7e462c107a37a068f829670d6a2"
-dependencies = [
- "base64 0.22.1",
- "chacha20",
- "constant_time_eq",
- "hkdf",
- "hmac",
- "rand_core",
- "secp256k1 0.29.0",
- "sha2",
- "thiserror",
-]
-
-[[package]]
 name = "nostr-types"
 version = "0.8.0-unstable"
 dependencies = [
@@ -1479,9 +1456,10 @@ dependencies = [
  "hex",
  "hmac",
  "lazy_static",
+ "lightning",
  "lightning-invoice",
  "linkify",
- "nip44 0.1.0 (git+https://github.com/mikedilger/nip44?rev=a55cd3850634d7e462c107a37a068f829670d6a2)",
+ "nip44",
  "num_cpus",
  "pbkdf2",
  "rand",
