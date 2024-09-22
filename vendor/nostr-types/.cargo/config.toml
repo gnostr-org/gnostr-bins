@@ -1,0 +1,20 @@
+#[source.crates-io]
+#replace-with = "vendored-sources"
+
+[source."git+https://github.com/arik-so/rust-musig2?rev=cff11e3"]
+git = "https://github.com/arik-so/rust-musig2"
+rev = "cff11e3"
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/mikedilger/nip44?rev=a55cd3850634d7e462c107a37a068f829670d6a2"]
+git = "https://github.com/mikedilger/nip44"
+rev = "a55cd3850634d7e462c107a37a068f829670d6a2"
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/mikedilger/rust-lightning?rev=7a62cb4106d449bc4d1724920b73918d501bb3a9"]
+git = "https://github.com/mikedilger/rust-lightning"
+rev = "7a62cb4106d449bc4d1724920b73918d501bb3a9"
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
