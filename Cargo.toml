@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.59"
+version = "0.0.60"
 license = "Apache-2.0"
 rust-version = "1.75"
 edition = "2021"
@@ -40,7 +40,6 @@ serde_json = "1.0"
 sha2 = "0.10.8"
 sha256 = "1.2.2"
 structopt = "0.3.26"
-time = "0.1.42"
 tungstenite = { version = "^0.20", features = [ "rustls-tls-webpki-roots" ] }
 url = { version = "2.5.0", features = ["serde"] }
 zeroize = "1.5"

@@ -24,13 +24,6 @@ pub use blockheight::blockheight;
 pub mod hash;
 pub use hash::hash;
 
-pub mod gitminer;
-pub use gitminer::*;
-pub mod repo;
-pub use repo::*;
-pub mod worker;
-pub use worker::*;
-
 /// REF: <https://api.nostr.watch>
 /// nostr.watch API Docs
 ///
