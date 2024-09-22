@@ -1,0 +1,16 @@
+/target/
+c-bindings-gen/target/
+lightning-c-bindings/target/
+lightning-c-bindings/a.out
+/hfuzz_target/
+/net-tokio/target/
+**/*.rs.bk
+Cargo.lock
+.idea
+lightning/target
+lightning/net_graph-*.bin
+lightning-rapid-gossip-sync/res/full_graph.lngossip
+lightning-custom-message/target
+lightning-transaction-sync/target
+no-std-check/target
+msrv-no-dev-deps-check/target

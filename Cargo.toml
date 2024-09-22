@@ -26,6 +26,7 @@ hex = "0.4"
 http = "1.1"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 lazy_static = "1.4"
+lightning = { version = "0.0.123-beta", path = "src/lightning/lightning" }
 log = "0.4.22"
 nip44 = { version = "0.1.0", path = "src/nip44" }
 nostr-types = { version = "0.8.0-unstable", path = "src/types" }
