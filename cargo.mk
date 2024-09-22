@@ -9,7 +9,7 @@ cargo-release-all:### 	cargo-release-all
 	for t in ffi/*/Cargo.toml;  do echo $$t; cargo b -r -vv --manifest-path $$t; done
 cargo-clean-all:### 	cargo-clean-all - clean release artifacts
 ## 	cargo-clean-all 	recursively cargo clean --release
-	for t in */Cargo.toml;  do echo $$t; cargo clean --release -vv --manifest-path $$t; done
+	for t in **Cargo.toml;  do echo $$t; cargo clean --release -vv --manifest-path $$t; done
 
 cargo-install-bins:### 	cargo-install-bins
 ## 	cargo-install-all 	recursively cargo install -vv $(SUBMODULES)

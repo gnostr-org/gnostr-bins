@@ -1,11 +1,12 @@
 // TEMPORARILY
 #![allow(clippy::uninlined_format_args)]
 
-use nostr_types::RelayInformationDocument;
-use reqwest::blocking::Client;
-use reqwest::redirect::Policy;
 use std::env;
 use std::time::Duration;
+
+use gnostr_types::RelayInformationDocument;
+use reqwest::blocking::Client;
+use reqwest::redirect::Policy;
 
 fn main() {
     let mut args = env::args();
