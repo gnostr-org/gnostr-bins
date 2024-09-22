@@ -1,11 +1,12 @@
 [package]
-name = "nostr-probe"
+name = "gnostr-bins"
 version = "0.2.0"
 edition = "2021"
-authors = ["Mike Dilger <mike@mikedilger.com>"]
+authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "Command line tools for nostr"
-repository = "https://github.com/mikedilger/nostr-probe"
-keywords = [ "nostr" ]
+repository = "https://github.com/gnostr-org/gnostr-bins"
+documentation = "https://github.com/gnostr-org/gnostr-bins"
+keywords = [ "gnostr", "nostr" ]
 license = "MIT"
 
 [dependencies]
