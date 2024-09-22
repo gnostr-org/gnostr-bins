@@ -899,7 +899,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.62-rc10"
+version = "0.0.62-rc12"
 dependencies = [
  "ascii",
  "base64 0.21.7",
@@ -939,7 +939,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-types"
-version = "0.8.0-unstable"
+version = "0.8.0"
 dependencies = [
  "aes",
  "base64 0.22.1",
