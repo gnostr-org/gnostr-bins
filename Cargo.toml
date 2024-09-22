@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.62-rc3"
+version = "0.0.62-rc4"
 edition = "2021"
 authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "Command line tools for nostr"
