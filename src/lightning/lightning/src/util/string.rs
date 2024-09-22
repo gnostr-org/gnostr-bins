@@ -9,10 +9,10 @@
 
 //! Utilities for strings.
 
-use core::fmt;
 use crate::io::{self, Read};
 use crate::ln::msgs;
-use crate::util::ser::{Writeable, Writer, Readable};
+use crate::util::ser::{Readable, Writeable, Writer};
+use core::fmt;
 
 #[allow(unused_imports)]
 use crate::prelude::*;

@@ -81,37 +81,35 @@
 //! [`ChannelManager`]: crate::ln::channelmanager::ChannelManager
 //! [`ChannelManager::create_refund_builder`]: crate::ln::channelmanager::ChannelManager::create_refund_builder
 
-use bitcoin::blockdata::constants::ChainHash;
-use bitcoin::network::constants::Network;
-use bitcoin::secp256k1::{PublicKey, Secp256k1, self};
-use core::hash::{Hash, Hasher};
-use core::ops::Deref;
-use core::str::FromStr;
-use core::time::Duration;
-use crate::sign::EntropySource;
-use crate::io;
 use crate::blinded_path::BlindedPath;
-use crate::ln::PaymentHash;
+use crate::io;
 use crate::ln::channelmanager::PaymentId;
 use crate::ln::features::InvoiceRequestFeatures;
-use crate::ln::inbound_payment::{ExpandedKey, IV_LEN, Nonce};
+use crate::ln::inbound_payment::{ExpandedKey, Nonce, IV_LEN};
 use crate::ln::msgs::{DecodeError, MAX_VALUE_MSAT};
+use crate::ln::PaymentHash;
 use crate::offers::invoice::BlindedPayInfo;
 use crate::offers::invoice_request::{InvoiceRequestTlvStream, InvoiceRequestTlvStreamRef};
 use crate::offers::offer::{OfferTlvStream, OfferTlvStreamRef};
 use crate::offers::parse::{Bech32Encode, Bolt12ParseError, Bolt12SemanticError, ParsedMessage};
 use crate::offers::payer::{PayerContents, PayerTlvStream, PayerTlvStreamRef};
-use crate::offers::signer::{Metadata, MetadataMaterial, self};
+use crate::offers::signer::{self, Metadata, MetadataMaterial};
+use crate::sign::EntropySource;
 use crate::util::ser::{SeekReadable, WithoutLength, Writeable, Writer};
 use crate::util::string::PrintableString;
+use bitcoin::blockdata::constants::ChainHash;
+use bitcoin::network::constants::Network;
+use bitcoin::secp256k1::{self, PublicKey, Secp256k1};
+use core::hash::{Hash, Hasher};
+use core::ops::Deref;
+use core::str::FromStr;
+use core::time::Duration;
 
 #[cfg(not(c_bindings))]
-use {
-	crate::offers::invoice::{DerivedSigningPubkey, ExplicitSigningPubkey, InvoiceBuilder},
-};
+use crate::offers::invoice::{DerivedSigningPubkey, ExplicitSigningPubkey, InvoiceBuilder};
 #[cfg(c_bindings)]
-use {
-	crate::offers::invoice::{InvoiceWithDerivedSigningPubkeyBuilder, InvoiceWithExplicitSigningPubkeyBuilder},
+use crate::offers::invoice::{
+	InvoiceWithDerivedSigningPubkeyBuilder, InvoiceWithExplicitSigningPubkeyBuilder,
 };
 
 #[allow(unused_imports)]
@@ -145,38 +143,48 @@ pub struct RefundMaybeWithDerivedMetadataBuilder<'a> {
 	secp_ctx: Option<&'a Secp256k1<secp256k1::All>>,
 }
 
-macro_rules! refund_explicit_metadata_builder_methods { () => {
-	/// Creates a new builder for a refund using the [`Refund::payer_id`] for the public node id to
-	/// send to if no [`Refund::paths`] are set. Otherwise, it may be a transient pubkey.
-	///
-	/// Additionally, sets the required [`Refund::description`], [`Refund::payer_metadata`], and
-	/// [`Refund::amount_msats`].
-	///
-	/// # Note
-	///
-	/// If constructing a [`Refund`] for use with a [`ChannelManager`], use
-	/// [`ChannelManager::create_refund_builder`] instead of [`RefundBuilder::new`].
-	///
-	/// [`ChannelManager`]: crate::ln::channelmanager::ChannelManager
-	/// [`ChannelManager::create_refund_builder`]: crate::ln::channelmanager::ChannelManager::create_refund_builder
-	pub fn new(
-		description: String, metadata: Vec<u8>, payer_id: PublicKey, amount_msats: u64
-	) -> Result<Self, Bolt12SemanticError> {
-		if amount_msats > MAX_VALUE_MSAT {
-			return Err(Bolt12SemanticError::InvalidAmount);
-		}
+macro_rules! refund_explicit_metadata_builder_methods {
+	() => {
+		/// Creates a new builder for a refund using the [`Refund::payer_id`] for the public node id to
+		/// send to if no [`Refund::paths`] are set. Otherwise, it may be a transient pubkey.
+		///
+		/// Additionally, sets the required [`Refund::description`], [`Refund::payer_metadata`], and
+		/// [`Refund::amount_msats`].
+		///
+		/// # Note
+		///
+		/// If constructing a [`Refund`] for use with a [`ChannelManager`], use
+		/// [`ChannelManager::create_refund_builder`] instead of [`RefundBuilder::new`].
+		///
+		/// [`ChannelManager`]: crate::ln::channelmanager::ChannelManager
+		/// [`ChannelManager::create_refund_builder`]: crate::ln::channelmanager::ChannelManager::create_refund_builder
+		pub fn new(
+			description: String, metadata: Vec<u8>, payer_id: PublicKey, amount_msats: u64,
+		) -> Result<Self, Bolt12SemanticError> {
+			if amount_msats > MAX_VALUE_MSAT {
+				return Err(Bolt12SemanticError::InvalidAmount);
+			}
 
-		let metadata = Metadata::Bytes(metadata);
-		Ok(Self {
-			refund: RefundContents {
-				payer: PayerContents(metadata), description, absolute_expiry: None, issuer: None,
-				paths: None, chain: None, amount_msats, features: InvoiceRequestFeatures::empty(),
-				quantity: None, payer_id, payer_note: None,
-			},
-			secp_ctx: None,
-		})
-	}
-} }
+			let metadata = Metadata::Bytes(metadata);
+			Ok(Self {
+				refund: RefundContents {
+					payer: PayerContents(metadata),
+					description,
+					absolute_expiry: None,
+					issuer: None,
+					paths: None,
+					chain: None,
+					amount_msats,
+					features: InvoiceRequestFeatures::empty(),
+					quantity: None,
+					payer_id,
+					payer_note: None,
+				},
+				secp_ctx: None,
+			})
+		}
+	};
+}
 
 macro_rules! refund_builder_methods { (
 	$self: ident, $self_type: ty, $return_type: ty, $return_value: expr, $secp_context: ty $(, $self_mut: tt)?
@@ -366,8 +374,7 @@ impl<'a> RefundMaybeWithDerivedMetadataBuilder<'a> {
 }
 
 #[cfg(c_bindings)]
-impl<'a> From<RefundBuilder<'a, secp256k1::All>>
-for RefundMaybeWithDerivedMetadataBuilder<'a> {
+impl<'a> From<RefundBuilder<'a, secp256k1::All>> for RefundMaybeWithDerivedMetadataBuilder<'a> {
 	fn from(builder: RefundBuilder<'a, secp256k1::All>) -> Self {
 		let RefundBuilder { refund, secp_ctx } = builder;
 
@@ -376,8 +383,7 @@ for RefundMaybeWithDerivedMetadataBuilder<'a> {
 }
 
 #[cfg(c_bindings)]
-impl<'a> From<RefundMaybeWithDerivedMetadataBuilder<'a>>
-for RefundBuilder<'a, secp256k1::All> {
+impl<'a> From<RefundMaybeWithDerivedMetadataBuilder<'a>> for RefundBuilder<'a, secp256k1::All> {
 	fn from(builder: RefundMaybeWithDerivedMetadataBuilder<'a>) -> Self {
 		let RefundMaybeWithDerivedMetadataBuilder { refund, secp_ctx } = builder;
 
@@ -722,9 +728,7 @@ impl RefundContents {
 	}
 
 	pub(super) fn as_tlv_stream(&self) -> RefundTlvStreamRef {
-		let payer = PayerTlvStreamRef {
-			metadata: self.payer.0.as_bytes(),
-		};
+		let payer = PayerTlvStreamRef { metadata: self.payer.0.as_bytes() };
 
 		let offer = OfferTlvStreamRef {
 			chains: None,
@@ -741,8 +745,11 @@ impl RefundContents {
 		};
 
 		let features = {
-			if self.features == InvoiceRequestFeatures::empty() { None }
-			else { Some(&self.features) }
+			if self.features == InvoiceRequestFeatures::empty() {
+				None
+			} else {
+				Some(&self.features)
+			}
 		};
 
 		let invoice_request = InvoiceRequestTlvStreamRef {
@@ -772,11 +779,8 @@ impl Writeable for RefundContents {
 
 type RefundTlvStream = (PayerTlvStream, OfferTlvStream, InvoiceRequestTlvStream);
 
-type RefundTlvStreamRef<'a> = (
-	PayerTlvStreamRef<'a>,
-	OfferTlvStreamRef<'a>,
-	InvoiceRequestTlvStreamRef<'a>,
-);
+type RefundTlvStreamRef<'a> =
+	(PayerTlvStreamRef<'a>, OfferTlvStreamRef<'a>, InvoiceRequestTlvStreamRef<'a>);
 
 impl SeekReadable for RefundTlvStream {
 	fn read<R: io::Read + io::Seek>(r: &mut R) -> Result<Self, DecodeError> {
@@ -819,8 +823,17 @@ impl TryFrom<RefundTlvStream> for RefundContents {
 		let (
 			PayerTlvStream { metadata: payer_metadata },
 			OfferTlvStream {
-				chains, metadata, currency, amount: offer_amount, description,
-				features: offer_features, absolute_expiry, paths, issuer, quantity_max, node_id,
+				chains,
+				metadata,
+				currency,
+				amount: offer_amount,
+				description,
+				features: offer_features,
+				absolute_expiry,
+				paths,
+				issuer,
+				quantity_max,
+				node_id,
 			},
 			InvoiceRequestTlvStream { chain, amount, features, quantity, payer_id, payer_note },
 		) = tlv_stream;
@@ -877,8 +890,17 @@ impl TryFrom<RefundTlvStream> for RefundContents {
 		};
 
 		Ok(RefundContents {
-			payer, description, absolute_expiry, issuer, paths, chain, amount_msats, features,
-			quantity, payer_id, payer_note,
+			payer,
+			description,
+			absolute_expiry,
+			issuer,
+			paths,
+			chain,
+			amount_msats,
+			features,
+			quantity,
+			payer_id,
+			payer_note,
 		})
 	}
 }
@@ -891,15 +913,11 @@ impl core::fmt::Display for Refund {
 
 #[cfg(test)]
 mod tests {
-	use super::{Refund, RefundTlvStreamRef};
 	#[cfg(not(c_bindings))]
-	use {
-		super::RefundBuilder,
-	};
+	use super::RefundBuilder;
 	#[cfg(c_bindings)]
-	use {
-		super::RefundMaybeWithDerivedMetadataBuilder as RefundBuilder,
-	};
+	use super::RefundMaybeWithDerivedMetadataBuilder as RefundBuilder;
+	use super::{Refund, RefundTlvStreamRef};
 
 	use bitcoin::blockdata::constants::ChainHash;
 	use bitcoin::network::constants::Network;
@@ -908,7 +926,6 @@ mod tests {
 	use core::time::Duration;
 
 	use crate::blinded_path::{BlindedHop, BlindedPath, IntroductionNode};
-	use crate::sign::KeyMaterial;
 	use crate::ln::channelmanager::PaymentId;
 	use crate::ln::features::{InvoiceRequestFeatures, OfferFeatures};
 	use crate::ln::inbound_payment::ExpandedKey;
@@ -918,9 +935,10 @@ mod tests {
 	use crate::offers::parse::{Bolt12ParseError, Bolt12SemanticError};
 	use crate::offers::payer::PayerTlvStreamRef;
 	use crate::offers::test_utils::*;
+	use crate::prelude::*;
+	use crate::sign::KeyMaterial;
 	use crate::util::ser::{BigSize, Writeable};
 	use crate::util::string::PrintableString;
-	use crate::prelude::*;
 
 	trait ToBytes {
 		fn to_bytes(&self) -> Vec<u8>;
@@ -936,8 +954,10 @@ mod tests {
 
 	#[test]
 	fn builds_refund_with_defaults() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 
 		let mut buffer = Vec::new();
 		refund.write(&mut buffer).unwrap();
@@ -1006,18 +1026,28 @@ mod tests {
 		let secp_ctx = Secp256k1::new();
 		let payment_id = PaymentId([1; 32]);
 
-		let refund = RefundBuilder
-			::deriving_payer_id(desc, node_id, &expanded_key, &entropy, &secp_ctx, 1000, payment_id)
-			.unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::deriving_payer_id(
+			desc,
+			node_id,
+			&expanded_key,
+			&entropy,
+			&secp_ctx,
+			1000,
+			payment_id,
+		)
+		.unwrap()
+		.build()
+		.unwrap();
 		assert_eq!(refund.payer_id(), node_id);
 
 		// Fails verification with altered fields
 		let invoice = refund
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		match invoice.verify(&expanded_key, &secp_ctx) {
 			Ok(payment_id) => assert_eq!(payment_id, PaymentId([1; 32])),
 			Err(()) => panic!("verification failed"),
@@ -1029,11 +1059,14 @@ mod tests {
 		let mut encoded_refund = Vec::new();
 		tlv_stream.write(&mut encoded_refund).unwrap();
 
-		let invoice = Refund::try_from(encoded_refund).unwrap()
+		let invoice = Refund::try_from(encoded_refund)
+			.unwrap()
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		assert!(invoice.verify(&expanded_key, &secp_ctx).is_err());
 
 		// Fails verification with altered metadata
@@ -1044,11 +1077,14 @@ mod tests {
 		let mut encoded_refund = Vec::new();
 		tlv_stream.write(&mut encoded_refund).unwrap();
 
-		let invoice = Refund::try_from(encoded_refund).unwrap()
+		let invoice = Refund::try_from(encoded_refund)
+			.unwrap()
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		assert!(invoice.verify(&expanded_key, &secp_ctx).is_err());
 	}
 
@@ -1070,18 +1106,28 @@ mod tests {
 			],
 		};
 
-		let refund = RefundBuilder
-			::deriving_payer_id(desc, node_id, &expanded_key, &entropy, &secp_ctx, 1000, payment_id)
-			.unwrap()
-			.path(blinded_path)
-			.build().unwrap();
+		let refund = RefundBuilder::deriving_payer_id(
+			desc,
+			node_id,
+			&expanded_key,
+			&entropy,
+			&secp_ctx,
+			1000,
+			payment_id,
+		)
+		.unwrap()
+		.path(blinded_path)
+		.build()
+		.unwrap();
 		assert_ne!(refund.payer_id(), node_id);
 
 		let invoice = refund
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		match invoice.verify(&expanded_key, &secp_ctx) {
 			Ok(payment_id) => assert_eq!(payment_id, PaymentId([1; 32])),
 			Err(()) => panic!("verification failed"),
@@ -1094,11 +1140,14 @@ mod tests {
 		let mut encoded_refund = Vec::new();
 		tlv_stream.write(&mut encoded_refund).unwrap();
 
-		let invoice = Refund::try_from(encoded_refund).unwrap()
+		let invoice = Refund::try_from(encoded_refund)
+			.unwrap()
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		assert!(invoice.verify(&expanded_key, &secp_ctx).is_err());
 
 		// Fails verification with altered payer_id
@@ -1109,11 +1158,14 @@ mod tests {
 		let mut encoded_refund = Vec::new();
 		tlv_stream.write(&mut encoded_refund).unwrap();
 
-		let invoice = Refund::try_from(encoded_refund).unwrap()
+		let invoice = Refund::try_from(encoded_refund)
+			.unwrap()
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 			.unwrap()
-			.build().unwrap()
-			.sign(recipient_sign).unwrap();
+			.build()
+			.unwrap()
+			.sign(recipient_sign)
+			.unwrap();
 		assert!(invoice.verify(&expanded_key, &secp_ctx).is_err());
 	}
 
@@ -1123,7 +1175,8 @@ mod tests {
 		let past_expiry = Duration::from_secs(0);
 		let now = future_expiry - Duration::from_secs(1_000);
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.absolute_expiry(future_expiry)
 			.build()
 			.unwrap();
@@ -1134,7 +1187,8 @@ mod tests {
 		assert_eq!(refund.absolute_expiry(), Some(future_expiry));
 		assert_eq!(tlv_stream.absolute_expiry, Some(future_expiry.as_secs()));
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.absolute_expiry(future_expiry)
 			.absolute_expiry(past_expiry)
 			.build()
@@ -1168,7 +1222,8 @@ mod tests {
 			},
 		];
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.path(paths[0].clone())
 			.path(paths[1].clone())
 			.build()
@@ -1183,7 +1238,8 @@ mod tests {
 
 	#[test]
 	fn builds_refund_with_issuer() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.issuer("bar".into())
 			.build()
 			.unwrap();
@@ -1191,7 +1247,8 @@ mod tests {
 		assert_eq!(refund.issuer(), Some(PrintableString("bar")));
 		assert_eq!(tlv_stream.issuer, Some(&String::from("bar")));
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.issuer("bar".into())
 			.issuer("baz".into())
 			.build()
@@ -1206,24 +1263,30 @@ mod tests {
 		let mainnet = ChainHash::using_genesis_block(Network::Bitcoin);
 		let testnet = ChainHash::using_genesis_block(Network::Testnet);
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.chain(Network::Bitcoin)
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.chain(), mainnet);
 		assert_eq!(tlv_stream.chain, None);
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.chain(Network::Testnet)
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.chain(), testnet);
 		assert_eq!(tlv_stream.chain, Some(&testnet));
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.chain(Network::Regtest)
 			.chain(Network::Testnet)
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.chain(), testnet);
 		assert_eq!(tlv_stream.chain, Some(&testnet));
@@ -1231,17 +1294,21 @@ mod tests {
 
 	#[test]
 	fn builds_refund_with_quantity() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.quantity(10)
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.quantity(), Some(10));
 		assert_eq!(tlv_stream.quantity, Some(10));
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.quantity(10)
 			.quantity(1)
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.quantity(), Some(1));
 		assert_eq!(tlv_stream.quantity, Some(1));
@@ -1249,17 +1316,21 @@ mod tests {
 
 	#[test]
 	fn builds_refund_with_payer_note() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.payer_note("bar".into())
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.payer_note(), Some(PrintableString("bar")));
 		assert_eq!(tlv_stream.payer_note, Some(&String::from("bar")));
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.payer_note("bar".into())
 			.payer_note("baz".into())
-			.build().unwrap();
+			.build()
+			.unwrap();
 		let (_, _, tlv_stream) = refund.as_tlv_stream();
 		assert_eq!(refund.payer_note(), Some(PrintableString("baz")));
 		assert_eq!(tlv_stream.payer_note, Some(&String::from("baz")));
@@ -1267,9 +1338,11 @@ mod tests {
 
 	#[test]
 	fn fails_responding_with_unknown_required_features() {
-		match RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		match RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.features_unchecked(InvoiceRequestFeatures::unknown())
-			.build().unwrap()
+			.build()
+			.unwrap()
 			.respond_with_no_std(payment_paths(), payment_hash(), recipient_pubkey(), now())
 		{
 			Ok(_) => panic!("expected error"),
@@ -1279,8 +1352,10 @@ mod tests {
 
 	#[test]
 	fn parses_refund_with_metadata() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 		if let Err(e) = refund.to_string().parse::<Refund>() {
 			panic!("error parsing refund: {:?}", e);
 		}
@@ -1291,15 +1366,20 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingPayerMetadata));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingPayerMetadata)
+				);
 			},
 		}
 	}
 
 	#[test]
 	fn parses_refund_with_description() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 		if let Err(e) = refund.to_string().parse::<Refund>() {
 			panic!("error parsing refund: {:?}", e);
 		}
@@ -1310,15 +1390,20 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingDescription));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingDescription)
+				);
 			},
 		}
 	}
 
 	#[test]
 	fn parses_refund_with_amount() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 		if let Err(e) = refund.to_string().parse::<Refund>() {
 			panic!("error parsing refund: {:?}", e);
 		}
@@ -1329,7 +1414,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingAmount));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingAmount)
+				);
 			},
 		}
 
@@ -1339,15 +1427,20 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::InvalidAmount));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::InvalidAmount)
+				);
 			},
 		}
 	}
 
 	#[test]
 	fn parses_refund_with_payer_id() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 		if let Err(e) = refund.to_string().parse::<Refund>() {
 			panic!("error parsing refund: {:?}", e);
 		}
@@ -1358,7 +1451,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingPayerId));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::MissingPayerId)
+				);
 			},
 		}
 	}
@@ -1385,7 +1481,8 @@ mod tests {
 			},
 		];
 
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
 			.absolute_expiry(past_expiry)
 			.issuer("bar".into())
 			.path(paths[0].clone())
@@ -1414,8 +1511,10 @@ mod tests {
 
 	#[test]
 	fn fails_parsing_refund_with_unexpected_fields() {
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], payer_pubkey(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 		if let Err(e) = refund.to_string().parse::<Refund>() {
 			panic!("error parsing refund: {:?}", e);
 		}
@@ -1427,7 +1526,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedMetadata));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedMetadata)
+				);
 			},
 		}
 
@@ -1438,7 +1540,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedChain));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedChain)
+				);
 			},
 		}
 
@@ -1449,7 +1554,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedAmount));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedAmount)
+				);
 			},
 		}
 
@@ -1460,7 +1568,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedFeatures));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedFeatures)
+				);
 			},
 		}
 
@@ -1470,7 +1581,10 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedQuantity));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedQuantity)
+				);
 			},
 		}
 
@@ -1481,7 +1595,12 @@ mod tests {
 		match Refund::try_from(tlv_stream.to_bytes()) {
 			Ok(_) => panic!("expected error"),
 			Err(e) => {
-				assert_eq!(e, Bolt12ParseError::InvalidSemantics(Bolt12SemanticError::UnexpectedSigningPubkey));
+				assert_eq!(
+					e,
+					Bolt12ParseError::InvalidSemantics(
+						Bolt12SemanticError::UnexpectedSigningPubkey
+					)
+				);
 			},
 		}
 	}
@@ -1490,8 +1609,10 @@ mod tests {
 	fn fails_parsing_refund_with_extra_tlv_records() {
 		let secp_ctx = Secp256k1::new();
 		let keys = KeyPair::from_secret_key(&secp_ctx, &SecretKey::from_slice(&[42; 32]).unwrap());
-		let refund = RefundBuilder::new("foo".into(), vec![1; 32], keys.public_key(), 1000).unwrap()
-			.build().unwrap();
+		let refund = RefundBuilder::new("foo".into(), vec![1; 32], keys.public_key(), 1000)
+			.unwrap()
+			.build()
+			.unwrap();
 
 		let mut encoded_refund = Vec::new();
 		refund.write(&mut encoded_refund).unwrap();

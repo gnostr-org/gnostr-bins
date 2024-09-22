@@ -9,18 +9,14 @@
 
 //! ChannelId definition.
 
+use super::channel_keys::RevocationBasepoint;
 use crate::chain::transaction::OutPoint;
 use crate::io;
 use crate::ln::msgs::DecodeError;
 use crate::sign::EntropySource;
 use crate::util::ser::{Readable, Writeable, Writer};
-use super::channel_keys::RevocationBasepoint;
 
-use bitcoin::hashes::{
-	Hash as _,
-	HashEngine as _,
-	sha256::Hash as Sha256,
-};
+use bitcoin::hashes::{sha256::Hash as Sha256, Hash as _, HashEngine as _};
 use core::fmt;
 use core::ops::Deref;
 
@@ -54,7 +50,9 @@ impl ChannelId {
 
 	/// Create a _temporary_ channel ID randomly, based on an entropy source.
 	pub fn temporary_from_entropy_source<ES: Deref>(entropy_source: &ES) -> Self
-	where ES::Target: EntropySource {
+	where
+		ES::Target: EntropySource,
+	{
 		Self(entropy_source.get_secure_random_bytes())
 	}
 
@@ -78,16 +76,11 @@ impl ChannelId {
 	/// revocation basepoint and hashing the result. The basepoints will be concatenated in increasing
 	/// sorted order.
 	pub fn v2_from_revocation_basepoints(
-		ours: &RevocationBasepoint,
-		theirs: &RevocationBasepoint,
+		ours: &RevocationBasepoint, theirs: &RevocationBasepoint,
 	) -> Self {
 		let ours = ours.0.serialize();
 		let theirs = theirs.0.serialize();
-		let (lesser, greater) = if ours < theirs {
-			(ours, theirs)
-		} else {
-			(theirs, ours)
-		};
+		let (lesser, greater) = if ours < theirs { (ours, theirs) } else { (theirs, ours) };
 		let mut engine = Sha256::engine();
 		engine.input(&lesser[..]);
 		engine.input(&greater[..]);
@@ -96,8 +89,13 @@ impl ChannelId {
 
 	/// Create temporary _v2_ channel ID by concatenating a zeroed out basepoint with the holder
 	/// revocation basepoint and hashing the result.
-	pub fn temporary_v2_from_revocation_basepoint(our_revocation_basepoint: &RevocationBasepoint) -> Self {
-		Self(Sha256::hash(&[[0u8; 33], our_revocation_basepoint.0.serialize()].concat()).to_byte_array())
+	pub fn temporary_v2_from_revocation_basepoint(
+		our_revocation_basepoint: &RevocationBasepoint,
+	) -> Self {
+		Self(
+			Sha256::hash(&[[0u8; 33], our_revocation_basepoint.0.serialize()].concat())
+				.to_byte_array(),
+		)
 	}
 }
 
@@ -122,26 +120,24 @@ impl fmt::Display for ChannelId {
 
 #[cfg(test)]
 mod tests {
-	use bitcoin::hashes::{
-		Hash as _,
-		HashEngine as _,
-		hex::FromHex as _,
-		sha256::Hash as Sha256,
-	};
+	use bitcoin::hashes::{hex::FromHex as _, sha256::Hash as Sha256, Hash as _, HashEngine as _};
 	use bitcoin::secp256k1::PublicKey;
 	use hex::DisplayHex;
 
-	use crate::ln::ChannelId;
+	use crate::io;
 	use crate::ln::channel_keys::RevocationBasepoint;
+	use crate::ln::ChannelId;
+	use crate::prelude::*;
 	use crate::util::ser::{Readable, Writeable};
 	use crate::util::test_utils;
-	use crate::prelude::*;
-	use crate::io;
 
 	#[test]
 	fn test_channel_id_v1_from_funding_txid() {
 		let channel_id = ChannelId::v1_from_funding_txid(&[2; 32], 1);
-		assert_eq!(channel_id.0.as_hex().to_string(), "0202020202020202020202020202020202020202020202020202020202020203");
+		assert_eq!(
+			channel_id.0.as_hex().to_string(),
+			"0202020202020202020202020202020202020202020202020202020202020203"
+		);
 	}
 
 	#[test]
@@ -176,14 +172,33 @@ mod tests {
 	#[test]
 	fn test_channel_id_display() {
 		let channel_id = ChannelId::v1_from_funding_txid(&[2; 32], 1);
-		assert_eq!(format!("{}", &channel_id), "0202020202020202020202020202020202020202020202020202020202020203");
+		assert_eq!(
+			format!("{}", &channel_id),
+			"0202020202020202020202020202020202020202020202020202020202020203"
+		);
 	}
 
 	#[test]
 	fn test_channel_id_v2_from_basepoints() {
 		// Ours greater than theirs
-		let ours = RevocationBasepoint(PublicKey::from_slice(&<Vec<u8>>::from_hex("0324653eac434488002cc06bbfb7f10fe18991e35f9fe4302dbea6d2353dc0ab1c").unwrap()[..]).unwrap());
-		let theirs = RevocationBasepoint(PublicKey::from_slice(&<Vec<u8>>::from_hex("02eec7245d6b7d2ccb30380bfbe2a3648cd7a942653f5aa340edcea1f283686619").unwrap()[..]).unwrap());
+		let ours = RevocationBasepoint(
+			PublicKey::from_slice(
+				&<Vec<u8>>::from_hex(
+					"0324653eac434488002cc06bbfb7f10fe18991e35f9fe4302dbea6d2353dc0ab1c",
+				)
+				.unwrap()[..],
+			)
+			.unwrap(),
+		);
+		let theirs = RevocationBasepoint(
+			PublicKey::from_slice(
+				&<Vec<u8>>::from_hex(
+					"02eec7245d6b7d2ccb30380bfbe2a3648cd7a942653f5aa340edcea1f283686619",
+				)
+				.unwrap()[..],
+			)
+			.unwrap(),
+		);
 
 		let mut engine = Sha256::engine();
 		engine.input(&theirs.0.serialize());
@@ -193,8 +208,24 @@ mod tests {
 		assert_eq!(ChannelId::v2_from_revocation_basepoints(&ours, &theirs), expected_id);
 
 		// Theirs greater than ours
-		let ours = RevocationBasepoint(PublicKey::from_slice(&<Vec<u8>>::from_hex("027f31ebc5462c1fdce1b737ecff52d37d75dea43ce11c74d25aa297165faa2007").unwrap()[..]).unwrap());
-		let theirs = RevocationBasepoint(PublicKey::from_slice(&<Vec<u8>>::from_hex("02eec7245d6b7d2ccb30380bfbe2a3648cd7a942653f5aa340edcea1f283686619").unwrap()[..]).unwrap());
+		let ours = RevocationBasepoint(
+			PublicKey::from_slice(
+				&<Vec<u8>>::from_hex(
+					"027f31ebc5462c1fdce1b737ecff52d37d75dea43ce11c74d25aa297165faa2007",
+				)
+				.unwrap()[..],
+			)
+			.unwrap(),
+		);
+		let theirs = RevocationBasepoint(
+			PublicKey::from_slice(
+				&<Vec<u8>>::from_hex(
+					"02eec7245d6b7d2ccb30380bfbe2a3648cd7a942653f5aa340edcea1f283686619",
+				)
+				.unwrap()[..],
+			)
+			.unwrap(),
+		);
 
 		let mut engine = Sha256::engine();
 		engine.input(&ours.0.serialize());

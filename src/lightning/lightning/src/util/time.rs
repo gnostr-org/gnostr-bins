@@ -12,7 +12,10 @@ use core::ops::Sub;
 use core::time::Duration;
 
 /// A measurement of time.
-pub trait Time: Copy + Sub<Duration, Output = Self> where Self: Sized {
+pub trait Time: Copy + Sub<Duration, Output = Self>
+where
+	Self: Sized,
+{
 	/// Returns an instance corresponding to the current moment.
 	fn now() -> Self;
 
@@ -54,7 +57,9 @@ const SHIFT: Duration = Duration::from_secs(10 * 365 * 24 * 60 * 60); // 10 year
 #[cfg(feature = "std")]
 impl Time for MonotonicTime {
 	fn now() -> Self {
-		let instant = std::time::Instant::now().checked_add(SHIFT).expect("Overflow on MonotonicTime instantiation");
+		let instant = std::time::Instant::now()
+			.checked_add(SHIFT)
+			.expect("Overflow on MonotonicTime instantiation");
 		Self(instant)
 	}
 
@@ -64,7 +69,11 @@ impl Time for MonotonicTime {
 		// clocks" that go backwards in practice (likely relatively ancient kernels/etc). Thus, we
 		// manually check for time going backwards here and return a duration of zero in that case.
 		let now = Self::now();
-		if now.0 > earlier.0 { now.0 - earlier.0 } else { Duration::from_secs(0) }
+		if now.0 > earlier.0 {
+			now.0 - earlier.0
+		} else {
+			Duration::from_secs(0)
+		}
 	}
 }
 
@@ -73,18 +82,21 @@ impl Sub<Duration> for MonotonicTime {
 	type Output = Self;
 
 	fn sub(self, other: Duration) -> Self {
-		let instant = self.0.checked_sub(other).expect("MonotonicTime is not supposed to go backward futher than 10 years");
+		let instant = self
+			.0
+			.checked_sub(other)
+			.expect("MonotonicTime is not supposed to go backward futher than 10 years");
 		Self(instant)
 	}
 }
 
 #[cfg(test)]
 pub mod tests {
-	use super::{Time, Eternity};
+	use super::{Eternity, Time};
 
-	use core::time::Duration;
-	use core::ops::Sub;
 	use core::cell::Cell;
+	use core::ops::Sub;
+	use core::time::Duration;
 
 	/// Time that can be advanced manually in tests.
 	#[derive(Clone, Copy, Debug, PartialEq, Eq)]

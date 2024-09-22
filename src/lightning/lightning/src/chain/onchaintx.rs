@@ -13,38 +13,47 @@
 //! building, tracking, bumping and notifications functions.
 
 use bitcoin::blockdata::locktime::absolute::LockTime;
-use bitcoin::blockdata::transaction::Transaction;
-use bitcoin::blockdata::transaction::OutPoint as BitcoinOutPoint;
 use bitcoin::blockdata::script::{Script, ScriptBuf};
-use bitcoin::hashes::{Hash, HashEngine};
+use bitcoin::blockdata::transaction::OutPoint as BitcoinOutPoint;
+use bitcoin::blockdata::transaction::Transaction;
+use bitcoin::hash_types::{BlockHash, Txid};
 use bitcoin::hashes::sha256::Hash as Sha256;
-use bitcoin::hash_types::{Txid, BlockHash};
-use bitcoin::secp256k1::{Secp256k1, ecdsa::Signature};
+use bitcoin::hashes::{Hash, HashEngine};
 use bitcoin::secp256k1;
+use bitcoin::secp256k1::{ecdsa::Signature, Secp256k1};
 
 use crate::chain::chaininterface::compute_feerate_sat_per_1000_weight;
-use crate::sign::{ChannelDerivationParameters, HTLCDescriptor, ChannelSigner, EntropySource, SignerProvider, ecdsa::WriteableEcdsaChannelSigner};
-use crate::ln::msgs::DecodeError;
-use crate::ln::PaymentPreimage;
-use crate::ln::chan_utils::{self, ChannelTransactionParameters, HTLCOutputInCommitment, HolderCommitmentTransaction};
-use crate::chain::ClaimId;
-use crate::chain::chaininterface::{ConfirmationTarget, FeeEstimator, BroadcasterInterface, LowerBoundedFeeEstimator};
+use crate::chain::chaininterface::{
+	BroadcasterInterface, ConfirmationTarget, FeeEstimator, LowerBoundedFeeEstimator,
+};
 use crate::chain::channelmonitor::{ANTI_REORG_DELAY, CLTV_SHARED_CLAIM_BUFFER};
 use crate::chain::package::{PackageSolvingData, PackageTemplate};
 use crate::chain::transaction::MaybeSignedTransaction;
+use crate::chain::ClaimId;
+use crate::ln::chan_utils::{
+	self, ChannelTransactionParameters, HTLCOutputInCommitment, HolderCommitmentTransaction,
+};
+use crate::ln::msgs::DecodeError;
+use crate::ln::PaymentPreimage;
+use crate::sign::{
+	ecdsa::WriteableEcdsaChannelSigner, ChannelDerivationParameters, ChannelSigner, EntropySource,
+	HTLCDescriptor, SignerProvider,
+};
 use crate::util::logger::Logger;
-use crate::util::ser::{Readable, ReadableArgs, MaybeReadable, UpgradableRequired, Writer, Writeable, VecWriter};
+use crate::util::ser::{
+	MaybeReadable, Readable, ReadableArgs, UpgradableRequired, VecWriter, Writeable, Writer,
+};
 
 use crate::io;
+use crate::ln::features::ChannelTypeFeatures;
 use crate::prelude::*;
 use alloc::collections::BTreeMap;
 use core::cmp;
-use core::ops::Deref;
 use core::mem::replace;
 use core::mem::swap;
-use crate::ln::features::ChannelTypeFeatures;
+use core::ops::Deref;
 
-const MAX_ALLOC_SIZE: usize = 64*1024;
+const MAX_ALLOC_SIZE: usize = 64 * 1024;
 
 /// An entry for an [`OnchainEvent`], stating the block height when the event was observed and the
 /// transaction causing it.
@@ -76,18 +85,14 @@ enum OnchainEvent {
 	/// as the request. This claim can either be ours or from the counterparty. Once the claiming
 	/// transaction has met [`ANTI_REORG_DELAY`] confirmations, we consider it final and remove the
 	/// pending request.
-	Claim {
-		claim_id: ClaimId,
-	},
+	Claim { claim_id: ClaimId },
 	/// The counterparty has claimed an outpoint from one of our pending requests through a
 	/// different transaction than ours. If our transaction was attempting to claim multiple
 	/// outputs, we need to drop the outpoint claimed by the counterparty and regenerate a new claim
 	/// transaction for ourselves. We keep tracking, separately, the outpoint claimed by the
 	/// counterparty up to [`ANTI_REORG_DELAY`] confirmations to ensure we attempt to re-claim it
 	/// if the counterparty's claim is reorged from the chain.
-	ContentiousOutpoint {
-		package: PackageTemplate,
-	}
+	ContentiousOutpoint { package: PackageTemplate },
 }
 
 impl Writeable for OnchainEventEntry {
@@ -114,7 +119,12 @@ impl MaybeReadable for OnchainEventEntry {
 			(2, height, required),
 			(4, event, upgradable_required),
 		});
-		Ok(Some(Self { txid, height, block_hash, event: _init_tlv_based_struct_field!(event, upgradable_required) }))
+		Ok(Some(Self {
+			txid,
+			height,
+			block_hash,
+			event: _init_tlv_based_struct_field!(event, upgradable_required),
+		}))
 	}
 }
 
@@ -133,12 +143,18 @@ impl Readable for Option<Vec<Option<(usize, Signature)>>> {
 			0u8 => Ok(None),
 			1u8 => {
 				let vlen: u64 = Readable::read(reader)?;
-				let mut ret = Vec::with_capacity(cmp::min(vlen as usize, MAX_ALLOC_SIZE / ::core::mem::size_of::<Option<(usize, Signature)>>()));
+				let mut ret = Vec::with_capacity(cmp::min(
+					vlen as usize,
+					MAX_ALLOC_SIZE / ::core::mem::size_of::<Option<(usize, Signature)>>(),
+				));
 				for _ in 0..vlen {
 					ret.push(match Readable::read(reader)? {
 						0u8 => None,
-						1u8 => Some((<u64 as Readable>::read(reader)? as usize, Readable::read(reader)?)),
-						_ => return Err(DecodeError::InvalidValue)
+						1u8 => Some((
+							<u64 as Readable>::read(reader)? as usize,
+							Readable::read(reader)?,
+						)),
+						_ => return Err(DecodeError::InvalidValue),
 					});
 				}
 				Ok(Some(ret))
@@ -284,16 +300,17 @@ pub struct OnchainTxHandler<ChannelSigner: WriteableEcdsaChannelSigner> {
 impl<ChannelSigner: WriteableEcdsaChannelSigner> PartialEq for OnchainTxHandler<ChannelSigner> {
 	fn eq(&self, other: &Self) -> bool {
 		// `signer`, `secp_ctx`, and `pending_claim_events` are excluded on purpose.
-		self.channel_value_satoshis == other.channel_value_satoshis &&
-			self.channel_keys_id == other.channel_keys_id &&
-			self.destination_script == other.destination_script &&
-			self.holder_commitment == other.holder_commitment &&
-			self.prev_holder_commitment == other.prev_holder_commitment &&
-			self.channel_transaction_parameters == other.channel_transaction_parameters &&
-			self.pending_claim_requests == other.pending_claim_requests &&
-			self.claimable_outpoints == other.claimable_outpoints &&
-			self.locktimed_packages == other.locktimed_packages &&
-			self.onchain_events_awaiting_threshold_conf == other.onchain_events_awaiting_threshold_conf
+		self.channel_value_satoshis == other.channel_value_satoshis
+			&& self.channel_keys_id == other.channel_keys_id
+			&& self.destination_script == other.destination_script
+			&& self.holder_commitment == other.holder_commitment
+			&& self.prev_holder_commitment == other.prev_holder_commitment
+			&& self.channel_transaction_parameters == other.channel_transaction_parameters
+			&& self.pending_claim_requests == other.pending_claim_requests
+			&& self.claimable_outpoints == other.claimable_outpoints
+			&& self.locktimed_packages == other.locktimed_packages
+			&& self.onchain_events_awaiting_threshold_conf
+				== other.onchain_events_awaiting_threshold_conf
 	}
 }
 
@@ -341,7 +358,8 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 			}
 		}
 
-		writer.write_all(&(self.onchain_events_awaiting_threshold_conf.len() as u64).to_be_bytes())?;
+		writer
+			.write_all(&(self.onchain_events_awaiting_threshold_conf.len() as u64).to_be_bytes())?;
 		for ref entry in self.onchain_events_awaiting_threshold_conf.iter() {
 			entry.write(writer)?;
 		}
@@ -351,8 +369,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	}
 }
 
-impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP, u64, [u8; 32])> for OnchainTxHandler<SP::EcdsaSigner> {
-	fn read<R: io::Read>(reader: &mut R, args: (&'a ES, &'b SP, u64, [u8; 32])) -> Result<Self, DecodeError> {
+impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP, u64, [u8; 32])>
+	for OnchainTxHandler<SP::EcdsaSigner>
+{
+	fn read<R: io::Read>(
+		reader: &mut R, args: (&'a ES, &'b SP, u64, [u8; 32]),
+	) -> Result<Self, DecodeError> {
 		let entropy_source = args.0;
 		let signer_provider = args.1;
 		let channel_value_satoshis = args.2;
@@ -365,7 +387,8 @@ impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP
 		let holder_commitment = Readable::read(reader)?;
 		let _holder_htlc_sigs: Option<Vec<Option<(usize, Signature)>>> = Readable::read(reader)?;
 		let prev_holder_commitment = Readable::read(reader)?;
-		let _prev_holder_htlc_sigs: Option<Vec<Option<(usize, Signature)>>> = Readable::read(reader)?;
+		let _prev_holder_htlc_sigs: Option<Vec<Option<(usize, Signature)>>> =
+			Readable::read(reader)?;
 
 		let channel_parameters = Readable::read(reader)?;
 
@@ -382,17 +405,24 @@ impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP
 			bytes_read += bytes_to_read;
 		}
 
-		let mut signer = signer_provider.derive_channel_signer(channel_value_satoshis, channel_keys_id);
+		let mut signer =
+			signer_provider.derive_channel_signer(channel_value_satoshis, channel_keys_id);
 		signer.provide_channel_parameters(&channel_parameters);
 
 		let pending_claim_requests_len: u64 = Readable::read(reader)?;
-		let mut pending_claim_requests = hash_map_with_capacity(cmp::min(pending_claim_requests_len as usize, MAX_ALLOC_SIZE / 128));
+		let mut pending_claim_requests = hash_map_with_capacity(cmp::min(
+			pending_claim_requests_len as usize,
+			MAX_ALLOC_SIZE / 128,
+		));
 		for _ in 0..pending_claim_requests_len {
 			pending_claim_requests.insert(Readable::read(reader)?, Readable::read(reader)?);
 		}
 
 		let claimable_outpoints_len: u64 = Readable::read(reader)?;
-		let mut claimable_outpoints = hash_map_with_capacity(cmp::min(pending_claim_requests_len as usize, MAX_ALLOC_SIZE / 128));
+		let mut claimable_outpoints = hash_map_with_capacity(cmp::min(
+			pending_claim_requests_len as usize,
+			MAX_ALLOC_SIZE / 128,
+		));
 		for _ in 0..claimable_outpoints_len {
 			let outpoint = Readable::read(reader)?;
 			let ancestor_claim_txid = Readable::read(reader)?;
@@ -405,7 +435,10 @@ impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP
 		for _ in 0..locktimed_packages_len {
 			let locktime = Readable::read(reader)?;
 			let packages_len: u64 = Readable::read(reader)?;
-			let mut packages = Vec::with_capacity(cmp::min(packages_len as usize, MAX_ALLOC_SIZE / core::mem::size_of::<PackageTemplate>()));
+			let mut packages = Vec::with_capacity(cmp::min(
+				packages_len as usize,
+				MAX_ALLOC_SIZE / core::mem::size_of::<PackageTemplate>(),
+			));
 			for _ in 0..packages_len {
 				packages.push(Readable::read(reader)?);
 			}
@@ -413,7 +446,8 @@ impl<'a, 'b, ES: EntropySource, SP: SignerProvider> ReadableArgs<(&'a ES, &'b SP
 		}
 
 		let waiting_threshold_conf_len: u64 = Readable::read(reader)?;
-		let mut onchain_events_awaiting_threshold_conf = Vec::with_capacity(cmp::min(waiting_threshold_conf_len as usize, MAX_ALLOC_SIZE / 128));
+		let mut onchain_events_awaiting_threshold_conf =
+			Vec::with_capacity(cmp::min(waiting_threshold_conf_len as usize, MAX_ALLOC_SIZE / 128));
 		for _ in 0..waiting_threshold_conf_len {
 			if let Some(val) = MaybeReadable::read(reader)? {
 				onchain_events_awaiting_threshold_conf.push(val);
@@ -447,7 +481,7 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	pub(crate) fn new(
 		channel_value_satoshis: u64, channel_keys_id: [u8; 32], destination_script: ScriptBuf,
 		signer: ChannelSigner, channel_parameters: ChannelTransactionParameters,
-		holder_commitment: HolderCommitmentTransaction, secp_ctx: Secp256k1<secp256k1::All>
+		holder_commitment: HolderCommitmentTransaction, secp_ctx: Secp256k1<secp256k1::All>,
 	) -> Self {
 		OnchainTxHandler {
 			channel_value_satoshis,
@@ -488,15 +522,18 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	pub(super) fn rebroadcast_pending_claims<B: Deref, F: Deref, L: Logger>(
 		&mut self, current_height: u32, feerate_strategy: FeerateStrategy, broadcaster: &B,
 		fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L,
-	)
-	where
+	) where
 		B::Target: BroadcasterInterface,
 		F::Target: FeeEstimator,
 	{
 		let mut bump_requests = Vec::with_capacity(self.pending_claim_requests.len());
 		for (claim_id, request) in self.pending_claim_requests.iter() {
 			let inputs = request.outpoints();
-			log_info!(logger, "Triggering rebroadcast/fee-bump for request with inputs {:?}", inputs);
+			log_info!(
+				logger,
+				"Triggering rebroadcast/fee-bump for request with inputs {:?}",
+				inputs
+			);
 			bump_requests.push((*claim_id, request.clone()));
 		}
 		for (claim_id, request) in bump_requests {
@@ -510,26 +547,43 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 					match claim {
 						OnchainClaim::Tx(tx) => {
 							if tx.is_fully_signed() {
-								let log_start = if bumped_feerate { "Broadcasting RBF-bumped" } else { "Rebroadcasting" };
+								let log_start = if bumped_feerate {
+									"Broadcasting RBF-bumped"
+								} else {
+									"Rebroadcasting"
+								};
 								log_info!(logger, "{} onchain {}", log_start, log_tx!(tx.0));
 								broadcaster.broadcast_transactions(&[&tx.0]);
 							} else {
-								log_info!(logger, "Waiting for signature of unsigned onchain transaction {}", tx.0.txid());
+								log_info!(
+									logger,
+									"Waiting for signature of unsigned onchain transaction {}",
+									tx.0.txid()
+								);
 							}
 						},
 						OnchainClaim::Event(event) => {
-							let log_start = if bumped_feerate { "Yielding fee-bumped" } else { "Replaying" };
-							log_info!(logger, "{} onchain event to spend inputs {:?}", log_start,
-								request.outpoints());
-							#[cfg(debug_assertions)] {
+							let log_start =
+								if bumped_feerate { "Yielding fee-bumped" } else { "Replaying" };
+							log_info!(
+								logger,
+								"{} onchain event to spend inputs {:?}",
+								log_start,
+								request.outpoints()
+							);
+							#[cfg(debug_assertions)]
+							{
 								debug_assert!(request.requires_external_funding());
-								let num_existing = self.pending_claim_events.iter()
-									.filter(|entry| entry.0 == claim_id).count();
+								let num_existing = self
+									.pending_claim_events
+									.iter()
+									.filter(|entry| entry.0 == claim_id)
+									.count();
 								assert!(num_existing == 0 || num_existing == 1);
 							}
 							self.pending_claim_events.retain(|event| event.0 != claim_id);
 							self.pending_claim_events.push((claim_id, event));
-						}
+						},
 					}
 				});
 		}
@@ -544,10 +598,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	/// Panics if there are signing errors, because signing operations in reaction to on-chain
 	/// events are not expected to fail, and if they do, we may lose funds.
 	fn generate_claim<F: Deref, L: Logger>(
-		&mut self, cur_height: u32, cached_request: &PackageTemplate, feerate_strategy: &FeerateStrategy,
-		fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L,
+		&mut self, cur_height: u32, cached_request: &PackageTemplate,
+		feerate_strategy: &FeerateStrategy, fee_estimator: &LowerBoundedFeeEstimator<F>,
+		logger: &L,
 	) -> Option<(u32, u64, OnchainClaim)>
-	where F::Target: FeeEstimator,
+	where
+		F::Target: FeeEstimator,
 	{
 		let request_outpoints = cached_request.outpoints();
 		if request_outpoints.is_empty() {
@@ -566,14 +622,14 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 			if let Some((request_claim_id, _)) = self.claimable_outpoints.get(*outpoint) {
 				// We check for outpoint spends within claims individually rather than as a set
 				// since requests can have outpoints split off.
-				if !self.onchain_events_awaiting_threshold_conf.iter()
-					.any(|event_entry| if let OnchainEvent::Claim { claim_id } = event_entry.event {
+				if !self.onchain_events_awaiting_threshold_conf.iter().any(|event_entry| {
+					if let OnchainEvent::Claim { claim_id } = event_entry.event {
 						*request_claim_id == claim_id
 					} else {
 						// The onchain event is not a claim, keep seeking until we find one.
 						false
-					})
-				{
+					}
+				}) {
 					// Either we had no `OnchainEvent::Claim`, or we did but none matched the
 					// outpoint's registered spend.
 					all_inputs_have_confirmed_spend = false;
@@ -593,16 +649,22 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		if cached_request.is_malleable() {
 			if cached_request.requires_external_funding() {
 				let target_feerate_sat_per_1000_weight = cached_request.compute_package_feerate(
-					fee_estimator, ConfirmationTarget::OnChainSweep, feerate_strategy,
+					fee_estimator,
+					ConfirmationTarget::OnChainSweep,
+					feerate_strategy,
 				);
-				if let Some(htlcs) = cached_request.construct_malleable_package_with_external_funding(self) {
+				if let Some(htlcs) =
+					cached_request.construct_malleable_package_with_external_funding(self)
+				{
 					return Some((
 						new_timer,
 						target_feerate_sat_per_1000_weight as u64,
 						OnchainClaim::Event(ClaimEvent::BumpHTLC {
 							target_feerate_sat_per_1000_weight,
 							htlcs,
-							tx_lock_time: LockTime::from_consensus(cached_request.package_locktime(cur_height)),
+							tx_lock_time: LockTime::from_consensus(
+								cached_request.package_locktime(cur_height),
+							),
 						}),
 					));
 				} else {
@@ -612,14 +674,23 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 
 			let predicted_weight = cached_request.package_weight(&self.destination_script);
 			if let Some((output_value, new_feerate)) = cached_request.compute_package_output(
-				predicted_weight, self.destination_script.dust_value().to_sat(),
-				feerate_strategy, fee_estimator, logger,
+				predicted_weight,
+				self.destination_script.dust_value().to_sat(),
+				feerate_strategy,
+				fee_estimator,
+				logger,
 			) {
 				assert!(new_feerate != 0);
 
-				let transaction = cached_request.maybe_finalize_malleable_package(
-					cur_height, self, output_value, self.destination_script.clone(), logger
-				).unwrap();
+				let transaction = cached_request
+					.maybe_finalize_malleable_package(
+						cur_height,
+						self,
+						output_value,
+						self.destination_script.clone(),
+						logger,
+					)
+					.unwrap();
 				assert!(predicted_weight >= transaction.0.weight().to_wu());
 				return Some((new_timer, new_feerate, OnchainClaim::Tx(transaction)));
 			}
@@ -686,16 +757,19 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 					debug_assert!(false, "Only HolderFundingOutput inputs should be untractable and require external funding");
 					None
 				},
-			})
+			});
 		}
 		None
 	}
 
 	pub fn abandon_claim(&mut self, outpoint: &BitcoinOutPoint) {
-		let claim_id = self.claimable_outpoints.get(outpoint).map(|(claim_id, _)| *claim_id)
-			.or_else(|| {
-				self.pending_claim_requests.iter()
-					.find(|(_, claim)| claim.outpoints().iter().any(|claim_outpoint| *claim_outpoint == outpoint))
+		let claim_id =
+			self.claimable_outpoints.get(outpoint).map(|(claim_id, _)| *claim_id).or_else(|| {
+				self.pending_claim_requests
+					.iter()
+					.find(|(_, claim)| {
+						claim.outpoints().iter().any(|claim_outpoint| *claim_outpoint == outpoint)
+					})
 					.map(|(claim_id, _)| *claim_id)
 			});
 		if let Some(claim_id) = claim_id {
@@ -705,8 +779,11 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 				}
 			}
 		} else {
-			self.locktimed_packages.values_mut().for_each(|claims|
-				claims.retain(|claim| !claim.outpoints().iter().any(|claim_outpoint| *claim_outpoint == outpoint)));
+			self.locktimed_packages.values_mut().for_each(|claims| {
+				claims.retain(|claim| {
+					!claim.outpoints().iter().any(|claim_outpoint| *claim_outpoint == outpoint)
+				})
+			});
 		}
 	}
 
@@ -721,13 +798,18 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	/// `cur_height`, however it must never be higher than `cur_height`.
 	pub(super) fn update_claims_view_from_requests<B: Deref, F: Deref, L: Logger>(
 		&mut self, requests: Vec<PackageTemplate>, conf_height: u32, cur_height: u32,
-		broadcaster: &B, fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L
+		broadcaster: &B, fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L,
 	) where
 		B::Target: BroadcasterInterface,
 		F::Target: FeeEstimator,
 	{
 		if !requests.is_empty() {
-			log_debug!(logger, "Updating claims view at height {} with {} claim requests", cur_height, requests.len());
+			log_debug!(
+				logger,
+				"Updating claims view at height {} with {} claim requests",
+				cur_height,
+				requests.len()
+			);
 		}
 
 		let mut preprocessed_requests = Vec::with_capacity(requests.len());
@@ -740,7 +822,11 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 			if let Some(_) = self.claimable_outpoints.get(req.outpoints()[0]) {
 				log_info!(logger, "Ignoring second claim for outpoint {}:{}, already registered its claiming request", req.outpoints()[0].txid, req.outpoints()[0].vout);
 			} else {
-				let timelocked_equivalent_package = self.locktimed_packages.iter().map(|v| v.1.iter()).flatten()
+				let timelocked_equivalent_package = self
+					.locktimed_packages
+					.iter()
+					.map(|v| v.1.iter())
+					.flatten()
 					.find(|locked_package| locked_package.outpoints() == req.outpoints());
 				if let Some(package) = timelocked_equivalent_package {
 					log_info!(logger, "Ignoring second claim for outpoint {}:{}, we already have one which we're waiting on a timelock at {} for.",
@@ -758,7 +844,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 					continue;
 				}
 
-				log_trace!(logger, "Test if outpoint can be aggregated with expiration {} against {}", req.timelock(), cur_height + CLTV_SHARED_CLAIM_BUFFER);
+				log_trace!(
+					logger,
+					"Test if outpoint can be aggregated with expiration {} against {}",
+					req.timelock(),
+					cur_height + CLTV_SHARED_CLAIM_BUFFER
+				);
 				if req.timelock() <= cur_height + CLTV_SHARED_CLAIM_BUFFER || !req.aggregable() {
 					// Don't aggregate if outpoint package timelock is soon or marked as non-aggregable
 					preprocessed_requests.push(req);
@@ -776,13 +867,19 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		// Claim everything up to and including `cur_height`
 		let remaining_locked_packages = self.locktimed_packages.split_off(&(cur_height + 1));
 		if !self.locktimed_packages.is_empty() {
-			log_debug!(logger,
+			log_debug!(
+				logger,
 				"Updating claims view at height {} with {} locked packages available for claim",
 				cur_height,
-				self.locktimed_packages.len());
+				self.locktimed_packages.len()
+			);
 		}
 		for (pop_height, mut entry) in self.locktimed_packages.iter_mut() {
-			log_trace!(logger, "Restoring delayed claim of package(s) at their timelock at {}.", pop_height);
+			log_trace!(
+				logger,
+				"Restoring delayed claim of package(s) at their timelock at {}.",
+				pop_height
+			);
 			preprocessed_requests.append(&mut entry);
 		}
 		self.locktimed_packages = remaining_locked_packages;
@@ -791,7 +888,11 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		// height timer expiration (i.e in how many blocks we're going to take action).
 		for mut req in preprocessed_requests {
 			if let Some((new_timer, new_feerate, claim)) = self.generate_claim(
-				cur_height, &req, &FeerateStrategy::ForceBump, &*fee_estimator, &*logger,
+				cur_height,
+				&req,
+				&FeerateStrategy::ForceBump,
+				&*fee_estimator,
+				&*logger,
 			) {
 				req.set_timer(new_timer);
 				req.set_feerate(new_feerate);
@@ -804,17 +905,27 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 							log_info!(logger, "Broadcasting onchain {}", log_tx!(tx.0));
 							broadcaster.broadcast_transactions(&[&tx.0]);
 						} else {
-							log_info!(logger, "Waiting for signature of unsigned onchain transaction {}", tx.0.txid());
+							log_info!(
+								logger,
+								"Waiting for signature of unsigned onchain transaction {}",
+								tx.0.txid()
+							);
 						}
 						ClaimId(tx.0.txid().to_byte_array())
 					},
 					OnchainClaim::Event(claim_event) => {
-						log_info!(logger, "Yielding onchain event to spend inputs {:?}", req.outpoints());
+						log_info!(
+							logger,
+							"Yielding onchain event to spend inputs {:?}",
+							req.outpoints()
+						);
 						let claim_id = match claim_event {
 							ClaimEvent::BumpCommitment { ref commitment_tx, .. } =>
-								// For commitment claims, we can just use their txid as it should
-								// already be unique.
-								ClaimId(commitment_tx.txid().to_byte_array()),
+							// For commitment claims, we can just use their txid as it should
+							// already be unique.
+							{
+								ClaimId(commitment_tx.txid().to_byte_array())
+							},
 							ClaimEvent::BumpHTLC { ref htlcs, .. } => {
 								// For HTLC claims, commit to the entire set of HTLC outputs to
 								// claim, which will always be unique per request. Once a claim ID
@@ -823,20 +934,30 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 								let mut engine = Sha256::engine();
 								for htlc in htlcs {
 									engine.input(&htlc.commitment_txid.to_byte_array());
-									engine.input(&htlc.htlc.transaction_output_index.unwrap().to_be_bytes());
+									engine.input(
+										&htlc.htlc.transaction_output_index.unwrap().to_be_bytes(),
+									);
 								}
 								ClaimId(Sha256::from_engine(engine).to_byte_array())
 							},
 						};
 						debug_assert!(self.pending_claim_requests.get(&claim_id).is_none());
-						debug_assert_eq!(self.pending_claim_events.iter().filter(|entry| entry.0 == claim_id).count(), 0);
+						debug_assert_eq!(
+							self.pending_claim_events
+								.iter()
+								.filter(|entry| entry.0 == claim_id)
+								.count(),
+							0
+						);
 						self.pending_claim_events.push((claim_id, claim_event));
 						claim_id
 					},
 				};
 				// Because fuzzing can cause hash collisions, we can end up with conflicting claim
 				// ids here, so we only assert when not fuzzing.
-				debug_assert!(cfg!(fuzzing) || self.pending_claim_requests.get(&claim_id).is_none());
+				debug_assert!(
+					cfg!(fuzzing) || self.pending_claim_requests.get(&claim_id).is_none()
+				);
 				for k in req.outpoints() {
 					log_info!(logger, "Registering claiming request for {}:{}", k.txid, k.vout);
 					self.claimable_outpoints.insert(k.clone(), (claim_id, conf_height));
@@ -856,7 +977,7 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	/// provided via `cur_height`, however it must never be higher than `cur_height`.
 	pub(super) fn update_claims_view_from_matched_txn<B: Deref, F: Deref, L: Logger>(
 		&mut self, txn_matched: &[&Transaction], conf_height: u32, conf_hash: BlockHash,
-		cur_height: u32, broadcaster: &B, fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L
+		cur_height: u32, broadcaster: &B, fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L,
 	) where
 		B::Target: BroadcasterInterface,
 		F::Target: FeeEstimator,
@@ -864,12 +985,20 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		let mut have_logged_intro = false;
 		let mut maybe_log_intro = || {
 			if !have_logged_intro {
-				log_debug!(logger, "Updating claims view at height {} with {} matched transactions in block {}", cur_height, txn_matched.len(), conf_height);
+				log_debug!(
+					logger,
+					"Updating claims view at height {} with {} matched transactions in block {}",
+					cur_height,
+					txn_matched.len(),
+					conf_height
+				);
 				have_logged_intro = true;
 			}
 		};
 		let mut bump_candidates = new_hash_map();
-		if !txn_matched.is_empty() { maybe_log_intro(); }
+		if !txn_matched.is_empty() {
+			maybe_log_intro();
+		}
 		for tx in txn_matched {
 			// Scan all input to verify is one of the outpoint spent is of interest for us
 			let mut claimed_outputs_material = Vec::new();
@@ -881,7 +1010,8 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 						// outpoints to know if transaction is the original claim or a bumped one issued
 						// by us.
 						let mut are_sets_equal = true;
-						let mut tx_inputs = tx.input.iter().map(|input| &input.previous_output).collect::<Vec<_>>();
+						let mut tx_inputs =
+							tx.input.iter().map(|input| &input.previous_output).collect::<Vec<_>>();
 						tx_inputs.sort_unstable();
 						for request_input in request.outpoints() {
 							if tx_inputs.binary_search(&request_input).is_err() {
@@ -896,12 +1026,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 									txid: tx.txid(),
 									height: conf_height,
 									block_hash: Some(conf_hash),
-									event: OnchainEvent::Claim { claim_id: *claim_id }
+									event: OnchainEvent::Claim { claim_id: *claim_id },
 								};
 								if !self.onchain_events_awaiting_threshold_conf.contains(&entry) {
 									self.onchain_events_awaiting_threshold_conf.push(entry);
 								}
-							}
+							};
 						}
 
 						// If this is our transaction (or our counterparty spent all the outputs
@@ -909,10 +1039,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 						// ANTI_REORG_DELAY and clean the RBF tracking map.
 						if are_sets_equal {
 							clean_claim_request_after_safety_delay!();
-						} else { // If false, generate new claim request with update outpoint set
+						} else {
+							// If false, generate new claim request with update outpoint set
 							let mut at_least_one_drop = false;
 							for input in tx.input.iter() {
-								if let Some(package) = request.split_package(&input.previous_output) {
+								if let Some(package) = request.split_package(&input.previous_output)
+								{
 									claimed_outputs_material.push(package);
 									at_least_one_drop = true;
 								}
@@ -930,9 +1062,13 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 								// input(s) that already have a confirmed spend. If such spend is
 								// reorged out of the chain, then we'll attempt to re-spend the
 								// inputs once we see it.
-								#[cfg(debug_assertions)] {
-									let existing = self.pending_claim_events.iter()
-										.filter(|entry| entry.0 == *claim_id).count();
+								#[cfg(debug_assertions)]
+								{
+									let existing = self
+										.pending_claim_events
+										.iter()
+										.filter(|entry| entry.0 == *claim_id)
+										.count();
 									assert!(existing == 0 || existing == 1);
 								}
 								self.pending_claim_events.retain(|entry| entry.0 != *claim_id);
@@ -973,19 +1109,26 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 									outpoint, log_bytes!(claim_id.0));
 								self.claimable_outpoints.remove(outpoint);
 							}
-							#[cfg(debug_assertions)] {
-								let num_existing = self.pending_claim_events.iter()
-									.filter(|entry| entry.0 == claim_id).count();
+							#[cfg(debug_assertions)]
+							{
+								let num_existing = self
+									.pending_claim_events
+									.iter()
+									.filter(|entry| entry.0 == claim_id)
+									.count();
 								assert!(num_existing == 0 || num_existing == 1);
 							}
 							self.pending_claim_events.retain(|(id, _)| *id != claim_id);
 						}
 					},
 					OnchainEvent::ContentiousOutpoint { package } => {
-						log_debug!(logger, "Removing claim tracking due to maturation of claim tx for outpoints:");
+						log_debug!(
+							logger,
+							"Removing claim tracking due to maturation of claim tx for outpoints:"
+						);
 						log_debug!(logger, " {:?}", package.outpoints());
 						self.claimable_outpoints.remove(package.outpoints()[0]);
-					}
+					},
 				}
 			} else {
 				self.onchain_events_awaiting_threshold_conf.push(entry);
@@ -1007,12 +1150,20 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 
 		for (claim_id, request) in bump_candidates.iter() {
 			if let Some((new_timer, new_feerate, bump_claim)) = self.generate_claim(
-				cur_height, &request, &FeerateStrategy::ForceBump, &*fee_estimator, &*logger,
+				cur_height,
+				&request,
+				&FeerateStrategy::ForceBump,
+				&*fee_estimator,
+				&*logger,
 			) {
 				match bump_claim {
 					OnchainClaim::Tx(bump_tx) => {
 						if bump_tx.is_fully_signed() {
-							log_info!(logger, "Broadcasting RBF-bumped onchain {}", log_tx!(bump_tx.0));
+							log_info!(
+								logger,
+								"Broadcasting RBF-bumped onchain {}",
+								log_tx!(bump_tx.0)
+							);
 							broadcaster.broadcast_transactions(&[&bump_tx.0]);
 						} else {
 							log_info!(logger, "Waiting for signature of RBF-bumped unsigned onchain transaction {}",
@@ -1020,10 +1171,18 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 						}
 					},
 					OnchainClaim::Event(claim_event) => {
-						log_info!(logger, "Yielding RBF-bumped onchain event to spend inputs {:?}", request.outpoints());
-						#[cfg(debug_assertions)] {
-							let num_existing = self.pending_claim_events.iter().
-								filter(|entry| entry.0 == *claim_id).count();
+						log_info!(
+							logger,
+							"Yielding RBF-bumped onchain event to spend inputs {:?}",
+							request.outpoints()
+						);
+						#[cfg(debug_assertions)]
+						{
+							let num_existing = self
+								.pending_claim_events
+								.iter()
+								.filter(|entry| entry.0 == *claim_id)
+								.count();
 							assert!(num_existing == 0 || num_existing == 1);
 						}
 						self.pending_claim_events.retain(|event| event.0 != *claim_id);
@@ -1039,10 +1198,7 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	}
 
 	pub(super) fn transaction_unconfirmed<B: Deref, F: Deref, L: Logger>(
-		&mut self,
-		txid: &Txid,
-		broadcaster: B,
-		fee_estimator: &LowerBoundedFeeEstimator<F>,
+		&mut self, txid: &Txid, broadcaster: B, fee_estimator: &LowerBoundedFeeEstimator<F>,
 		logger: &L,
 	) where
 		B::Target: BroadcasterInterface,
@@ -1061,9 +1217,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		}
 	}
 
-	pub(super) fn block_disconnected<B: Deref, F: Deref, L: Logger>(&mut self, height: u32, broadcaster: B, fee_estimator: &LowerBoundedFeeEstimator<F>, logger: &L)
-		where B::Target: BroadcasterInterface,
-			F::Target: FeeEstimator,
+	pub(super) fn block_disconnected<B: Deref, F: Deref, L: Logger>(
+		&mut self, height: u32, broadcaster: B, fee_estimator: &LowerBoundedFeeEstimator<F>,
+		logger: &L,
+	) where
+		B::Target: BroadcasterInterface,
+		F::Target: FeeEstimator,
 	{
 		let mut bump_candidates = new_hash_map();
 		let onchain_events_awaiting_threshold_conf =
@@ -1074,8 +1233,12 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 				//- resurect outpoint back in its claimable set and regenerate tx
 				match entry.event {
 					OnchainEvent::ContentiousOutpoint { package } => {
-						if let Some(pending_claim) = self.claimable_outpoints.get(package.outpoints()[0]) {
-							if let Some(request) = self.pending_claim_requests.get_mut(&pending_claim.0) {
+						if let Some(pending_claim) =
+							self.claimable_outpoints.get(package.outpoints()[0])
+						{
+							if let Some(request) =
+								self.pending_claim_requests.get_mut(&pending_claim.0)
+							{
 								request.merge_package(package);
 								// Using a HashMap guarantee us than if we have multiple outpoints getting
 								// resurrected only one bump claim tx is going to be broadcast
@@ -1093,7 +1256,11 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 			// `height` is the height being disconnected, so our `current_height` is 1 lower.
 			let current_height = height - 1;
 			if let Some((new_timer, new_feerate, bump_claim)) = self.generate_claim(
-				current_height, &request, &FeerateStrategy::ForceBump, fee_estimator, logger
+				current_height,
+				&request,
+				&FeerateStrategy::ForceBump,
+				fee_estimator,
+				logger,
 			) {
 				request.set_timer(new_timer);
 				request.set_feerate(new_feerate);
@@ -1103,14 +1270,26 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 							log_info!(logger, "Broadcasting onchain {}", log_tx!(bump_tx.0));
 							broadcaster.broadcast_transactions(&[&bump_tx.0]);
 						} else {
-							log_info!(logger, "Waiting for signature of unsigned onchain transaction {}", bump_tx.0.txid());
+							log_info!(
+								logger,
+								"Waiting for signature of unsigned onchain transaction {}",
+								bump_tx.0.txid()
+							);
 						}
 					},
 					OnchainClaim::Event(claim_event) => {
-						log_info!(logger, "Yielding onchain event after reorg to spend inputs {:?}", request.outpoints());
-						#[cfg(debug_assertions)] {
-							let num_existing = self.pending_claim_events.iter()
-								.filter(|entry| entry.0 == *_claim_id).count();
+						log_info!(
+							logger,
+							"Yielding onchain event after reorg to spend inputs {:?}",
+							request.outpoints()
+						);
+						#[cfg(debug_assertions)]
+						{
+							let num_existing = self
+								.pending_claim_events
+								.iter()
+								.filter(|entry| entry.0 == *_claim_id)
+								.count();
 							assert!(num_existing == 0 || num_existing == 1);
 						}
 						self.pending_claim_events.retain(|event| event.0 != *_claim_id);
@@ -1125,11 +1304,14 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		//TODO: if we implement cross-block aggregated claim transaction we need to refresh set of outpoints and regenerate tx but
 		// right now if one of the outpoint get disconnected, just erase whole pending claim request.
 		let mut remove_request = Vec::new();
-		self.claimable_outpoints.retain(|_, ref v|
+		self.claimable_outpoints.retain(|_, ref v| {
 			if v.1 >= height {
-			remove_request.push(v.0.clone());
-			false
-			} else { true });
+				remove_request.push(v.0.clone());
+				false
+			} else {
+				true
+			}
+		});
 		for req in remove_request {
 			self.pending_claim_requests.remove(&req);
 		}
@@ -1140,7 +1322,8 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 	}
 
 	pub(crate) fn get_relevant_txids(&self) -> Vec<(Txid, u32, Option<BlockHash>)> {
-		let mut txids: Vec<(Txid, u32, Option<BlockHash>)> = self.onchain_events_awaiting_threshold_conf
+		let mut txids: Vec<(Txid, u32, Option<BlockHash>)> = self
+			.onchain_events_awaiting_threshold_conf
 			.iter()
 			.map(|entry| (entry.txid, entry.height, entry.block_hash))
 			.collect();
@@ -1157,31 +1340,47 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 		&self.holder_commitment.trust().built_transaction().transaction
 	}
 
-	pub(crate) fn get_maybe_signed_holder_tx(&mut self, funding_redeemscript: &Script) -> MaybeSignedTransaction {
-		let tx = self.signer.sign_holder_commitment(&self.holder_commitment, &self.secp_ctx)
+	pub(crate) fn get_maybe_signed_holder_tx(
+		&mut self, funding_redeemscript: &Script,
+	) -> MaybeSignedTransaction {
+		let tx = self
+			.signer
+			.sign_holder_commitment(&self.holder_commitment, &self.secp_ctx)
 			.map(|sig| self.holder_commitment.add_holder_sig(funding_redeemscript, sig))
 			.unwrap_or_else(|_| self.get_unsigned_holder_commitment_tx().clone());
 		MaybeSignedTransaction(tx)
 	}
 
-	#[cfg(any(test, feature="unsafe_revoked_tx_signing"))]
-	pub(crate) fn get_fully_signed_copy_holder_tx(&mut self, funding_redeemscript: &Script) -> Transaction {
-		let sig = self.signer.unsafe_sign_holder_commitment(&self.holder_commitment, &self.secp_ctx).expect("sign holder commitment");
+	#[cfg(any(test, feature = "unsafe_revoked_tx_signing"))]
+	pub(crate) fn get_fully_signed_copy_holder_tx(
+		&mut self, funding_redeemscript: &Script,
+	) -> Transaction {
+		let sig = self
+			.signer
+			.unsafe_sign_holder_commitment(&self.holder_commitment, &self.secp_ctx)
+			.expect("sign holder commitment");
 		self.holder_commitment.add_holder_sig(funding_redeemscript, sig)
 	}
 
-	pub(crate) fn get_maybe_signed_htlc_tx(&mut self, outp: &::bitcoin::OutPoint, preimage: &Option<PaymentPreimage>) -> Option<MaybeSignedTransaction> {
+	pub(crate) fn get_maybe_signed_htlc_tx(
+		&mut self, outp: &::bitcoin::OutPoint, preimage: &Option<PaymentPreimage>,
+	) -> Option<MaybeSignedTransaction> {
 		let get_signed_htlc_tx = |holder_commitment: &HolderCommitmentTransaction| {
 			let trusted_tx = holder_commitment.trust();
 			if trusted_tx.txid() != outp.txid {
 				return None;
 			}
-			let (htlc_idx, htlc) = trusted_tx.htlcs().iter().enumerate()
+			let (htlc_idx, htlc) = trusted_tx
+				.htlcs()
+				.iter()
+				.enumerate()
 				.find(|(_, htlc)| htlc.transaction_output_index.unwrap() == outp.vout)
 				.unwrap();
 			let counterparty_htlc_sig = holder_commitment.counterparty_htlc_sigs[htlc_idx];
 			let mut htlc_tx = trusted_tx.build_unsigned_htlc_tx(
-				&self.channel_transaction_parameters.as_holder_broadcastable(), htlc_idx, preimage,
+				&self.channel_transaction_parameters.as_holder_broadcastable(),
+				htlc_idx,
+				preimage,
 			);
 
 			let htlc_descriptor = HTLCDescriptor {
@@ -1198,44 +1397,62 @@ impl<ChannelSigner: WriteableEcdsaChannelSigner> OnchainTxHandler<ChannelSigner>
 				preimage: preimage.clone(),
 				counterparty_sig: counterparty_htlc_sig.clone(),
 			};
-			if let Ok(htlc_sig) = self.signer.sign_holder_htlc_transaction(&htlc_tx, 0, &htlc_descriptor, &self.secp_ctx) {
+			if let Ok(htlc_sig) = self.signer.sign_holder_htlc_transaction(
+				&htlc_tx,
+				0,
+				&htlc_descriptor,
+				&self.secp_ctx,
+			) {
 				htlc_tx.input[0].witness = trusted_tx.build_htlc_input_witness(
-					htlc_idx, &counterparty_htlc_sig, &htlc_sig, preimage,
+					htlc_idx,
+					&counterparty_htlc_sig,
+					&htlc_sig,
+					preimage,
 				);
 			}
 			Some(MaybeSignedTransaction(htlc_tx))
 		};
 
 		// Check if the HTLC spends from the current holder commitment first, or the previous.
-		get_signed_htlc_tx(&self.holder_commitment)
-			.or_else(|| self.prev_holder_commitment.as_ref().and_then(|prev_holder_commitment| get_signed_htlc_tx(prev_holder_commitment)))
+		get_signed_htlc_tx(&self.holder_commitment).or_else(|| {
+			self.prev_holder_commitment
+				.as_ref()
+				.and_then(|prev_holder_commitment| get_signed_htlc_tx(prev_holder_commitment))
+		})
 	}
 
 	pub(crate) fn generate_external_htlc_claim(
-		&self, outp: &::bitcoin::OutPoint, preimage: &Option<PaymentPreimage>
+		&self, outp: &::bitcoin::OutPoint, preimage: &Option<PaymentPreimage>,
 	) -> Option<ExternalHTLCClaim> {
-		let find_htlc = |holder_commitment: &HolderCommitmentTransaction| -> Option<ExternalHTLCClaim> {
-			let trusted_tx = holder_commitment.trust();
-			if outp.txid != trusted_tx.txid() {
-				return None;
-			}
-			trusted_tx.htlcs().iter().enumerate()
-				.find(|(_, htlc)| if let Some(output_index) = htlc.transaction_output_index {
-					output_index == outp.vout
-				} else {
-					false
-				})
-				.map(|(htlc_idx, htlc)| {
-					let counterparty_htlc_sig = holder_commitment.counterparty_htlc_sigs[htlc_idx];
-					ExternalHTLCClaim {
-						commitment_txid: trusted_tx.txid(),
-						per_commitment_number: trusted_tx.commitment_number(),
-						htlc: htlc.clone(),
-						preimage: *preimage,
-						counterparty_sig: counterparty_htlc_sig,
-					}
-				})
-		};
+		let find_htlc =
+			|holder_commitment: &HolderCommitmentTransaction| -> Option<ExternalHTLCClaim> {
+				let trusted_tx = holder_commitment.trust();
+				if outp.txid != trusted_tx.txid() {
+					return None;
+				}
+				trusted_tx
+					.htlcs()
+					.iter()
+					.enumerate()
+					.find(|(_, htlc)| {
+						if let Some(output_index) = htlc.transaction_output_index {
+							output_index == outp.vout
+						} else {
+							false
+						}
+					})
+					.map(|(htlc_idx, htlc)| {
+						let counterparty_htlc_sig =
+							holder_commitment.counterparty_htlc_sigs[htlc_idx];
+						ExternalHTLCClaim {
+							commitment_txid: trusted_tx.txid(),
+							per_commitment_number: trusted_tx.commitment_number(),
+							htlc: htlc.clone(),
+							preimage: *preimage,
+							counterparty_sig: counterparty_htlc_sig,
+						}
+					})
+			};
 		// Check if the HTLC spends from the current holder commitment or the previous one otherwise.
 		find_htlc(&self.holder_commitment)
 			.or_else(|| self.prev_holder_commitment.as_ref().map(|c| find_htlc(c)).flatten())

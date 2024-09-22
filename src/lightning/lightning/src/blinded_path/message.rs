@@ -3,14 +3,14 @@ use bitcoin::secp256k1::{self, PublicKey, Secp256k1, SecretKey};
 #[allow(unused_imports)]
 use crate::prelude::*;
 
-use crate::blinded_path::{BlindedHop, BlindedPath, IntroductionNode, NodeIdLookUp};
 use crate::blinded_path::utils;
+use crate::blinded_path::{BlindedHop, BlindedPath, IntroductionNode, NodeIdLookUp};
+use crate::crypto::streams::ChaChaPolyReadAdapter;
 use crate::io;
 use crate::io::Cursor;
 use crate::ln::onion_utils;
 use crate::onion_message::packet::ControlTlvs;
 use crate::sign::{NodeSigner, Recipient};
-use crate::crypto::streams::ChaChaPolyReadAdapter;
 use crate::util::ser::{FixedLengthReader, LengthReadableArgs, Writeable, Writer};
 
 use core::mem;
@@ -71,9 +71,10 @@ impl Writeable for ReceiveTlvs {
 
 /// Construct blinded onion message hops for the given `unblinded_path`.
 pub(super) fn blinded_hops<T: secp256k1::Signing + secp256k1::Verification>(
-	secp_ctx: &Secp256k1<T>, unblinded_path: &[PublicKey], session_priv: &SecretKey
+	secp_ctx: &Secp256k1<T>, unblinded_path: &[PublicKey], session_priv: &SecretKey,
 ) -> Result<Vec<BlindedHop>, secp256k1::Error> {
-	let blinded_tlvs = unblinded_path.iter()
+	let blinded_tlvs = unblinded_path
+		.iter()
 		.skip(1) // The first node's TLVs contains the next node's pubkey
 		.map(|pk| ForwardTlvs { next_hop: NextHop::NodeId(*pk), next_blinding_override: None })
 		.map(|tlvs| ControlTlvs::Forward(tlvs))
@@ -85,7 +86,7 @@ pub(super) fn blinded_hops<T: secp256k1::Signing + secp256k1::Verification>(
 // Advance the blinded onion message path by one hop, so make the second hop into the new
 // introduction node.
 pub(crate) fn advance_path_by_one<NS: Deref, NL: Deref, T>(
-	path: &mut BlindedPath, node_signer: &NS, node_id_lookup: &NL, secp_ctx: &Secp256k1<T>
+	path: &mut BlindedPath, node_signer: &NS, node_id_lookup: &NL, secp_ctx: &Secp256k1<T>,
 ) -> Result<(), ()>
 where
 	NS::Target: NodeSigner,
@@ -99,7 +100,7 @@ where
 	let mut reader = FixedLengthReader::new(&mut s, encrypted_control_tlvs.len() as u64);
 	match ChaChaPolyReadAdapter::read(&mut reader, rho) {
 		Ok(ChaChaPolyReadAdapter {
-			readable: ControlTlvs::Forward(ForwardTlvs { next_hop, next_blinding_override })
+			readable: ControlTlvs::Forward(ForwardTlvs { next_hop, next_blinding_override }),
 		}) => {
 			let next_node_id = match next_hop {
 				NextHop::NodeId(pubkey) => pubkey,
@@ -110,15 +111,17 @@ where
 			};
 			let mut new_blinding_point = match next_blinding_override {
 				Some(blinding_point) => blinding_point,
-				None => {
-					onion_utils::next_hop_pubkey(secp_ctx, path.blinding_point,
-						control_tlvs_ss.as_ref()).map_err(|_| ())?
-				}
+				None => onion_utils::next_hop_pubkey(
+					secp_ctx,
+					path.blinding_point,
+					control_tlvs_ss.as_ref(),
+				)
+				.map_err(|_| ())?,
 			};
 			mem::swap(&mut path.blinding_point, &mut new_blinding_point);
 			path.introduction_node = IntroductionNode::NodeId(next_node_id);
 			Ok(())
 		},
-		_ => Err(())
+		_ => Err(()),
 	}
 }

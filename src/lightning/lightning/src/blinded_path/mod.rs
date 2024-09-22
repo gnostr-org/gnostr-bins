@@ -9,8 +9,8 @@
 
 //! Creating blinded paths and related utilities live here.
 
-pub mod payment;
 pub(crate) mod message;
+pub mod payment;
 pub(crate) mod utils;
 
 use bitcoin::secp256k1::{self, PublicKey, Secp256k1, SecretKey};
@@ -104,8 +104,11 @@ pub struct BlindedHop {
 
 impl BlindedPath {
 	/// Create a one-hop blinded path for a message.
-	pub fn one_hop_for_message<ES: EntropySource + ?Sized, T: secp256k1::Signing + secp256k1::Verification>(
-		recipient_node_id: PublicKey, entropy_source: &ES, secp_ctx: &Secp256k1<T>
+	pub fn one_hop_for_message<
+		ES: EntropySource + ?Sized,
+		T: secp256k1::Signing + secp256k1::Verification,
+	>(
+		recipient_node_id: PublicKey, entropy_source: &ES, secp_ctx: &Secp256k1<T>,
 	) -> Result<Self, ()> {
 		Self::new_for_message(&[recipient_node_id], entropy_source, secp_ctx)
 	}
@@ -115,32 +118,47 @@ impl BlindedPath {
 	///
 	/// Errors if no hops are provided or if `node_pk`(s) are invalid.
 	//  TODO: make all payloads the same size with padding + add dummy hops
-	pub fn new_for_message<ES: EntropySource + ?Sized, T: secp256k1::Signing + secp256k1::Verification>(
-		node_pks: &[PublicKey], entropy_source: &ES, secp_ctx: &Secp256k1<T>
+	pub fn new_for_message<
+		ES: EntropySource + ?Sized,
+		T: secp256k1::Signing + secp256k1::Verification,
+	>(
+		node_pks: &[PublicKey], entropy_source: &ES, secp_ctx: &Secp256k1<T>,
 	) -> Result<Self, ()> {
-		if node_pks.is_empty() { return Err(()) }
+		if node_pks.is_empty() {
+			return Err(());
+		}
 		let blinding_secret_bytes = entropy_source.get_secure_random_bytes();
-		let blinding_secret = SecretKey::from_slice(&blinding_secret_bytes[..]).expect("RNG is busted");
+		let blinding_secret =
+			SecretKey::from_slice(&blinding_secret_bytes[..]).expect("RNG is busted");
 		let introduction_node = IntroductionNode::NodeId(node_pks[0]);
 
 		Ok(BlindedPath {
 			introduction_node,
 			blinding_point: PublicKey::from_secret_key(secp_ctx, &blinding_secret),
-			blinded_hops: message::blinded_hops(secp_ctx, node_pks, &blinding_secret).map_err(|_| ())?,
+			blinded_hops: message::blinded_hops(secp_ctx, node_pks, &blinding_secret)
+				.map_err(|_| ())?,
 		})
 	}
 
 	/// Create a one-hop blinded path for a payment.
-	pub fn one_hop_for_payment<ES: EntropySource + ?Sized, T: secp256k1::Signing + secp256k1::Verification>(
-		payee_node_id: PublicKey, payee_tlvs: payment::ReceiveTlvs, min_final_cltv_expiry_delta: u16,
-		entropy_source: &ES, secp_ctx: &Secp256k1<T>
+	pub fn one_hop_for_payment<
+		ES: EntropySource + ?Sized,
+		T: secp256k1::Signing + secp256k1::Verification,
+	>(
+		payee_node_id: PublicKey, payee_tlvs: payment::ReceiveTlvs,
+		min_final_cltv_expiry_delta: u16, entropy_source: &ES, secp_ctx: &Secp256k1<T>,
 	) -> Result<(BlindedPayInfo, Self), ()> {
 		// This value is not considered in pathfinding for 1-hop blinded paths, because it's intended to
 		// be in relation to a specific channel.
 		let htlc_maximum_msat = u64::max_value();
 		Self::new_for_payment(
-			&[], payee_node_id, payee_tlvs, htlc_maximum_msat, min_final_cltv_expiry_delta,
-			entropy_source, secp_ctx
+			&[],
+			payee_node_id,
+			payee_tlvs,
+			htlc_maximum_msat,
+			min_final_cltv_expiry_delta,
+			entropy_source,
+			secp_ctx,
 		)
 	}
 
@@ -153,33 +171,48 @@ impl BlindedPath {
 	///
 	/// [`ForwardTlvs`]: crate::blinded_path::payment::ForwardTlvs
 	//  TODO: make all payloads the same size with padding + add dummy hops
-	pub fn new_for_payment<ES: EntropySource + ?Sized, T: secp256k1::Signing + secp256k1::Verification>(
+	pub fn new_for_payment<
+		ES: EntropySource + ?Sized,
+		T: secp256k1::Signing + secp256k1::Verification,
+	>(
 		intermediate_nodes: &[payment::ForwardNode], payee_node_id: PublicKey,
 		payee_tlvs: payment::ReceiveTlvs, htlc_maximum_msat: u64, min_final_cltv_expiry_delta: u16,
-		entropy_source: &ES, secp_ctx: &Secp256k1<T>
+		entropy_source: &ES, secp_ctx: &Secp256k1<T>,
 	) -> Result<(BlindedPayInfo, Self), ()> {
 		let introduction_node = IntroductionNode::NodeId(
-			intermediate_nodes.first().map_or(payee_node_id, |n| n.node_id)
+			intermediate_nodes.first().map_or(payee_node_id, |n| n.node_id),
 		);
 		let blinding_secret_bytes = entropy_source.get_secure_random_bytes();
-		let blinding_secret = SecretKey::from_slice(&blinding_secret_bytes[..]).expect("RNG is busted");
+		let blinding_secret =
+			SecretKey::from_slice(&blinding_secret_bytes[..]).expect("RNG is busted");
 
 		let blinded_payinfo = payment::compute_payinfo(
-			intermediate_nodes, &payee_tlvs, htlc_maximum_msat, min_final_cltv_expiry_delta
+			intermediate_nodes,
+			&payee_tlvs,
+			htlc_maximum_msat,
+			min_final_cltv_expiry_delta,
 		)?;
-		Ok((blinded_payinfo, BlindedPath {
-			introduction_node,
-			blinding_point: PublicKey::from_secret_key(secp_ctx, &blinding_secret),
-			blinded_hops: payment::blinded_hops(
-				secp_ctx, intermediate_nodes, payee_node_id, payee_tlvs, &blinding_secret
-			).map_err(|_| ())?,
-		}))
+		Ok((
+			blinded_payinfo,
+			BlindedPath {
+				introduction_node,
+				blinding_point: PublicKey::from_secret_key(secp_ctx, &blinding_secret),
+				blinded_hops: payment::blinded_hops(
+					secp_ctx,
+					intermediate_nodes,
+					payee_node_id,
+					payee_tlvs,
+					&blinding_secret,
+				)
+				.map_err(|_| ())?,
+			},
+		))
 	}
 
 	/// Returns the introduction [`NodeId`] of the blinded path, if it is publicly reachable (i.e.,
 	/// it is found in the network graph).
 	pub fn public_introduction_node_id<'a>(
-		&self, network_graph: &'a ReadOnlyNetworkGraph
+		&self, network_graph: &'a ReadOnlyNetworkGraph,
 	) -> Option<&'a NodeId> {
 		match &self.introduction_node {
 			IntroductionNode::NodeId(pubkey) => {
@@ -187,12 +220,10 @@ impl BlindedPath {
 				network_graph.nodes().get_key_value(&node_id).map(|(key, _)| key)
 			},
 			IntroductionNode::DirectedShortChannelId(direction, scid) => {
-				network_graph
-					.channel(*scid)
-					.map(|c| match direction {
-						Direction::NodeOne => &c.node_one,
-						Direction::NodeTwo => &c.node_two,
-					})
+				network_graph.channel(*scid).map(|c| match direction {
+					Direction::NodeOne => &c.node_one,
+					Direction::NodeTwo => &c.node_two,
+				})
 			},
 		}
 	}
@@ -226,7 +257,7 @@ impl Readable for BlindedPath {
 		let introduction_node = match first_byte {
 			0 => IntroductionNode::DirectedShortChannelId(Direction::NodeOne, Readable::read(r)?),
 			1 => IntroductionNode::DirectedShortChannelId(Direction::NodeTwo, Readable::read(r)?),
-			2|3 => {
+			2 | 3 => {
 				use io::Read;
 				let mut pubkey_read = core::slice::from_mut(&mut first_byte).chain(r.by_ref());
 				IntroductionNode::NodeId(Readable::read(&mut pubkey_read)?)
@@ -235,16 +266,14 @@ impl Readable for BlindedPath {
 		};
 		let blinding_point = Readable::read(r)?;
 		let num_hops: u8 = Readable::read(r)?;
-		if num_hops == 0 { return Err(DecodeError::InvalidValue) }
+		if num_hops == 0 {
+			return Err(DecodeError::InvalidValue);
+		}
 		let mut blinded_hops: Vec<BlindedHop> = Vec::with_capacity(num_hops.into());
 		for _ in 0..num_hops {
 			blinded_hops.push(Readable::read(r)?);
 		}
-		Ok(BlindedPath {
-			introduction_node,
-			blinding_point,
-			blinded_hops,
-		})
+		Ok(BlindedPath { introduction_node, blinding_point, blinded_hops })
 	}
 }
 

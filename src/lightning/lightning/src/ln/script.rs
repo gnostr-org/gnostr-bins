@@ -1,11 +1,11 @@
 //! Abstractions for scripts used in the Lightning Network.
 
+use bitcoin::address::WitnessProgram;
 use bitcoin::blockdata::opcodes::all::OP_PUSHBYTES_0 as SEGWIT_V0;
 use bitcoin::blockdata::script::{Script, ScriptBuf};
-use bitcoin::hashes::Hash;
 use bitcoin::hash_types::{WPubkeyHash, WScriptHash};
+use bitcoin::hashes::Hash;
 use bitcoin::secp256k1::PublicKey;
-use bitcoin::address::WitnessProgram;
 
 use crate::ln::channelmanager;
 use crate::ln::features::InitFeatures;
@@ -29,7 +29,7 @@ pub struct InvalidShutdownScript {
 	/// The script that did not meet the requirements from [BOLT #2].
 	///
 	/// [BOLT #2]: https://github.com/lightning/bolts/blob/master/02-peer-protocol.md
-	pub script: ScriptBuf
+	pub script: ScriptBuf,
 }
 
 #[derive(Clone, PartialEq, Eq)]
@@ -83,7 +83,9 @@ impl ShutdownScript {
 	/// # Errors
 	///
 	/// This function may return an error if `program` is invalid for the segwit `version`.
-	pub fn new_witness_program(witness_program: &WitnessProgram) -> Result<Self, InvalidShutdownScript> {
+	pub fn new_witness_program(
+		witness_program: &WitnessProgram,
+	) -> Result<Self, InvalidShutdownScript> {
 		Self::try_from(ScriptBuf::new_witness_program(witness_program))
 	}
 
@@ -129,7 +131,10 @@ impl TryFrom<ScriptBuf> for ShutdownScript {
 	type Error = InvalidShutdownScript;
 
 	fn try_from(script: ScriptBuf) -> Result<Self, Self::Error> {
-		Self::try_from((script, &channelmanager::provided_init_features(&crate::util::config::UserConfig::default())))
+		Self::try_from((
+			script,
+			&channelmanager::provided_init_features(&crate::util::config::UserConfig::default()),
+		))
 	}
 }
 
@@ -150,14 +155,15 @@ impl TryFrom<(ScriptBuf, &InitFeatures)> for ShutdownScript {
 impl Into<ScriptBuf> for ShutdownScript {
 	fn into(self) -> ScriptBuf {
 		match self.0 {
-			ShutdownScriptImpl::Legacy(pubkey) =>
-				ScriptBuf::new_v0_p2wpkh(&WPubkeyHash::hash(&pubkey.serialize())),
+			ShutdownScriptImpl::Legacy(pubkey) => {
+				ScriptBuf::new_v0_p2wpkh(&WPubkeyHash::hash(&pubkey.serialize()))
+			},
 			ShutdownScriptImpl::Bolt2(script_pubkey) => script_pubkey,
 		}
 	}
 }
 
-impl core::fmt::Display for ShutdownScript{
+impl core::fmt::Display for ShutdownScript {
 	fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
 		match &self.0 {
 			ShutdownScriptImpl::Legacy(_) => self.clone().into_inner().fmt(f),
@@ -181,7 +187,11 @@ mod shutdown_script_tests {
 
 	fn pubkey() -> bitcoin::key::PublicKey {
 		let secp_ctx = Secp256k1::signing_only();
-		let secret_key = SecretKey::from_slice(&[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]).unwrap();
+		let secret_key = SecretKey::from_slice(&[
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 1,
+		])
+		.unwrap();
 		bitcoin::key::PublicKey::new(PublicKey::from_secret_key(&secp_ctx, &secret_key))
 	}
 

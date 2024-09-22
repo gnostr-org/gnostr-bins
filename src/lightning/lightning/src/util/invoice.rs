@@ -21,8 +21,9 @@ pub fn construct_invoice_preimage(hrp_bytes: &[u8], data_without_signature: &[u5
 		}
 	}
 
-	preimage.extend_from_slice(&Vec::<u8>::from_base32(&data_part)
-		.expect("No padding error may occur due to appended zero above."));
+	preimage.extend_from_slice(
+		&Vec::<u8>::from_base32(&data_part)
+			.expect("No padding error may occur due to appended zero above."),
+	);
 	preimage
 }
-
