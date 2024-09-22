@@ -45,6 +45,18 @@ tokio-tungstenite = { version = "0.21", features = [ "connect", "handshake", "ru
 tungstenite = { version = "0.21", features = [ "rustls-tls-webpki-roots" ] }
 zeroize = "1.5"
 
+[dev-dependencies]
+cargo-dist = "0.21.1"
+
+[workspace]
+members = [
+    ".",
+    "gnip44",
+    "lightning/lightning",
+    "lightning/lightning-invoice",
+    "types",
+]
+
 # The profile that 'cargo dist' will build with
 [profile.dist]
 inherits = "release"
