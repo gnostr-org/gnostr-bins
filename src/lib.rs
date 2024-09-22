@@ -184,7 +184,7 @@ impl Probe {
                         );
                     }
                     //use nostr_types::RelayMessageV5;
-                    //RelayMessageV5::Notify(_) => todo!(),
+                    RelayMessage::Notify(_) => todo!(),
                 }
             }
             Message::Binary(_) => {
@@ -354,7 +354,7 @@ pub async fn req(
                 }
             }
             //use nostr_types::RelayMessageV5;
-            //RelayMessageV5::Notify(_) => todo!(),
+            RelayMessage::Notify(_) => todo!(),
         }
     }
 
