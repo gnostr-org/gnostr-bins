@@ -5,7 +5,7 @@
 // those terms.
 
 #![allow(clippy::uninlined_format_args)]
-use gnostr_types::{PrivateKey, PublicKey};
+use nostr_types::{PrivateKey, PublicKey};
 use k256::schnorr::SigningKey;
 use zeroize::Zeroize;
 
@@ -42,11 +42,11 @@ fn main() {
     }
 
     #[cfg(debug_assertions)]
-    std::process::exit(0);
+    //std::process::exit(0);
     #[cfg(debug_assertions)]
-    #[allow(unreachable_code)]
+    //#[allow(unreachable_code)]
     #[cfg(debug_assertions)]
-    println!();
+    println!("");
 
     #[cfg(debug_assertions)]
     let iter = _buffer_max.chunks_exact(1);
