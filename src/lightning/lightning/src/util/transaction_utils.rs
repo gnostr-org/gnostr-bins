@@ -239,19 +239,19 @@ mod tests {
 		assert_eq!(tx.weight().to_wu(), 40); // ie 10 vbytes
 		assert!(maybe_add_change_output(&mut tx, 9, 0, 250, output_spk.clone()).is_err());
 		assert_eq!(tx.wtxid(), orig_wtxid); // Failure doesn't change the transaction
-									// but 10-564 is, just not enough to add a change output...
+									  // but 10-564 is, just not enough to add a change output...
 		assert!(maybe_add_change_output(&mut tx, 10, 0, 250, output_spk.clone()).is_ok());
 		assert_eq!(tx.output.len(), 0);
 		assert_eq!(tx.wtxid(), orig_wtxid); // If we don't add an output, we don't change the transaction
 		assert!(maybe_add_change_output(&mut tx, 549, 0, 250, output_spk.clone()).is_ok());
 		assert_eq!(tx.output.len(), 0);
 		assert_eq!(tx.wtxid(), orig_wtxid); // If we don't add an output, we don't change the transaction
-									// 590 is also not enough, if we anticipate 2 more weight units pushing us up to the next vbyte
-									// (considering the two bytes for segwit flags)
+									  // 590 is also not enough, if we anticipate 2 more weight units pushing us up to the next vbyte
+									  // (considering the two bytes for segwit flags)
 		assert!(maybe_add_change_output(&mut tx, 590, 2, 250, output_spk.clone()).is_ok());
 		assert_eq!(tx.output.len(), 0);
 		assert_eq!(tx.wtxid(), orig_wtxid); // If we don't add an output, we don't change the transaction
-									// at 590 we can afford the change output at the dust limit (546)
+									  // at 590 we can afford the change output at the dust limit (546)
 		assert!(maybe_add_change_output(&mut tx, 590, 0, 250, output_spk.clone()).is_ok());
 		assert_eq!(tx.output.len(), 1);
 		assert_eq!(tx.output[0].value, 546);
@@ -295,7 +295,7 @@ mod tests {
 		)
 		.is_err());
 		assert_eq!(tx.wtxid(), orig_wtxid); // Failure doesn't change the transaction
-									// but one more input sat should succeed, without changing the transaction
+									  // but one more input sat should succeed, without changing the transaction
 		assert!(maybe_add_change_output(
 			&mut tx,
 			1000 + 61 + 100,
@@ -305,7 +305,7 @@ mod tests {
 		)
 		.is_ok());
 		assert_eq!(tx.wtxid(), orig_wtxid); // If we don't add an output, we don't change the transaction
-									// In order to get a change output, we need to add 474 plus the output's weight / 4 (10)...
+									  // In order to get a change output, we need to add 474 plus the output's weight / 4 (10)...
 		assert!(maybe_add_change_output(
 			&mut tx,
 			1000 + 61 + 100 + 474 + 9,

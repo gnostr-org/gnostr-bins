@@ -6503,30 +6503,31 @@ where
 		log_trace!(logger, "Regenerating latest commitment update in channel {} with{} {} update_adds, {} update_fulfills, {} update_fails, and {} update_fail_malformeds",
 				&self.context.channel_id(), if update_fee.is_some() { " update_fee," } else { "" },
 				update_add_htlcs.len(), update_fulfill_htlcs.len(), update_fail_htlcs.len(), update_fail_malformed_htlcs.len());
-		let commitment_signed =
-			if let Ok(update) = self.send_commitment_no_state_update(logger).map(|(cu, _)| cu) {
-				if self.context.signer_pending_commitment_update {
-					log_trace!(
-						logger,
-						"Commitment update generated: clearing signer_pending_commitment_update"
-					);
-					self.context.signer_pending_commitment_update = false;
+		let commitment_signed = if let Ok(update) =
+			self.send_commitment_no_state_update(logger).map(|(cu, _)| cu)
+		{
+			if self.context.signer_pending_commitment_update {
+				log_trace!(
+					logger,
+					"Commitment update generated: clearing signer_pending_commitment_update"
+				);
+				self.context.signer_pending_commitment_update = false;
+			}
+			update
+		} else {
+			#[cfg(not(async_signing))]
+			{
+				panic!("Failed to get signature for new commitment state");
+			}
+			#[cfg(async_signing)]
+			{
+				if !self.context.signer_pending_commitment_update {
+					log_trace!(logger, "Commitment update awaiting signer: setting signer_pending_commitment_update");
+					self.context.signer_pending_commitment_update = true;
 				}
-				update
-			} else {
-				#[cfg(not(async_signing))]
-				{
-					panic!("Failed to get signature for new commitment state");
-				}
-				#[cfg(async_signing)]
-				{
-					if !self.context.signer_pending_commitment_update {
-						log_trace!(logger, "Commitment update awaiting signer: setting signer_pending_commitment_update");
-						self.context.signer_pending_commitment_update = true;
-					}
-					return Err(());
-				}
-			};
+				return Err(());
+			}
+		};
 		Ok(msgs::CommitmentUpdate {
 			update_add_htlcs,
 			update_fulfill_htlcs,

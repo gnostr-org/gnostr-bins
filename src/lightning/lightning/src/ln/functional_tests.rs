@@ -2386,7 +2386,7 @@ fn test_chan_reserve_dust_inbound_htlcs_inbound_chan() {
 	create_announced_chan_between_nodes_with_value(&nodes, 0, 1, 100000, 98000000);
 
 	let payment_amt = 46000; // Dust amount
-						 // In the previous code, these first four payments would succeed.
+						  // In the previous code, these first four payments would succeed.
 	route_payment(&nodes[0], &[&nodes[1]], payment_amt);
 	route_payment(&nodes[0], &[&nodes[1]], payment_amt);
 	route_payment(&nodes[0], &[&nodes[1]], payment_amt);
@@ -2736,7 +2736,8 @@ fn test_channel_reserve_holding_cell_htlcs() {
 			stat.value_to_self_msat
 				- (stat.pending_outbound_htlcs_amount_msat
 					+ recv_value_21 + recv_value_22
-					+ total_fee_msat + total_fee_msat
+					+ total_fee_msat
+					+ total_fee_msat
 					+ commit_tx_fee_3_htlcs),
 			stat.channel_reserve_msat
 		);
@@ -3462,7 +3463,7 @@ fn test_justice_tx_htlc_timeout() {
 		revoked_local_txn[1].input[0].witness.last().unwrap().len(),
 		OFFERED_HTLC_SCRIPT_WEIGHT
 	); // HTLC-Timeout
-   // Revoke the old state
+	// Revoke the old state
 	claim_payment(&nodes[0], &vec![&nodes[1]][..], payment_preimage_3);
 
 	{
@@ -3486,7 +3487,7 @@ fn test_justice_tx_htlc_timeout() {
 
 		mine_transaction(&nodes[0], &revoked_local_txn[0]);
 		connect_blocks(&nodes[0], TEST_FINAL_CLTV); // Confirm blocks until the HTLC expires
-											// Verify broadcast of revoked HTLC-timeout
+											  // Verify broadcast of revoked HTLC-timeout
 		let node_txn = test_txn_broadcast(
 			&nodes[0],
 			&chan_5,
@@ -3543,7 +3544,7 @@ fn test_justice_tx_htlc_success() {
 	assert_eq!(revoked_local_txn[0].input.len(), 1);
 	assert_eq!(revoked_local_txn[0].input[0].previous_output.txid, chan_6.3.txid());
 	assert_eq!(revoked_local_txn[0].output.len(), 2); // Only HTLC and output back to A are present
-												  // Revoke the old state
+												   // Revoke the old state
 	claim_payment(&nodes[0], &vec![&nodes[1]][..], payment_preimage_4);
 	{
 		mine_transaction(&nodes[0], &revoked_local_txn[0]);
@@ -4171,8 +4172,8 @@ fn test_htlc_on_chain_success() {
 	assert_eq!(commitment_spend.input[1].witness.last().unwrap().len(), OFFERED_HTLC_SCRIPT_WEIGHT);
 	assert_eq!(commitment_spend.lock_time.to_consensus_u32(), nodes[1].best_block_info().1);
 	assert!(commitment_spend.output[0].script_pubkey.is_v0_p2wpkh()); // direct payment
-																  // We don't bother to check that B can claim the HTLC output on its commitment tx here as
-																  // we already checked the same situation with A.
+																   // We don't bother to check that B can claim the HTLC output on its commitment tx here as
+																   // we already checked the same situation with A.
 
 	// Verify that A's ChannelManager is able to extract preimage from preimage tx and generate PaymentSent
 	connect_block(
@@ -6556,9 +6557,9 @@ fn test_static_spendable_outputs_justice_tx_revoked_htlc_timeout_tx() {
 
 	let node_txn = nodes[1].tx_broadcaster.txn_broadcasted.lock().unwrap().clone();
 	assert_eq!(node_txn.len(), 2); // ChannelMonitor: bogus justice tx, justice tx on revoked outputs
-							   // The first transaction generated is bogus - it spends both outputs of revoked_local_txn[0]
-							   // including the one already spent by revoked_htlc_txn[1]. That's OK, we'll spend with valid
-							   // transactions next...
+								// The first transaction generated is bogus - it spends both outputs of revoked_local_txn[0]
+								// including the one already spent by revoked_htlc_txn[1]. That's OK, we'll spend with valid
+								// transactions next...
 	assert_eq!(node_txn[0].input.len(), 3);
 	check_spends!(node_txn[0], revoked_local_txn[0], revoked_htlc_txn[0]);
 
@@ -7191,7 +7192,7 @@ fn do_test_fail_backwards_unrevoked_remote_announce(deliver_last_raa: bool, anno
 	// 0th HTLC:
 	let (_, payment_hash_1, ..) =
 		route_payment(&nodes[0], &[&nodes[2], &nodes[3], &nodes[4]], ds_dust_limit * 1000); // not added < dust limit + HTLC tx fee
-																					// 1st HTLC:
+																					  // 1st HTLC:
 	let (_, payment_hash_2, ..) =
 		route_payment(&nodes[0], &[&nodes[2], &nodes[3], &nodes[4]], ds_dust_limit * 1000); // not added < dust limit + HTLC tx fee
 	let (route, _, _, _) = get_route_and_payment_hash!(nodes[1], nodes[5], ds_dust_limit * 1000);
@@ -7204,7 +7205,7 @@ fn do_test_fail_backwards_unrevoked_remote_announce(deliver_last_raa: bool, anno
 		payment_hash_1,
 		nodes[5].node.create_inbound_payment_for_hash(payment_hash_1, None, 7200, None).unwrap(),
 	); // not added < dust limit + HTLC tx fee
-   // 3rd HTLC:
+	// 3rd HTLC:
 	send_along_route_with_secret(
 		&nodes[1],
 		route,
@@ -7213,7 +7214,7 @@ fn do_test_fail_backwards_unrevoked_remote_announce(deliver_last_raa: bool, anno
 		payment_hash_2,
 		nodes[5].node.create_inbound_payment_for_hash(payment_hash_2, None, 7200, None).unwrap(),
 	); // not added < dust limit + HTLC tx fee
-   // 4th HTLC:
+	// 4th HTLC:
 	let (_, payment_hash_3, ..) =
 		route_payment(&nodes[0], &[&nodes[2], &nodes[3], &nodes[4]], 1000000);
 	// 5th HTLC:
@@ -7256,7 +7257,7 @@ fn do_test_fail_backwards_unrevoked_remote_announce(deliver_last_raa: bool, anno
 	// 10th HTLC:
 	let (_, payment_hash_6, ..) =
 		route_payment(&nodes[0], &[&nodes[2], &nodes[3], &nodes[4]], ds_dust_limit * 1000); // not added < dust limit + HTLC tx fee
-																					// 11th HTLC:
+																					  // 11th HTLC:
 	let (route, _, _, _) = get_route_and_payment_hash!(nodes[1], nodes[5], 1000000);
 	send_along_route_with_secret(
 		&nodes[1],
@@ -10411,7 +10412,7 @@ fn test_announce_disable_channels() {
 		match e {
 			MessageSendEvent::BroadcastChannelUpdate { ref msg } => {
 				assert_eq!(msg.contents.flags & (1 << 1), 1 << 1); // The "channel disabled" bit should be set
-												   // Check that each channel gets updated exactly once
+													   // Check that each channel gets updated exactly once
 				if chans_disabled
 					.insert(msg.contents.short_channel_id, msg.contents.timestamp)
 					.is_some()
@@ -10711,7 +10712,7 @@ fn test_bump_penalty_txn_on_revoked_htlcs() {
 	{
 		let mut node_txn = nodes[0].tx_broadcaster.txn_broadcasted.lock().unwrap();
 		assert_eq!(node_txn.len(), 4); // 3 penalty txn on revoked commitment tx + 1 penalty tnx on revoked HTLC txn
-							   // Verify claim tx are spending revoked HTLC txn
+								 // Verify claim tx are spending revoked HTLC txn
 
 		// node_txn 0-2 each spend a separate revoked output from revoked_local_txn[0]
 		// Note that node_txn[0] and node_txn[1] are bogus - they double spend the revoked_htlc_txn
@@ -11853,7 +11854,7 @@ fn test_bad_secret_hash() {
 	}
 
 	let expected_error_code = 0x4000 | 15; // incorrect_or_unknown_payment_details
-									   // Error data is the HTLC value (100,000) and current block height
+										// Error data is the HTLC value (100,000) and current block height
 	let expected_error_data = [0, 0, 0, 0, 0, 1, 0x86, 0xa0, 0, 0, 0, CHAN_CONFIRM_DEPTH as u8];
 
 	// Send a payment with the right payment hash but the wrong payment secret

@@ -1061,7 +1061,8 @@ impl<Descriptor: SocketDescriptor, RM: Deref, L: Deref, NS: Deref>
 		L,
 		IgnoringMessageHandler,
 		NS,
-	> where
+	>
+where
 	RM::Target: RoutingMessageHandler,
 	L::Target: Logger,
 	NS::Target: NodeSigner,

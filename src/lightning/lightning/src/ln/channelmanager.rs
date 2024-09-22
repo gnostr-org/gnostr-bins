@@ -6383,7 +6383,8 @@ where
 														payment_hash,
 														&payment_data,
 														self.highest_seen_timestamp
-															.load(Ordering::Acquire) as u64,
+															.load(Ordering::Acquire)
+															as u64,
 														&self.inbound_payment_key,
 														&self.logger,
 													) {
@@ -10646,7 +10647,8 @@ where
 					entropy,
 				)?;
 				#[cfg(not(feature = "std"))]
-				let created_at = Duration::from_secs(self.highest_seen_timestamp.load(Ordering::Acquire) as u64);
+				let created_at =
+					Duration::from_secs(self.highest_seen_timestamp.load(Ordering::Acquire) as u64);
 				#[cfg(not(feature = "std"))]
 				let builder = refund.respond_using_derived_keys_no_std(
 					payment_paths,
@@ -12545,7 +12547,8 @@ where
 				};
 
 				#[cfg(not(feature = "std"))]
-				let created_at = Duration::from_secs(self.highest_seen_timestamp.load(Ordering::Acquire) as u64);
+				let created_at =
+					Duration::from_secs(self.highest_seen_timestamp.load(Ordering::Acquire) as u64);
 
 				let response = if invoice_request.keys.is_some() {
 					#[cfg(feature = "std")]

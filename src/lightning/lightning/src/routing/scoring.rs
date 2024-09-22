@@ -2493,9 +2493,9 @@ mod bucketed_history {
 					let max_bucket_end_pos = BUCKET_START_POS[32 - max_idx] - 1;
 					// Note that this multiply can only barely not overflow - two 16 bit ints plus
 					// 30 bits is 62 bits.
-					let bucket_prob_times_billion = (*min_bucket as u64)
-						* (*max_bucket as u64) * 1024
-						* 1024 * 1024 / total_valid_points_tracked;
+					let bucket_prob_times_billion =
+						(*min_bucket as u64) * (*max_bucket as u64) * 1024 * 1024 * 1024
+							/ total_valid_points_tracked;
 					if payment_pos >= max_bucket_end_pos {
 						// Success probability 0, the payment amount may be above the max liquidity
 						break;

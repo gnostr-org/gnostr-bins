@@ -1243,7 +1243,8 @@ fn do_test_balances_on_local_commitment_htlcs(anchors: bool) {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 10_000 - 20_000 - commitment_tx_fee
+					- 10_000 - 20_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: node_a_commitment_claimable,
 			},
@@ -1282,7 +1283,8 @@ fn do_test_balances_on_local_commitment_htlcs(anchors: bool) {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 10_000 - 20_000 - commitment_tx_fee
+					- 10_000 - 20_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: node_a_commitment_claimable,
 			},
@@ -1317,7 +1319,8 @@ fn do_test_balances_on_local_commitment_htlcs(anchors: bool) {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 10_000 - 20_000 - commitment_tx_fee
+					- 10_000 - 20_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: node_a_commitment_claimable,
 			},
@@ -1345,7 +1348,8 @@ fn do_test_balances_on_local_commitment_htlcs(anchors: bool) {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 10_000 - 20_000 - commitment_tx_fee
+					- 10_000 - 20_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: node_a_commitment_claimable,
 			},
@@ -1375,7 +1379,8 @@ fn do_test_balances_on_local_commitment_htlcs(anchors: bool) {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 10_000 - 20_000 - commitment_tx_fee
+					- 10_000 - 20_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: node_a_commitment_claimable,
 			},
@@ -1503,10 +1508,11 @@ fn test_no_preimage_inbound_htlc_balances() {
 		sorted_vec(vec![
 			Balance::ClaimableOnChannelClose {
 				amount_satoshis: 1_000_000
-					- 500_000 - 10_000 - chan_feerate
-					* (channel::commitment_tx_base_weight(&channel_type_features)
-						+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
-					/ 1000,
+					- 500_000 - 10_000
+					- chan_feerate
+						* (channel::commitment_tx_base_weight(&channel_type_features)
+							+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
+						/ 1000,
 			},
 			a_received_htlc_balance.clone(),
 			a_sent_htlc_balance.clone()
@@ -1712,10 +1718,11 @@ fn test_no_preimage_inbound_htlc_balances() {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 500_000 - 10_000 - chan_feerate
-					* (channel::commitment_tx_base_weight(&channel_type_features)
-						+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
-					/ 1000,
+					- 500_000 - 10_000
+					- chan_feerate
+						* (channel::commitment_tx_base_weight(&channel_type_features)
+							+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
+						/ 1000,
 				confirmation_height: node_a_commitment_claimable,
 			},
 			a_received_htlc_balance.clone(),
@@ -1739,10 +1746,11 @@ fn test_no_preimage_inbound_htlc_balances() {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 500_000 - 10_000 - chan_feerate
-					* (channel::commitment_tx_base_weight(&channel_type_features)
-						+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
-					/ 1000,
+					- 500_000 - 10_000
+					- chan_feerate
+						* (channel::commitment_tx_base_weight(&channel_type_features)
+							+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
+						/ 1000,
 				confirmation_height: node_a_commitment_claimable,
 			},
 			a_received_htlc_balance.clone(),
@@ -1771,10 +1779,11 @@ fn test_no_preimage_inbound_htlc_balances() {
 		sorted_vec(vec![
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 500_000 - 10_000 - chan_feerate
-					* (channel::commitment_tx_base_weight(&channel_type_features)
-						+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
-					/ 1000,
+					- 500_000 - 10_000
+					- chan_feerate
+						* (channel::commitment_tx_base_weight(&channel_type_features)
+							+ 2 * channel::COMMITMENT_TX_WEIGHT_PER_HTLC)
+						/ 1000,
 				confirmation_height: node_a_commitment_claimable,
 			},
 			Balance::ClaimableAwaitingConfirmations {
@@ -2215,7 +2224,8 @@ fn do_test_revoked_counterparty_commitment_balances(anchors: bool, confirm_htlc_
 			},
 			Balance::ClaimableAwaitingConfirmations {
 				amount_satoshis: 1_000_000
-					- 100_000 - 3_000 - commitment_tx_fee
+					- 100_000 - 3_000
+					- commitment_tx_fee
 					- anchor_outputs_value
 					- to_self_claim_fee,
 				confirmation_height: to_self_claimed_avail_height,
@@ -2549,7 +2559,8 @@ fn do_test_revoked_counterparty_htlc_tx_balances(anchors: bool) {
 			Balance::ClaimableAwaitingConfirmations {
 				// to_remote output in B's revoked commitment
 				amount_satoshis: 1_000_000
-					- 12_000 - 3_000 - commitment_tx_fee
+					- 12_000 - 3_000
+					- commitment_tx_fee
 					- anchor_outputs_value,
 				confirmation_height: to_remote_conf_height,
 			},
@@ -3941,13 +3952,14 @@ fn test_anchors_aggregated_revoked_htlc_tx() {
 		let txn = nodes[0].tx_broadcaster.txn_broadcasted.lock().unwrap().split_off(0);
 		assert_eq!(txn.len(), 2);
 
-		let revoked_htlc_claims =
-			txn.iter()
-				.filter(|tx| {
-					tx.input.len() == 2
-						&& tx.output.len() == 1 && tx.input[0].previous_output.txid == htlc_tx.txid()
-				})
-				.collect::<Vec<_>>();
+		let revoked_htlc_claims = txn
+			.iter()
+			.filter(|tx| {
+				tx.input.len() == 2
+					&& tx.output.len() == 1
+					&& tx.input[0].previous_output.txid == htlc_tx.txid()
+			})
+			.collect::<Vec<_>>();
 		assert_eq!(revoked_htlc_claims.len(), 2);
 		for revoked_htlc_claim in revoked_htlc_claims {
 			check_spends!(revoked_htlc_claim, htlc_tx);
