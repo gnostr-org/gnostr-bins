@@ -5,8 +5,8 @@
 // those terms.
 
 #![allow(clippy::uninlined_format_args)]
-use nostr_types::{PrivateKey, PublicKey};
 use k256::schnorr::SigningKey;
+use nostr_types::{PrivateKey, PublicKey};
 use zeroize::Zeroize;
 
 fn main() {

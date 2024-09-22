@@ -1,6 +1,6 @@
 use base64::Engine;
-use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use http::Uri;
+use nostr_types::{ClientMessage, Event, Filter, RelayMessage, SubscriptionId};
 use tungstenite::protocol::Message;
 
 pub(crate) fn filters_to_wire(filters: Vec<Filter>) -> String {
@@ -88,7 +88,7 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
                         // FIXME
                         println!("AUTH: {}", challenge)
                     }
-                    RelayMessage::Notify(_) => todo!()
+                    RelayMessage::Notify(_) => todo!(),
                 }
             }
             Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),

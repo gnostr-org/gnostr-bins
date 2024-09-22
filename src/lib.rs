@@ -54,7 +54,6 @@ pub fn get_relays_offline() -> Result<String, &'static str> {
     Ok(format!("{}", relays_offline().unwrap().to_string()))
 }
 
-
 /// pub fn get_weeble() -> Result<String, &'static str>
 pub fn get_weeble() -> Result<String, &'static str> {
     let _weeble_no_nl = weeble().unwrap().to_string();
@@ -80,7 +79,6 @@ pub fn get_blockhash() -> Result<String, &'static str> {
     Ok(format!("{}", blockhash().unwrap().to_string()))
 }
 
-
 /// pub fn hash_list_w_commit_message()
 pub fn hash_list_w_commit_message() {
     let _ = ref_hash_list_w_commit_message();
@@ -101,8 +99,8 @@ pub struct Config {
     /// pub query: String
     pub query: String,
 }
-use std::process;
 use sha256::digest;
+use std::process;
 // impl Config {
 impl Config {
     /// pub fn build(args: &\[String\]) -> Result\<Config, &'static str\>
@@ -137,7 +135,6 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     }
     results
 }
-
 
 /// pub fn post_event(url: &str, event: Event)
 pub fn post_event(url: &str, event: Event) {
@@ -223,15 +220,11 @@ pub fn fetch_by_id(url: &str, id: IdHex) -> Option<Event> {
     }
 }
 
-
-
 pub fn get_pwd() -> Result<String, &'static str> {
     let mut no_nl = pwd().unwrap().to_string();
     no_nl.retain(|c| c != '\n');
     return Ok(format!("{  }", no_nl));
 }
-
-
 
 use base64::Engine;
 use colorful::{Color, Colorful};
