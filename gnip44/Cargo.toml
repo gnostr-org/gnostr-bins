@@ -1,11 +1,11 @@
 [package]
-name = "nip44"
+name = "gnip44"
 version = "0.1.0"
 description = "nostr NIP-44 encryption code"
 authors = ["Mike Dilger <mike@mikedilger.com>"]
 license = "MIT"
-repository = "https://github.com/mikedilger/nip44"
-homepage = "https://github.com/mikedilger/nip44"
+repository = "https://github.com/gnostr-org/gnostr-bins/gnip44"
+homepage = "https://github.com/gnostr-org/gnostr-bins/gnip44"
 readme = "README.md"
 edition = "2021"
 

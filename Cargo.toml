@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-bins"
-version = "0.0.62-rc12"
+version = "0.0.62-rc13"
 edition = "2021"
 authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "Command line tools for nostr"
@@ -22,13 +22,13 @@ futures = "0.3.30"
 futures-util = "0.3"
 getopts = "0.2.21"
 git2 = "0.19.0"
+gnip44 = { version = "0.1.0", path = "gnip44" }
 hex = "0.4"
 http = "1.1"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 lazy_static = "1.4"
 lightning = { version = "0.0.123-beta", path = "lightning/lightning" }
 log = "0.4.22"
-nip44 = { version = "0.1.0", path = "nip44" }
 nostr-types = { version = "0.8.0-unstable", path = "types", package = "gnostr-types" }
 num-bigint = "0.4.6"
 rand = "0.8"

@@ -898,8 +898,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "gnip44"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "chacha20",
+ "constant_time_eq",
+ "hex",
+ "hkdf",
+ "hmac",
+ "rand_core",
+ "secp256k1 0.29.0",
+ "serde_json",
+ "sha2",
+ "thiserror",
+]
+
+[[package]]
 name = "gnostr-bins"
-version = "0.0.62-rc12"
+version = "0.0.62-rc13"
 dependencies = [
  "ascii",
  "base64 0.21.7",
@@ -913,6 +930,7 @@ dependencies = [
  "futures-util",
  "getopts",
  "git2",
+ "gnip44",
  "gnostr-types",
  "hex",
  "http 1.1.0",
@@ -920,7 +938,6 @@ dependencies = [
  "lazy_static",
  "lightning",
  "log",
- "nip44",
  "num-bigint",
  "rand",
  "rand_core",
@@ -949,13 +966,13 @@ dependencies = [
  "chacha20poly1305",
  "core-net",
  "derive_more",
+ "gnip44",
  "hex",
  "hmac",
  "lazy_static",
  "lightning",
  "lightning-invoice",
  "linkify",
- "nip44",
  "num_cpus",
  "pbkdf2",
  "rand",
@@ -1459,23 +1476,6 @@ version = "0.1.0"
 source = "git+https://github.com/arik-so/rust-musig2?rev=cff11e3#cff11e3b1af1691f721a120dc6acb921afa31f89"
 dependencies = [
  "bitcoin",
-]
-
-[[package]]
-name = "nip44"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "chacha20",
- "constant_time_eq",
- "hex",
- "hkdf",
- "hmac",
- "rand_core",
- "secp256k1 0.29.0",
- "serde_json",
- "sha2",
- "thiserror",
 ]
 
 [[package]]
