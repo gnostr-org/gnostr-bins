@@ -31,8 +31,6 @@ vendor/idna/
 vendor/inout/
 vendor/itoa/
 vendor/libc/
-vendor/lightning-invoice/
-vendor/lightning/
 vendor/log/
 vendor/memchr/
 vendor/memoffset/
