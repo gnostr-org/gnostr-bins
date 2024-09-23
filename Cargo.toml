@@ -25,7 +25,7 @@ ascii = "1.1.0"
 base64 = "0.21"
 bech32 = "0.11"
 bitcoin_hashes = "0.14.0"
-cfg-if = { git = "https://github.com/rust-lang/cfg-if.git", version = "1.0.0" }
+cfg-if = "1.0.0"
 clap = { version = "4.5.18", features = ["derive"] }
 colorful = "0.2"
 dirs = "5.0"
