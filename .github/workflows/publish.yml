@@ -29,6 +29,14 @@ jobs:
       - run: |
           cargo publish \
           --token ${CRATES_TOKEN}
+          -p gnip44
+          --manifest-path gnip44/Cargo.toml
+          cargo publish \
+          --token ${CRATES_TOKEN}
+          -p gnostr-types
+          --manifest-path gnostr-types/Cargo.toml
+          cargo publish \
+          --token ${CRATES_TOKEN}
           -p gnostr-bins
           --manifest-path Cargo.toml
         env:
