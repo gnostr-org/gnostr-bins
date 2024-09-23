@@ -1,5 +1,5 @@
 [workspace.package]
-version = "0.0.62-rc18"
+version = "0.0.62-rc19"
 edition = "2021"
 authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "gnostr: a git+nostr workflow utility"
