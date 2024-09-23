@@ -1524,7 +1524,7 @@ dependencies = [
 
 [[package]]
 name = "gnip44"
-version = "0.1.0"
+version = "0.0.62-rc15"
 dependencies = [
  "base64 0.22.1",
  "chacha20",
@@ -1541,7 +1541,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-bins"
-version = "0.0.62-rc14"
+version = "0.0.62-rc15"
 dependencies = [
  "ascii",
  "base64 0.21.7",
@@ -1582,7 +1582,7 @@ dependencies = [
 
 [[package]]
 name = "gnostr-types"
-version = "0.8.0"
+version = "0.0.62-rc15"
 dependencies = [
  "aes",
  "base64 0.22.1",

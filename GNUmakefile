@@ -5,6 +5,14 @@ export RUSTC
 RUSTUP:=$(shell which rustup)
 export RUSTUP
 
+DISK_SIZE_TOTAL=$(shell df -kh . | tail -n1 | awk '{print $2}')
+DISK_SIZE_FREE=$(shell df -kh . | tail -n1 | awk '{print $4}')
+DISK_PERCENT_USED=$(shell df -kh . | tail -n1 | awk '{print $5}')
+export DISK_SIZE_TOTAL
+export DISK_SIZE_FREE
+export DISK_PERCENT_USED
+#	echo "${DISK_SIZE_FREE}" available out of "${DISK_SIZE_TOTAL}"\n total ("${DISK_PERCENT_USED}" used).
+
 -:
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?##/ {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 help:## 	help
