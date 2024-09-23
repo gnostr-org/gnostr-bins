@@ -1,5 +1,8 @@
 [workspace.package]
-version = "0.0.62-rc20"
+version = "0.0.62-rc21"
+## check Cargo.toml gnip44 dep version
+## check Cargo.toml gnostr-types dep version
+## check ./types/Cargo.toml gnip44 dep version
 edition = "2021"
 authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
 description = "gnostr: a git+nostr workflow utility"
@@ -33,14 +36,14 @@ futures = "0.3.30"
 futures-util = "0.3"
 getopts = "0.2.21"
 git2 = "0.19.0"
-gnip44 = { path = "gnip44", package = "gnip44", version = "0.0.62-rc20" }
+gnip44 = { path = "gnip44", package = "gnip44", version = "0.0.62-rc21" }
 hex = "0.4"
 http = "1.1"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 lazy_static = "1.4"
 lightning = { version = "0.0.123-beta", path = "lightning/lightning" }
 log = "0.4.22"
-nostr-types = { path = "types", package = "gnostr-types", version = "0.0.62-rc20" }
+nostr-types = { path = "types", package = "gnostr-types", version = "0.0.62-rc21" }
 num-bigint = "0.4.6"
 rand = "0.8"
 rand_core = "0.6"
