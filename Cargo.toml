@@ -13,7 +13,7 @@ license = "MIT"
 name = "gnostr-bins"
 version = { workspace = true }
 edition = { workspace = true }
-author = { workspace = true }
+authors = { workspace = true }
 description = { workspace = true }
 repository = { workspace = true }
 homepage = { workspace = true }
