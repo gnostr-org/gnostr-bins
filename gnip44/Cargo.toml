@@ -4,7 +4,7 @@ version = { workspace = true }
 description = "nostr NIP-44 encryption code"
 authors = ["Mike Dilger <mike@mikedilger.com>"]
 license = "MIT"
-repository = "https://github.com/gnostr-org/gnostr-bins/gnip44"
+repository = { workspace = true }
 homepage = "https://github.com/gnostr-org/gnostr-bins/gnip44"
 readme = "README.md"
 edition = "2021"

@@ -2,9 +2,10 @@
 name = "gnostr-types"
 version = { workspace = true }
 edition = "2021"
+homepage = { workspace = true }
 authors = ["gnostr <admin@gnostr.org>", "Mike Dilger <mike@mikedilger.com>"]
 description = "gnostr: a git+nostr workflow utility"
-repository = "https://github.com/mikedilger/gnostr-bins/types"
+repository = { workspace = true }
 documentation = "https://docs.rs/gnostr-bins"
 readme = "README.md"
 keywords = [ "git", "nostr", "gnostr" ]

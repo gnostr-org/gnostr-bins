@@ -1,8 +1,10 @@
 [workspace.package]
 version = "0.0.62-rc15"
+edition = "2021"
 authors = ["gnostr admin@gnostr.org", "Mike Dilger <mike@mikedilger.com>"]
-description = "Command line tools for nostr"
+description = "gnostr: a git+nostr workflow utility"
 repository = "https://github.com/gnostr-org/gnostr-bins"
+homepage = "https://github.com/gnostr-org/gnostr-bins"
 documentation = "https://github.com/gnostr-org/gnostr-bins"
 keywords = ["gnostr", "nostr"]
 license = "MIT"
@@ -10,7 +12,13 @@ license = "MIT"
 [package]
 name = "gnostr-bins"
 version = { workspace = true }
-edition = "2021"
+edition = { workspace = true }
+author = { workspace = true }
+description = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+keywords = { workspace = true }
+license = { workspace = true }
 
 [dependencies]
 ascii = "1.1.0"
