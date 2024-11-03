@@ -79,8 +79,10 @@ fn main() {
                 //this captures the stream when np --relay flag
                 std::io::stdin().read_to_string(&mut s).unwrap();
                 let event: Event = serde_json::from_str(&s).unwrap();
-                //always reprint s for further piping
-                print!("{}\n", s);
+                //if no --relay flag
+                //assume no reprint
+                //
+                //NO print!("{}\n", s);
                 gnostr_bins::post_event(relay_url, event);
                 process::exit(0);
             };
