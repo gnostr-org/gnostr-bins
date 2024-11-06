@@ -1,6 +1,7 @@
 use std::process::Command;
 
 fn main() {
+    println!("cargo::rustc-check-cfg=cfg(c_bindings)");
     Command::new("cargo").args(["update", "nostr-types"]);
     Command::new("brew").args(["install", "openssl@1.1", "||", "true"]);
     Command::new("apt").args(["install", "openssl", "||", "true"]);

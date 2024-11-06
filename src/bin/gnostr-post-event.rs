@@ -79,21 +79,23 @@ fn main() {
                 //this captures the stream when np --relay flag
                 std::io::stdin().read_to_string(&mut s).unwrap();
                 let event: Event = serde_json::from_str(&s).unwrap();
-                //always reprint s for further piping
-                print!("{}\n", s);
+                //if no --relay flag
+                //assume no reprint
+                //
+                //NO print!("{}\n", s);
                 gnostr_bins::post_event(relay_url, event);
                 process::exit(0);
             };
             //this actually captures the stream when --relay flag
             if args_vector.len() == 3 {
                 //and if
-                if args_vector[1] == "--relay" {
+                if args_vector[1] == "--relay" || args_vector[1] == "-r" {
                     relay_url = &args_vector[2];
                     let mut s: String = String::new();
                     std::io::stdin().read_to_string(&mut s).unwrap();
                     let event: Event = serde_json::from_str(&s).unwrap();
                     //always reprint s for further piping
-                    print!("{}\n", s);
+                    print!("{}", s);
                     gnostr_bins::post_event(relay_url, event);
                     process::exit(0);
                 }
@@ -101,7 +103,7 @@ fn main() {
                 let mut s: String = String::new();
                 std::io::stdin().read_to_string(&mut s).unwrap();
                 //always reprint s for further piping
-                print!("{}\n", s);
+                //print!("{}\n", s);
                 let event: Event = serde_json::from_str(&s).unwrap();
                 gnostr_bins::post_event(relay_url, event);
             };

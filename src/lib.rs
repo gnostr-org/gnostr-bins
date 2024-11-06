@@ -1,11 +1,26 @@
+pub use base64::Engine;
+pub use colorful::{Color, Colorful};
+pub use futures_util::stream::FusedStream;
+pub use futures_util::{SinkExt, StreamExt};
+pub use http::Uri;
+pub use lazy_static::lazy_static;
+// pub //use nostr_types::RelayMessageV5;
+pub use nostr_types::{
+    ClientMessage, EncryptedPrivateKey, Event, EventKind, Filter, Id, IdHex, KeySigner, PreEvent,
+    RelayMessage, Signer, SubscriptionId, Tag, Unixtime, Why,
+};
+pub use tokio::sync::mpsc::{Receiver, Sender};
+pub use tungstenite::Message;
+pub use zeroize::Zeroize;
+
 //pub use gnip44::*;
 pub use lightning;
-//pub use nostr_types::*;
 
-mod reflog_simple;
-use crate::reflog_simple::{
-    pwd, ref_hash_list, ref_hash_list_padded, ref_hash_list_w_commit_message,
-};
+type Ws =
+    tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>>;
+
+pub mod reflog;
+pub use reflog::{ref_hash_list, ref_hash_list_padded, ref_hash_list_w_commit_message};
 
 pub use relays::{
     relays, relays_by_nip, relays_offline, relays_online, relays_paid, relays_public,
@@ -83,11 +98,6 @@ pub fn get_blockhash() -> Result<String, &'static str> {
     Ok(format!("{}", blockhash().unwrap().to_string()))
 }
 
-/// pub fn hash_list_w_commit_message()
-pub fn hash_list_w_commit_message() {
-    let _ = ref_hash_list_w_commit_message();
-}
-
 /// pub fn hash_list()
 pub fn hash_list() {
     let _ = ref_hash_list();
@@ -96,6 +106,11 @@ pub fn hash_list() {
 /// pub fn hash_list_padded()
 pub fn hash_list_padded() {
     let _ = ref_hash_list_padded();
+}
+
+/// pub fn hash_list_w_commit_message()
+pub fn hash_list_w_commit_message() {
+    let _ = ref_hash_list_w_commit_message();
 }
 
 /// pub struct Config
@@ -174,18 +189,23 @@ pub fn print_event(event: &Event) {
 mod internal;
 use internal::*;
 
+/// <https://docs.rs/gnostr-bins/latest/gnostr_bins/weeble/index.html>
 pub mod weeble;
 pub use weeble::weeble;
 
+/// <https://docs.rs/gnostr-bins/latest/gnostr_bins/wobble/index.html>
 pub mod wobble;
 pub use wobble::wobble;
 
+/// <https://docs.rs/gnostr-bins/latest/gnostr_bins/blockhash/index.html>
 pub mod blockhash;
 pub use blockhash::blockhash;
 
+/// <https://docs.rs/gnostr-bins/latest/gnostr_bins/blockheight/index.html>
 pub mod blockheight;
 pub use blockheight::blockheight;
 
+/// <https://docs.rs/gnostr-bins/latest/gnostr_bins/hash/index.html>
 pub mod hash;
 pub use hash::hash;
 
@@ -229,26 +249,6 @@ pub fn get_pwd() -> Result<String, &'static str> {
     no_nl.retain(|c| c != '\n');
     return Ok(format!("{  }", no_nl));
 }
-
-use base64::Engine;
-use colorful::{Color, Colorful};
-use futures_util::stream::FusedStream;
-use futures_util::{SinkExt, StreamExt};
-use http::Uri;
-use lazy_static::lazy_static;
-//use nostr_types::RelayMessageV5;
-//
-use nostr_types::IdHex;
-use nostr_types::{
-    ClientMessage, EncryptedPrivateKey, Event, EventKind, Filter, Id, KeySigner, PreEvent,
-    RelayMessage, Signer, SubscriptionId, Tag, Unixtime, Why,
-};
-use tokio::sync::mpsc::{Receiver, Sender};
-use tungstenite::Message;
-use zeroize::Zeroize;
-
-type Ws =
-    tokio_tungstenite::WebSocketStream<tokio_tungstenite::MaybeTlsStream<tokio::net::TcpStream>>;
 
 pub struct Prefixes {
     from_relay: String,
