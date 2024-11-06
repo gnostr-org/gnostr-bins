@@ -87,6 +87,7 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
         let message = match websocket.read() {
             Ok(m) => m,
             Err(e) => {
+                //handle differently
                 println!("Problem reading from websocket: {}", e);
                 return events;
             }
@@ -121,24 +122,30 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
                         println!("OK: ok={} reason={}", ok, reason)
                     }
                     RelayMessage::Auth(challenge) => {
-                        // FIXME
-                        println!("AUTH: {}", challenge)
+                        // NIP-0042 [\"AUTH\", \"<challenge-string>\"]
+                        print!("[\"AUTH\":\"{}\"]", challenge)
                     }
                     RelayMessage::Notify(_) => todo!(),
                 }
             }
-            Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),
+            Message::Binary(_) => {
+                println!("IGNORING BINARY MESSAGE")
+            }
             Message::Ping(vec) => {
                 if let Err(e) = websocket.send(Message::Pong(vec)) {
                     println!("Unable to pong: {}", e);
                 }
             }
-            Message::Pong(_) => println!("IGNORING PONG"),
+            Message::Pong(_) => {
+                println!("IGNORING PONG")
+            }
             Message::Close(_) => {
                 //println!("Closing");
                 break;
             }
-            Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),
+            Message::Frame(_) => {
+                println!("UNEXPECTED RAW WEBSOCKET FRAME")
+            }
         }
     }
 
@@ -146,6 +153,7 @@ pub(crate) fn fetch(host: String, uri: Uri, wire: String) -> Vec<Event> {
 }
 
 pub(crate) fn post(host: String, uri: Uri, wire: String) {
+    //gnostr key here
     let key: [u8; 16] = rand::random();
     let request = http::request::Request::builder()
         .method("GET")
@@ -164,7 +172,7 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
     let (mut websocket, _response) =
         tungstenite::connect(request).expect("Could not connect to relay");
 
-    print!("{}\n", wire);
+    //print!("{}\n", wire);
     websocket
         .send(Message::Text(wire))
         .expect("Could not send message to relay");
@@ -174,6 +182,7 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
     let message = match websocket.read() {
         Ok(m) => m,
         Err(e) => {
+            //handle differently
             println!("Problem reading from websocket: {}", e);
             return;
         }
@@ -194,22 +203,28 @@ pub(crate) fn post(host: String, uri: Uri, wire: String) {
                     "[\"{}\",{{\"ok\":\"{}\",\"reason\":\"{}\"}}]",
                     host, ok, reason
                 ),
-                RelayMessage::Auth(challenge) => println!("AUTH: {}", challenge),
+                RelayMessage::Auth(challenge) => print!("[\"AUTH\":\"{}\"]", challenge),
                 RelayMessage::Notify(_) => todo!(),
                 RelayMessage::Closed(_, _) => todo!(),
             }
         }
-        Message::Binary(_) => println!("IGNORING BINARY MESSAGE"),
+        Message::Binary(_) => {
+            println!("IGNORING BINARY MESSAGE")
+        }
         Message::Ping(vec) => {
             if let Err(e) = websocket.send(Message::Pong(vec)) {
                 println!("Unable to pong: {}", e);
             }
         }
-        Message::Pong(_) => println!("IGNORING PONG"),
+        Message::Pong(_) => {
+            println!("IGNORING PONG")
+        }
         Message::Close(_) => {
             //println!("Closing");
             return;
         }
-        Message::Frame(_) => println!("UNEXPECTED RAW WEBSOCKET FRAME"),
+        Message::Frame(_) => {
+            println!("UNEXPECTED RAW WEBSOCKET FRAME")
+        }
     }
 }
