@@ -15,7 +15,9 @@
 #![deny(warnings)]
 
 use clap::Parser;
-use git2::{/*AutotagOption, */FetchOptions, RemoteCallbacks, /*RemoteUpdateFlags, */Repository};
+use git2::{
+    /*AutotagOption, */ FetchOptions, RemoteCallbacks, /*RemoteUpdateFlags, */ Repository,
+};
 use std::io::{self, Write};
 use std::str;
 
