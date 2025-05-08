@@ -117,9 +117,7 @@ fn main() {
     Command::new("apt").args(["install", "openssl", "||", "true"]);
     Command::new("apk").args(["add", "openssl-dev", "||", "true"]);
 
-
-
-	let now = match std::env::var("SOURCE_DATE_EPOCH") {
+    let now = match std::env::var("SOURCE_DATE_EPOCH") {
         Ok(val) => chrono::Local
             .timestamp_opt(val.parse::<i64>().unwrap(), 0)
             .unwrap(),

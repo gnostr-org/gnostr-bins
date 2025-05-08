@@ -1,0 +1,2090 @@
+{
+  "dist_version": "0.28.0",
+  "announcement_tag": "v0.0.67",
+  "announcement_tag_is_implicit": false,
+  "announcement_is_prerelease": false,
+  "announcement_title": "v0.0.67",
+  "announcement_github_body": "## Install gnostr-bins 0.0.67\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.sh | sh\n```\n\n### Install prebuilt binaries via powershell script\n\n```sh\npowershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.ps1 | iex\"\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install gnostr-org/gnostr-org/gnostr-bins\n```\n\n## Download gnostr-bins 0.0.67\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [gnostr-bins-aarch64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-aarch64-apple-darwin.tar.xz) | Apple Silicon macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-aarch64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-apple-darwin.tar.xz) | Intel macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-pc-windows-msvc.zip](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-pc-windows-msvc.zip) | x64 Windows | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-pc-windows-msvc.zip.sha256) |\n| [gnostr-bins-x86_64-unknown-linux-gnu.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz) | x64 Linux | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256) |\n\n",
+  "releases": [
+    {
+      "app_name": "gnostr-bins",
+      "app_version": "0.0.67",
+      "env": {
+        "install_dir_env_var": "GNOSTR_BINS_INSTALL_DIR",
+        "unmanaged_dir_env_var": "GNOSTR_BINS_UNMANAGED_INSTALL",
+        "disable_update_env_var": "GNOSTR_BINS_DISABLE_UPDATE",
+        "no_modify_path_env_var": "GNOSTR_BINS_NO_MODIFY_PATH",
+        "github_base_url_env_var": "GNOSTR_BINS_INSTALLER_GITHUB_BASE_URL",
+        "ghe_base_url_env_var": "GNOSTR_BINS_INSTALLER_GHE_BASE_URL"
+      },
+      "display_name": "gnostr-bins",
+      "display": true,
+      "artifacts": [
+        "source.tar.gz",
+        "source.tar.gz.sha256",
+        "gnostr-bins-installer.sh",
+        "gnostr-bins-installer.ps1",
+        "gnostr-bins.rb",
+        "sha256.sum",
+        "gnostr-bins-x86_64-apple-darwin-update",
+        "gnostr-bins-x86_64-apple-darwin.tar.xz",
+        "gnostr-bins-x86_64-apple-darwin.tar.xz.sha256",
+        "gnostr-bins-x86_64-pc-windows-msvc-update",
+        "gnostr-bins-x86_64-pc-windows-msvc.zip",
+        "gnostr-bins-x86_64-pc-windows-msvc.zip.sha256",
+        "gnostr-bins-x86_64-unknown-linux-gnu-update",
+        "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz",
+        "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256",
+        "gnostr-bins-aarch64-apple-darwin-update",
+        "gnostr-bins-aarch64-apple-darwin.tar.xz",
+        "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256"
+      ],
+      "hosting": {
+        "github": {
+          "artifact_base_url": "https://github.com",
+          "artifact_download_path": "/gnostr-org/gnostr-bins/releases/download/v0.0.67",
+          "owner": "gnostr-org",
+          "repo": "gnostr-bins"
+        }
+      }
+    }
+  ],
+  "artifacts": {
+    "gnostr-bins-aarch64-apple-darwin-update": {
+      "name": "gnostr-bins-aarch64-apple-darwin-update",
+      "kind": "updater",
+      "target_triples": [
+        "aarch64-apple-darwin"
+      ]
+    },
+    "gnostr-bins-aarch64-apple-darwin.tar.xz": {
+      "name": "gnostr-bins-aarch64-apple-darwin.tar.xz",
+      "kind": "executable-zip",
+      "target_triples": [
+        "aarch64-apple-darwin"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE-MIT",
+          "path": "LICENSE-MIT",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-bech32_to_any",
+          "name": "bech32_to_any",
+          "path": "bech32_to_any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-create_event",
+          "name": "create_event",
+          "path": "create_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-create_event_raw",
+          "name": "create_event_raw",
+          "path": "create_event_raw",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-create_giftwrap",
+          "name": "create_giftwrap",
+          "path": "create_giftwrap",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-create_nevent",
+          "name": "create_nevent",
+          "path": "create_nevent",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-decrypt_private_key",
+          "name": "decrypt_private_key",
+          "path": "decrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-dump_relay",
+          "name": "dump_relay",
+          "path": "dump_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-dump_relay_with_login",
+          "name": "dump_relay_with_login",
+          "path": "dump_relay_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-encrypt_private_key",
+          "name": "encrypt_private_key",
+          "path": "encrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_filter",
+          "name": "fetch_by_filter",
+          "path": "fetch_by_filter",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_id",
+          "name": "fetch_by_id",
+          "path": "fetch_by_id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_id_with_login",
+          "name": "fetch_by_id_with_login",
+          "path": "fetch_by_id_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_kind_and_author",
+          "name": "fetch_by_kind_and_author",
+          "path": "fetch_by_kind_and_author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_kind_and_author_limit",
+          "name": "fetch_by_kind_and_author_limit",
+          "path": "fetch_by_kind_and_author_limit",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_by_kind_and_author_with_login",
+          "name": "fetch_by_kind_and_author_with_login",
+          "path": "fetch_by_kind_and_author_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_giftwraps",
+          "name": "fetch_giftwraps",
+          "path": "fetch_giftwraps",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_metadata",
+          "name": "fetch_metadata",
+          "path": "fetch_metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_nip11",
+          "name": "fetch_nip11",
+          "path": "fetch_nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-fetch_relay_list",
+          "name": "fetch_relay_list",
+          "path": "fetch_relay_list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-form_naddr",
+          "name": "form_naddr",
+          "path": "form_naddr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-generate_keypair",
+          "name": "generate_keypair",
+          "path": "generate_keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-add",
+          "name": "gnostr-add",
+          "path": "gnostr-add",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-bech32-to-any",
+          "name": "gnostr-bech32-to-any",
+          "path": "gnostr-bech32-to-any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-blame",
+          "name": "gnostr-blame",
+          "path": "gnostr-blame",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-blockhash",
+          "name": "gnostr-blockhash",
+          "path": "gnostr-blockhash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-blockheight",
+          "name": "gnostr-blockheight",
+          "path": "gnostr-blockheight",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-cat-file",
+          "name": "gnostr-cat-file",
+          "path": "gnostr-cat-file",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-cli-example",
+          "name": "gnostr-cli-example",
+          "path": "gnostr-cli-example",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-clone",
+          "name": "gnostr-clone",
+          "path": "gnostr-clone",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-decrypt-private_key",
+          "name": "gnostr-decrypt-private_key",
+          "path": "gnostr-decrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-diff",
+          "name": "gnostr-diff",
+          "path": "gnostr-diff",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-dump-relay",
+          "name": "gnostr-dump-relay",
+          "path": "gnostr-dump-relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-encrypt-private_key",
+          "name": "gnostr-encrypt-private_key",
+          "path": "gnostr-encrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch",
+          "name": "gnostr-fetch",
+          "path": "gnostr-fetch",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-by-id",
+          "name": "gnostr-fetch-by-id",
+          "path": "gnostr-fetch-by-id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-by-kind-and-author",
+          "name": "gnostr-fetch-by-kind-and-author",
+          "path": "gnostr-fetch-by-kind-and-author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-metadata",
+          "name": "gnostr-fetch-metadata",
+          "path": "gnostr-fetch-metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-nip11",
+          "name": "gnostr-fetch-nip11",
+          "path": "gnostr-fetch-nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-pubkey-relays",
+          "name": "gnostr-fetch-pubkey-relays",
+          "path": "gnostr-fetch-pubkey-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-relay-list",
+          "name": "gnostr-fetch-relay-list",
+          "path": "gnostr-fetch-relay-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-watch-list",
+          "name": "gnostr-fetch-watch-list",
+          "path": "gnostr-fetch-watch-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-fetch-watch-list-iterator",
+          "name": "gnostr-fetch-watch-list-iterator",
+          "path": "gnostr-fetch-watch-list-iterator",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-form-event-addr",
+          "name": "gnostr-form-event-addr",
+          "path": "gnostr-form-event-addr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-generate-keypair",
+          "name": "gnostr-generate-keypair",
+          "path": "gnostr-generate-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-get-relays",
+          "name": "gnostr-get-relays",
+          "path": "gnostr-get-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-hash",
+          "name": "gnostr-hash",
+          "path": "gnostr-hash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-init",
+          "name": "gnostr-init",
+          "path": "gnostr-init",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-ls-remote",
+          "name": "gnostr-ls-remote",
+          "path": "gnostr-ls-remote",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-objects",
+          "name": "gnostr-objects",
+          "path": "gnostr-objects",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-pi",
+          "name": "gnostr-pi",
+          "path": "gnostr-pi",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-post-event",
+          "name": "gnostr-post-event",
+          "path": "gnostr-post-event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-privkey-to-bech32",
+          "name": "gnostr-privkey-to-bech32",
+          "path": "gnostr-privkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-pubkey-to-bech32",
+          "name": "gnostr-pubkey-to-bech32",
+          "path": "gnostr-pubkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-pull",
+          "name": "gnostr-pull",
+          "path": "gnostr-pull",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-reflog",
+          "name": "gnostr-reflog",
+          "path": "gnostr-reflog",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-rev-list",
+          "name": "gnostr-rev-list",
+          "path": "gnostr-rev-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-rev-parse",
+          "name": "gnostr-rev-parse",
+          "path": "gnostr-rev-parse",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-sha256",
+          "name": "gnostr-sha256",
+          "path": "gnostr-sha256",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-state",
+          "name": "gnostr-state",
+          "path": "gnostr-state",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-status",
+          "name": "gnostr-status",
+          "path": "gnostr-status",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-tag",
+          "name": "gnostr-tag",
+          "path": "gnostr-tag",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-verify-keypair",
+          "name": "gnostr-verify-keypair",
+          "path": "gnostr-verify-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-weeble",
+          "name": "gnostr-weeble",
+          "path": "gnostr-weeble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-wobble",
+          "name": "gnostr-wobble",
+          "path": "gnostr-wobble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-gnostr-xor",
+          "name": "gnostr-xor",
+          "path": "gnostr-xor",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-id_to_bech32",
+          "name": "id_to_bech32",
+          "path": "id_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-post_event",
+          "name": "post_event",
+          "path": "post_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-post_from_files",
+          "name": "post_from_files",
+          "path": "post_from_files",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-privkey_to_bech32",
+          "name": "privkey_to_bech32",
+          "path": "privkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-pubkey_to_bech32",
+          "name": "pubkey_to_bech32",
+          "path": "pubkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-test_nip46",
+          "name": "test_nip46",
+          "path": "test_nip46",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-test_relay",
+          "name": "test_relay",
+          "path": "test_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-verify_event",
+          "name": "verify_event",
+          "path": "verify_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-aarch64-apple-darwin-exe-verify_keypair",
+          "name": "verify_keypair",
+          "path": "verify_keypair",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256"
+    },
+    "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256": {
+      "name": "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "aarch64-apple-darwin"
+      ]
+    },
+    "gnostr-bins-installer.ps1": {
+      "name": "gnostr-bins-installer.ps1",
+      "kind": "installer",
+      "target_triples": [
+        "aarch64-pc-windows-msvc",
+        "x86_64-pc-windows-gnu",
+        "x86_64-pc-windows-msvc"
+      ],
+      "install_hint": "powershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.ps1 | iex\"",
+      "description": "Install prebuilt binaries via powershell script"
+    },
+    "gnostr-bins-installer.sh": {
+      "name": "gnostr-bins-installer.sh",
+      "kind": "installer",
+      "target_triples": [
+        "aarch64-apple-darwin",
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-gnu",
+        "x86_64-unknown-linux-gnu"
+      ],
+      "install_hint": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.sh | sh",
+      "description": "Install prebuilt binaries via shell script"
+    },
+    "gnostr-bins-x86_64-apple-darwin-update": {
+      "name": "gnostr-bins-x86_64-apple-darwin-update",
+      "kind": "updater",
+      "target_triples": [
+        "x86_64-apple-darwin"
+      ]
+    },
+    "gnostr-bins-x86_64-apple-darwin.tar.xz": {
+      "name": "gnostr-bins-x86_64-apple-darwin.tar.xz",
+      "kind": "executable-zip",
+      "target_triples": [
+        "x86_64-apple-darwin"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE-MIT",
+          "path": "LICENSE-MIT",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-bech32_to_any",
+          "name": "bech32_to_any",
+          "path": "bech32_to_any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-create_event",
+          "name": "create_event",
+          "path": "create_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-create_event_raw",
+          "name": "create_event_raw",
+          "path": "create_event_raw",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-create_giftwrap",
+          "name": "create_giftwrap",
+          "path": "create_giftwrap",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-create_nevent",
+          "name": "create_nevent",
+          "path": "create_nevent",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-decrypt_private_key",
+          "name": "decrypt_private_key",
+          "path": "decrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-dump_relay",
+          "name": "dump_relay",
+          "path": "dump_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-dump_relay_with_login",
+          "name": "dump_relay_with_login",
+          "path": "dump_relay_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-encrypt_private_key",
+          "name": "encrypt_private_key",
+          "path": "encrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_filter",
+          "name": "fetch_by_filter",
+          "path": "fetch_by_filter",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_id",
+          "name": "fetch_by_id",
+          "path": "fetch_by_id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_id_with_login",
+          "name": "fetch_by_id_with_login",
+          "path": "fetch_by_id_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_kind_and_author",
+          "name": "fetch_by_kind_and_author",
+          "path": "fetch_by_kind_and_author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_kind_and_author_limit",
+          "name": "fetch_by_kind_and_author_limit",
+          "path": "fetch_by_kind_and_author_limit",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_by_kind_and_author_with_login",
+          "name": "fetch_by_kind_and_author_with_login",
+          "path": "fetch_by_kind_and_author_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_giftwraps",
+          "name": "fetch_giftwraps",
+          "path": "fetch_giftwraps",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_metadata",
+          "name": "fetch_metadata",
+          "path": "fetch_metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_nip11",
+          "name": "fetch_nip11",
+          "path": "fetch_nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-fetch_relay_list",
+          "name": "fetch_relay_list",
+          "path": "fetch_relay_list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-form_naddr",
+          "name": "form_naddr",
+          "path": "form_naddr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-generate_keypair",
+          "name": "generate_keypair",
+          "path": "generate_keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-add",
+          "name": "gnostr-add",
+          "path": "gnostr-add",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-bech32-to-any",
+          "name": "gnostr-bech32-to-any",
+          "path": "gnostr-bech32-to-any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-blame",
+          "name": "gnostr-blame",
+          "path": "gnostr-blame",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-blockhash",
+          "name": "gnostr-blockhash",
+          "path": "gnostr-blockhash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-blockheight",
+          "name": "gnostr-blockheight",
+          "path": "gnostr-blockheight",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-cat-file",
+          "name": "gnostr-cat-file",
+          "path": "gnostr-cat-file",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-cli-example",
+          "name": "gnostr-cli-example",
+          "path": "gnostr-cli-example",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-clone",
+          "name": "gnostr-clone",
+          "path": "gnostr-clone",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-decrypt-private_key",
+          "name": "gnostr-decrypt-private_key",
+          "path": "gnostr-decrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-diff",
+          "name": "gnostr-diff",
+          "path": "gnostr-diff",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-dump-relay",
+          "name": "gnostr-dump-relay",
+          "path": "gnostr-dump-relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-encrypt-private_key",
+          "name": "gnostr-encrypt-private_key",
+          "path": "gnostr-encrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch",
+          "name": "gnostr-fetch",
+          "path": "gnostr-fetch",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-by-id",
+          "name": "gnostr-fetch-by-id",
+          "path": "gnostr-fetch-by-id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-by-kind-and-author",
+          "name": "gnostr-fetch-by-kind-and-author",
+          "path": "gnostr-fetch-by-kind-and-author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-metadata",
+          "name": "gnostr-fetch-metadata",
+          "path": "gnostr-fetch-metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-nip11",
+          "name": "gnostr-fetch-nip11",
+          "path": "gnostr-fetch-nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-pubkey-relays",
+          "name": "gnostr-fetch-pubkey-relays",
+          "path": "gnostr-fetch-pubkey-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-relay-list",
+          "name": "gnostr-fetch-relay-list",
+          "path": "gnostr-fetch-relay-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-watch-list",
+          "name": "gnostr-fetch-watch-list",
+          "path": "gnostr-fetch-watch-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-fetch-watch-list-iterator",
+          "name": "gnostr-fetch-watch-list-iterator",
+          "path": "gnostr-fetch-watch-list-iterator",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-form-event-addr",
+          "name": "gnostr-form-event-addr",
+          "path": "gnostr-form-event-addr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-generate-keypair",
+          "name": "gnostr-generate-keypair",
+          "path": "gnostr-generate-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-get-relays",
+          "name": "gnostr-get-relays",
+          "path": "gnostr-get-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-hash",
+          "name": "gnostr-hash",
+          "path": "gnostr-hash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-init",
+          "name": "gnostr-init",
+          "path": "gnostr-init",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-ls-remote",
+          "name": "gnostr-ls-remote",
+          "path": "gnostr-ls-remote",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-objects",
+          "name": "gnostr-objects",
+          "path": "gnostr-objects",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-pi",
+          "name": "gnostr-pi",
+          "path": "gnostr-pi",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-post-event",
+          "name": "gnostr-post-event",
+          "path": "gnostr-post-event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-privkey-to-bech32",
+          "name": "gnostr-privkey-to-bech32",
+          "path": "gnostr-privkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-pubkey-to-bech32",
+          "name": "gnostr-pubkey-to-bech32",
+          "path": "gnostr-pubkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-pull",
+          "name": "gnostr-pull",
+          "path": "gnostr-pull",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-reflog",
+          "name": "gnostr-reflog",
+          "path": "gnostr-reflog",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-rev-list",
+          "name": "gnostr-rev-list",
+          "path": "gnostr-rev-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-rev-parse",
+          "name": "gnostr-rev-parse",
+          "path": "gnostr-rev-parse",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-sha256",
+          "name": "gnostr-sha256",
+          "path": "gnostr-sha256",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-state",
+          "name": "gnostr-state",
+          "path": "gnostr-state",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-status",
+          "name": "gnostr-status",
+          "path": "gnostr-status",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-tag",
+          "name": "gnostr-tag",
+          "path": "gnostr-tag",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-verify-keypair",
+          "name": "gnostr-verify-keypair",
+          "path": "gnostr-verify-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-weeble",
+          "name": "gnostr-weeble",
+          "path": "gnostr-weeble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-wobble",
+          "name": "gnostr-wobble",
+          "path": "gnostr-wobble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-gnostr-xor",
+          "name": "gnostr-xor",
+          "path": "gnostr-xor",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-id_to_bech32",
+          "name": "id_to_bech32",
+          "path": "id_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-post_event",
+          "name": "post_event",
+          "path": "post_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-post_from_files",
+          "name": "post_from_files",
+          "path": "post_from_files",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-privkey_to_bech32",
+          "name": "privkey_to_bech32",
+          "path": "privkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-pubkey_to_bech32",
+          "name": "pubkey_to_bech32",
+          "path": "pubkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-test_nip46",
+          "name": "test_nip46",
+          "path": "test_nip46",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-test_relay",
+          "name": "test_relay",
+          "path": "test_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-verify_event",
+          "name": "verify_event",
+          "path": "verify_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-apple-darwin-exe-verify_keypair",
+          "name": "verify_keypair",
+          "path": "verify_keypair",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-bins-x86_64-apple-darwin.tar.xz.sha256"
+    },
+    "gnostr-bins-x86_64-apple-darwin.tar.xz.sha256": {
+      "name": "gnostr-bins-x86_64-apple-darwin.tar.xz.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "x86_64-apple-darwin"
+      ]
+    },
+    "gnostr-bins-x86_64-pc-windows-msvc-update": {
+      "name": "gnostr-bins-x86_64-pc-windows-msvc-update",
+      "kind": "updater",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ]
+    },
+    "gnostr-bins-x86_64-pc-windows-msvc.zip": {
+      "name": "gnostr-bins-x86_64-pc-windows-msvc.zip",
+      "kind": "executable-zip",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE-MIT",
+          "path": "LICENSE-MIT",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-bech32_to_any",
+          "name": "bech32_to_any",
+          "path": "bech32_to_any.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-create_event",
+          "name": "create_event",
+          "path": "create_event.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-create_event_raw",
+          "name": "create_event_raw",
+          "path": "create_event_raw.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-create_giftwrap",
+          "name": "create_giftwrap",
+          "path": "create_giftwrap.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-create_nevent",
+          "name": "create_nevent",
+          "path": "create_nevent.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-decrypt_private_key",
+          "name": "decrypt_private_key",
+          "path": "decrypt_private_key.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-dump_relay",
+          "name": "dump_relay",
+          "path": "dump_relay.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-dump_relay_with_login",
+          "name": "dump_relay_with_login",
+          "path": "dump_relay_with_login.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-encrypt_private_key",
+          "name": "encrypt_private_key",
+          "path": "encrypt_private_key.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_filter",
+          "name": "fetch_by_filter",
+          "path": "fetch_by_filter.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_id",
+          "name": "fetch_by_id",
+          "path": "fetch_by_id.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_id_with_login",
+          "name": "fetch_by_id_with_login",
+          "path": "fetch_by_id_with_login.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_kind_and_author",
+          "name": "fetch_by_kind_and_author",
+          "path": "fetch_by_kind_and_author.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_kind_and_author_limit",
+          "name": "fetch_by_kind_and_author_limit",
+          "path": "fetch_by_kind_and_author_limit.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_by_kind_and_author_with_login",
+          "name": "fetch_by_kind_and_author_with_login",
+          "path": "fetch_by_kind_and_author_with_login.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_giftwraps",
+          "name": "fetch_giftwraps",
+          "path": "fetch_giftwraps.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_metadata",
+          "name": "fetch_metadata",
+          "path": "fetch_metadata.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_nip11",
+          "name": "fetch_nip11",
+          "path": "fetch_nip11.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-fetch_relay_list",
+          "name": "fetch_relay_list",
+          "path": "fetch_relay_list.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-form_naddr",
+          "name": "form_naddr",
+          "path": "form_naddr.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-generate_keypair",
+          "name": "generate_keypair",
+          "path": "generate_keypair.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-add",
+          "name": "gnostr-add",
+          "path": "gnostr-add.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-bech32-to-any",
+          "name": "gnostr-bech32-to-any",
+          "path": "gnostr-bech32-to-any.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-blame",
+          "name": "gnostr-blame",
+          "path": "gnostr-blame.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-blockhash",
+          "name": "gnostr-blockhash",
+          "path": "gnostr-blockhash.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-blockheight",
+          "name": "gnostr-blockheight",
+          "path": "gnostr-blockheight.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-cat-file",
+          "name": "gnostr-cat-file",
+          "path": "gnostr-cat-file.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-cli-example",
+          "name": "gnostr-cli-example",
+          "path": "gnostr-cli-example.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-clone",
+          "name": "gnostr-clone",
+          "path": "gnostr-clone.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-decrypt-private_key",
+          "name": "gnostr-decrypt-private_key",
+          "path": "gnostr-decrypt-private_key.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-diff",
+          "name": "gnostr-diff",
+          "path": "gnostr-diff.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-dump-relay",
+          "name": "gnostr-dump-relay",
+          "path": "gnostr-dump-relay.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-encrypt-private_key",
+          "name": "gnostr-encrypt-private_key",
+          "path": "gnostr-encrypt-private_key.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch",
+          "name": "gnostr-fetch",
+          "path": "gnostr-fetch.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-by-id",
+          "name": "gnostr-fetch-by-id",
+          "path": "gnostr-fetch-by-id.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-by-kind-and-author",
+          "name": "gnostr-fetch-by-kind-and-author",
+          "path": "gnostr-fetch-by-kind-and-author.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-metadata",
+          "name": "gnostr-fetch-metadata",
+          "path": "gnostr-fetch-metadata.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-nip11",
+          "name": "gnostr-fetch-nip11",
+          "path": "gnostr-fetch-nip11.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-pubkey-relays",
+          "name": "gnostr-fetch-pubkey-relays",
+          "path": "gnostr-fetch-pubkey-relays.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-relay-list",
+          "name": "gnostr-fetch-relay-list",
+          "path": "gnostr-fetch-relay-list.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-watch-list",
+          "name": "gnostr-fetch-watch-list",
+          "path": "gnostr-fetch-watch-list.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-fetch-watch-list-iterator",
+          "name": "gnostr-fetch-watch-list-iterator",
+          "path": "gnostr-fetch-watch-list-iterator.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-form-event-addr",
+          "name": "gnostr-form-event-addr",
+          "path": "gnostr-form-event-addr.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-generate-keypair",
+          "name": "gnostr-generate-keypair",
+          "path": "gnostr-generate-keypair.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-get-relays",
+          "name": "gnostr-get-relays",
+          "path": "gnostr-get-relays.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-hash",
+          "name": "gnostr-hash",
+          "path": "gnostr-hash.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-init",
+          "name": "gnostr-init",
+          "path": "gnostr-init.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-ls-remote",
+          "name": "gnostr-ls-remote",
+          "path": "gnostr-ls-remote.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-objects",
+          "name": "gnostr-objects",
+          "path": "gnostr-objects.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-pi",
+          "name": "gnostr-pi",
+          "path": "gnostr-pi.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-post-event",
+          "name": "gnostr-post-event",
+          "path": "gnostr-post-event.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-privkey-to-bech32",
+          "name": "gnostr-privkey-to-bech32",
+          "path": "gnostr-privkey-to-bech32.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-pubkey-to-bech32",
+          "name": "gnostr-pubkey-to-bech32",
+          "path": "gnostr-pubkey-to-bech32.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-pull",
+          "name": "gnostr-pull",
+          "path": "gnostr-pull.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-reflog",
+          "name": "gnostr-reflog",
+          "path": "gnostr-reflog.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-rev-list",
+          "name": "gnostr-rev-list",
+          "path": "gnostr-rev-list.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-rev-parse",
+          "name": "gnostr-rev-parse",
+          "path": "gnostr-rev-parse.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-sha256",
+          "name": "gnostr-sha256",
+          "path": "gnostr-sha256.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-state",
+          "name": "gnostr-state",
+          "path": "gnostr-state.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-status",
+          "name": "gnostr-status",
+          "path": "gnostr-status.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-tag",
+          "name": "gnostr-tag",
+          "path": "gnostr-tag.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-verify-keypair",
+          "name": "gnostr-verify-keypair",
+          "path": "gnostr-verify-keypair.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-weeble",
+          "name": "gnostr-weeble",
+          "path": "gnostr-weeble.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-wobble",
+          "name": "gnostr-wobble",
+          "path": "gnostr-wobble.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-gnostr-xor",
+          "name": "gnostr-xor",
+          "path": "gnostr-xor.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-id_to_bech32",
+          "name": "id_to_bech32",
+          "path": "id_to_bech32.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-post_event",
+          "name": "post_event",
+          "path": "post_event.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-post_from_files",
+          "name": "post_from_files",
+          "path": "post_from_files.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-privkey_to_bech32",
+          "name": "privkey_to_bech32",
+          "path": "privkey_to_bech32.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-pubkey_to_bech32",
+          "name": "pubkey_to_bech32",
+          "path": "pubkey_to_bech32.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-test_nip46",
+          "name": "test_nip46",
+          "path": "test_nip46.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-test_relay",
+          "name": "test_relay",
+          "path": "test_relay.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-verify_event",
+          "name": "verify_event",
+          "path": "verify_event.exe",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-pc-windows-msvc-exe-verify_keypair",
+          "name": "verify_keypair",
+          "path": "verify_keypair.exe",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-bins-x86_64-pc-windows-msvc.zip.sha256"
+    },
+    "gnostr-bins-x86_64-pc-windows-msvc.zip.sha256": {
+      "name": "gnostr-bins-x86_64-pc-windows-msvc.zip.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ]
+    },
+    "gnostr-bins-x86_64-unknown-linux-gnu-update": {
+      "name": "gnostr-bins-x86_64-unknown-linux-gnu-update",
+      "kind": "updater",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ]
+    },
+    "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz": {
+      "name": "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz",
+      "kind": "executable-zip",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE-MIT",
+          "path": "LICENSE-MIT",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-bech32_to_any",
+          "name": "bech32_to_any",
+          "path": "bech32_to_any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-create_event",
+          "name": "create_event",
+          "path": "create_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-create_event_raw",
+          "name": "create_event_raw",
+          "path": "create_event_raw",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-create_giftwrap",
+          "name": "create_giftwrap",
+          "path": "create_giftwrap",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-create_nevent",
+          "name": "create_nevent",
+          "path": "create_nevent",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-decrypt_private_key",
+          "name": "decrypt_private_key",
+          "path": "decrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-dump_relay",
+          "name": "dump_relay",
+          "path": "dump_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-dump_relay_with_login",
+          "name": "dump_relay_with_login",
+          "path": "dump_relay_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-encrypt_private_key",
+          "name": "encrypt_private_key",
+          "path": "encrypt_private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_filter",
+          "name": "fetch_by_filter",
+          "path": "fetch_by_filter",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_id",
+          "name": "fetch_by_id",
+          "path": "fetch_by_id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_id_with_login",
+          "name": "fetch_by_id_with_login",
+          "path": "fetch_by_id_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_kind_and_author",
+          "name": "fetch_by_kind_and_author",
+          "path": "fetch_by_kind_and_author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_kind_and_author_limit",
+          "name": "fetch_by_kind_and_author_limit",
+          "path": "fetch_by_kind_and_author_limit",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_by_kind_and_author_with_login",
+          "name": "fetch_by_kind_and_author_with_login",
+          "path": "fetch_by_kind_and_author_with_login",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_giftwraps",
+          "name": "fetch_giftwraps",
+          "path": "fetch_giftwraps",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_metadata",
+          "name": "fetch_metadata",
+          "path": "fetch_metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_nip11",
+          "name": "fetch_nip11",
+          "path": "fetch_nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-fetch_relay_list",
+          "name": "fetch_relay_list",
+          "path": "fetch_relay_list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-form_naddr",
+          "name": "form_naddr",
+          "path": "form_naddr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-generate_keypair",
+          "name": "generate_keypair",
+          "path": "generate_keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-add",
+          "name": "gnostr-add",
+          "path": "gnostr-add",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-bech32-to-any",
+          "name": "gnostr-bech32-to-any",
+          "path": "gnostr-bech32-to-any",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-blame",
+          "name": "gnostr-blame",
+          "path": "gnostr-blame",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-blockhash",
+          "name": "gnostr-blockhash",
+          "path": "gnostr-blockhash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-blockheight",
+          "name": "gnostr-blockheight",
+          "path": "gnostr-blockheight",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-cat-file",
+          "name": "gnostr-cat-file",
+          "path": "gnostr-cat-file",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-cli-example",
+          "name": "gnostr-cli-example",
+          "path": "gnostr-cli-example",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-clone",
+          "name": "gnostr-clone",
+          "path": "gnostr-clone",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-decrypt-private_key",
+          "name": "gnostr-decrypt-private_key",
+          "path": "gnostr-decrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-diff",
+          "name": "gnostr-diff",
+          "path": "gnostr-diff",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-dump-relay",
+          "name": "gnostr-dump-relay",
+          "path": "gnostr-dump-relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-encrypt-private_key",
+          "name": "gnostr-encrypt-private_key",
+          "path": "gnostr-encrypt-private_key",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch",
+          "name": "gnostr-fetch",
+          "path": "gnostr-fetch",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-by-id",
+          "name": "gnostr-fetch-by-id",
+          "path": "gnostr-fetch-by-id",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-by-kind-and-author",
+          "name": "gnostr-fetch-by-kind-and-author",
+          "path": "gnostr-fetch-by-kind-and-author",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-metadata",
+          "name": "gnostr-fetch-metadata",
+          "path": "gnostr-fetch-metadata",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-nip11",
+          "name": "gnostr-fetch-nip11",
+          "path": "gnostr-fetch-nip11",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-pubkey-relays",
+          "name": "gnostr-fetch-pubkey-relays",
+          "path": "gnostr-fetch-pubkey-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-relay-list",
+          "name": "gnostr-fetch-relay-list",
+          "path": "gnostr-fetch-relay-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-watch-list",
+          "name": "gnostr-fetch-watch-list",
+          "path": "gnostr-fetch-watch-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-fetch-watch-list-iterator",
+          "name": "gnostr-fetch-watch-list-iterator",
+          "path": "gnostr-fetch-watch-list-iterator",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-form-event-addr",
+          "name": "gnostr-form-event-addr",
+          "path": "gnostr-form-event-addr",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-generate-keypair",
+          "name": "gnostr-generate-keypair",
+          "path": "gnostr-generate-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-get-relays",
+          "name": "gnostr-get-relays",
+          "path": "gnostr-get-relays",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-hash",
+          "name": "gnostr-hash",
+          "path": "gnostr-hash",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-init",
+          "name": "gnostr-init",
+          "path": "gnostr-init",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-ls-remote",
+          "name": "gnostr-ls-remote",
+          "path": "gnostr-ls-remote",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-objects",
+          "name": "gnostr-objects",
+          "path": "gnostr-objects",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-pi",
+          "name": "gnostr-pi",
+          "path": "gnostr-pi",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-post-event",
+          "name": "gnostr-post-event",
+          "path": "gnostr-post-event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-privkey-to-bech32",
+          "name": "gnostr-privkey-to-bech32",
+          "path": "gnostr-privkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-pubkey-to-bech32",
+          "name": "gnostr-pubkey-to-bech32",
+          "path": "gnostr-pubkey-to-bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-pull",
+          "name": "gnostr-pull",
+          "path": "gnostr-pull",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-reflog",
+          "name": "gnostr-reflog",
+          "path": "gnostr-reflog",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-rev-list",
+          "name": "gnostr-rev-list",
+          "path": "gnostr-rev-list",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-rev-parse",
+          "name": "gnostr-rev-parse",
+          "path": "gnostr-rev-parse",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-sha256",
+          "name": "gnostr-sha256",
+          "path": "gnostr-sha256",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-state",
+          "name": "gnostr-state",
+          "path": "gnostr-state",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-status",
+          "name": "gnostr-status",
+          "path": "gnostr-status",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-tag",
+          "name": "gnostr-tag",
+          "path": "gnostr-tag",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-verify-keypair",
+          "name": "gnostr-verify-keypair",
+          "path": "gnostr-verify-keypair",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-weeble",
+          "name": "gnostr-weeble",
+          "path": "gnostr-weeble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-wobble",
+          "name": "gnostr-wobble",
+          "path": "gnostr-wobble",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-gnostr-xor",
+          "name": "gnostr-xor",
+          "path": "gnostr-xor",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-id_to_bech32",
+          "name": "id_to_bech32",
+          "path": "id_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-post_event",
+          "name": "post_event",
+          "path": "post_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-post_from_files",
+          "name": "post_from_files",
+          "path": "post_from_files",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-privkey_to_bech32",
+          "name": "privkey_to_bech32",
+          "path": "privkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-pubkey_to_bech32",
+          "name": "pubkey_to_bech32",
+          "path": "pubkey_to_bech32",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-test_nip46",
+          "name": "test_nip46",
+          "path": "test_nip46",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-test_relay",
+          "name": "test_relay",
+          "path": "test_relay",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-verify_event",
+          "name": "verify_event",
+          "path": "verify_event",
+          "kind": "executable"
+        },
+        {
+          "id": "gnostr-bins-x86_64-unknown-linux-gnu-exe-verify_keypair",
+          "name": "verify_keypair",
+          "path": "verify_keypair",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256"
+    },
+    "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256": {
+      "name": "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ]
+    },
+    "gnostr-bins.rb": {
+      "name": "gnostr-bins.rb",
+      "kind": "installer",
+      "target_triples": [
+        "aarch64-apple-darwin",
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-gnu",
+        "x86_64-unknown-linux-gnu"
+      ],
+      "install_hint": "brew install gnostr-org/gnostr-org/gnostr-bins",
+      "description": "Install prebuilt binaries via Homebrew"
+    },
+    "sha256.sum": {
+      "name": "sha256.sum",
+      "kind": "unified-checksum"
+    },
+    "source.tar.gz": {
+      "name": "source.tar.gz",
+      "kind": "source-tarball",
+      "checksum": "source.tar.gz.sha256"
+    },
+    "source.tar.gz.sha256": {
+      "name": "source.tar.gz.sha256",
+      "kind": "checksum"
+    }
+  },
+  "systems": {
+    "host:create:all:": {
+      "id": "host:create:all:",
+      "cargo_version_line": "cargo 1.86.0 (adf9b6ad1 2025-02-28)",
+      "build_environment": {
+        "macos": {
+          "os_version": "13.5"
+        }
+      }
+    }
+  },
+  "publish_prereleases": false,
+  "force_latest": false,
+  "ci": {
+    "github": {
+      "artifacts_matrix": {
+        "include": [
+          {
+            "runner": "macos-13",
+            "host": "x86_64-apple-darwin",
+            "install_dist": {
+              "shell": "sh",
+              "run": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.sh | sh"
+            },
+            "dist_args": "--artifacts=local --target=aarch64-apple-darwin",
+            "targets": [
+              "aarch64-apple-darwin"
+            ],
+            "cache_provider": "github"
+          },
+          {
+            "runner": "macos-13",
+            "host": "x86_64-apple-darwin",
+            "install_dist": {
+              "shell": "sh",
+              "run": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.sh | sh"
+            },
+            "dist_args": "--artifacts=local --target=x86_64-apple-darwin",
+            "targets": [
+              "x86_64-apple-darwin"
+            ],
+            "cache_provider": "github"
+          },
+          {
+            "runner": "windows-2019",
+            "host": "x86_64-pc-windows-msvc",
+            "install_dist": {
+              "shell": "pwsh",
+              "run": "irm https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.ps1 | iex"
+            },
+            "dist_args": "--artifacts=local --target=x86_64-pc-windows-msvc",
+            "targets": [
+              "x86_64-pc-windows-msvc"
+            ],
+            "cache_provider": "github"
+          },
+          {
+            "runner": "ubuntu-latest",
+            "host": "x86_64-unknown-linux-gnu",
+            "install_dist": {
+              "shell": "sh",
+              "run": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.sh | sh"
+            },
+            "dist_args": "--artifacts=local --target=x86_64-unknown-linux-gnu",
+            "targets": [
+              "x86_64-unknown-linux-gnu"
+            ],
+            "cache_provider": "github"
+          }
+        ]
+      },
+      "pr_run_mode": "plan"
+    }
+  },
+  "linkage": [],
+  "upload_files": []
+}
