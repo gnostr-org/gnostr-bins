@@ -1,14 +1,14 @@
 {
   "dist_version": "0.28.0",
-  "announcement_tag": "v0.0.67",
+  "announcement_tag": "v0.0.71",
   "announcement_tag_is_implicit": false,
   "announcement_is_prerelease": false,
-  "announcement_title": "v0.0.67",
-  "announcement_github_body": "## Install gnostr-bins 0.0.67\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.sh | sh\n```\n\n### Install prebuilt binaries via powershell script\n\n```sh\npowershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.ps1 | iex\"\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install gnostr-org/gnostr-org/gnostr-bins\n```\n\n## Download gnostr-bins 0.0.67\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [gnostr-bins-aarch64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-aarch64-apple-darwin.tar.xz) | Apple Silicon macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-aarch64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-apple-darwin.tar.xz) | Intel macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-pc-windows-msvc.zip](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-pc-windows-msvc.zip) | x64 Windows | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-pc-windows-msvc.zip.sha256) |\n| [gnostr-bins-x86_64-unknown-linux-gnu.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz) | x64 Linux | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256) |\n\n",
+  "announcement_title": "v0.0.71",
+  "announcement_github_body": "## Install gnostr-bins 0.0.71\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-installer.sh | sh\n```\n\n### Install prebuilt binaries via powershell script\n\n```sh\npowershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-installer.ps1 | iex\"\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install gnostr-org/gnostr-org/gnostr-bins\n```\n\n## Download gnostr-bins 0.0.71\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [gnostr-bins-aarch64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-aarch64-apple-darwin.tar.xz) | Apple Silicon macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-aarch64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-apple-darwin.tar.xz) | Intel macOS | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-apple-darwin.tar.xz.sha256) |\n| [gnostr-bins-x86_64-pc-windows-msvc.zip](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-pc-windows-msvc.zip) | x64 Windows | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-pc-windows-msvc.zip.sha256) |\n| [gnostr-bins-x86_64-unknown-linux-gnu.tar.xz](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz) | x64 Linux | [checksum](https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256) |\n\n",
   "releases": [
     {
       "app_name": "gnostr-bins",
-      "app_version": "0.0.67",
+      "app_version": "0.0.71",
       "env": {
         "install_dir_env_var": "GNOSTR_BINS_INSTALL_DIR",
         "unmanaged_dir_env_var": "GNOSTR_BINS_UNMANAGED_INSTALL",
@@ -26,6 +26,9 @@
         "gnostr-bins-installer.ps1",
         "gnostr-bins.rb",
         "sha256.sum",
+        "gnostr-bins-aarch64-apple-darwin-update",
+        "gnostr-bins-aarch64-apple-darwin.tar.xz",
+        "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256",
         "gnostr-bins-x86_64-apple-darwin-update",
         "gnostr-bins-x86_64-apple-darwin.tar.xz",
         "gnostr-bins-x86_64-apple-darwin.tar.xz.sha256",
@@ -34,15 +37,12 @@
         "gnostr-bins-x86_64-pc-windows-msvc.zip.sha256",
         "gnostr-bins-x86_64-unknown-linux-gnu-update",
         "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz",
-        "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256",
-        "gnostr-bins-aarch64-apple-darwin-update",
-        "gnostr-bins-aarch64-apple-darwin.tar.xz",
-        "gnostr-bins-aarch64-apple-darwin.tar.xz.sha256"
+        "gnostr-bins-x86_64-unknown-linux-gnu.tar.xz.sha256"
       ],
       "hosting": {
         "github": {
           "artifact_base_url": "https://github.com",
-          "artifact_download_path": "/gnostr-org/gnostr-bins/releases/download/v0.0.67",
+          "artifact_download_path": "/gnostr-org/gnostr-bins/releases/download/v0.0.71",
           "owner": "gnostr-org",
           "repo": "gnostr-bins"
         }
@@ -536,7 +536,7 @@
         "x86_64-pc-windows-gnu",
         "x86_64-pc-windows-msvc"
       ],
-      "install_hint": "powershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.ps1 | iex\"",
+      "install_hint": "powershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-installer.ps1 | iex\"",
       "description": "Install prebuilt binaries via powershell script"
     },
     "gnostr-bins-installer.sh": {
@@ -548,7 +548,7 @@
         "x86_64-pc-windows-gnu",
         "x86_64-unknown-linux-gnu"
       ],
-      "install_hint": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.67/gnostr-bins-installer.sh | sh",
+      "install_hint": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-bins/releases/download/v0.0.71/gnostr-bins-installer.sh | sh",
       "description": "Install prebuilt binaries via shell script"
     },
     "gnostr-bins-x86_64-apple-darwin-update": {
@@ -2028,19 +2028,6 @@
     "github": {
       "artifacts_matrix": {
         "include": [
-          {
-            "runner": "macos-13",
-            "host": "x86_64-apple-darwin",
-            "install_dist": {
-              "shell": "sh",
-              "run": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.sh | sh"
-            },
-            "dist_args": "--artifacts=local --target=aarch64-apple-darwin",
-            "targets": [
-              "aarch64-apple-darwin"
-            ],
-            "cache_provider": "github"
-          },
           {
             "runner": "macos-13",
             "host": "x86_64-apple-darwin",
