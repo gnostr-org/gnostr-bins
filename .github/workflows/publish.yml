@@ -35,6 +35,6 @@ jobs:
           -p gnostr-types
           cargo publish \
           --token ${CRATES_TOKEN} \
-          -p gnostr-bins
+          -p gnostr-bins || true
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
