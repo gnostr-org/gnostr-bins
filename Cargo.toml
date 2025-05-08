@@ -1,5 +1,5 @@
 [workspace.package]
-version = "0.0.65"
+version = "0.0.67"
 ## check Cargo.toml gnip44 dep version
 ## check Cargo.toml gnostr-types dep version
 ## check ./types/Cargo.toml gnip44 dep version
@@ -36,14 +36,14 @@ futures = "0.3.30"
 futures-util = "0.3"
 getopts = "0.2.21"
 git2 = "^0.18"
-gnip44 = { path = "gnip44", package = "gnip44", version = "0.0.65" }
+gnip44 = { path = "gnip44", package = "gnip44", version = "0.0.67" }
 hex = "0.4"
 http = "1.1"
 k256 = { version = "0.13", features = [ "schnorr", "ecdh" ] }
 lazy_static = "1.4"
 lightning = { version = "0.0.123-beta", path = "lightning/lightning" }
 log = "0.4.22"
-nostr-types = { path = "types", package = "gnostr-types", version = "0.0.65" }
+nostr-types = { path = "types", package = "gnostr-types", version = "0.0.67" }
 num-bigint = "0.4.6"
 rand = "0.8"
 rand_core = "0.6"
@@ -60,7 +60,7 @@ tungstenite = { version = "0.21", features = [ "rustls-tls-webpki-roots" ] }
 zeroize = "1.5"
 
 [dev-dependencies]
-cargo-dist = "0.21.1"
+cargo-dist = "0.28.0"
 
 [workspace]
 members = [
@@ -81,22 +81,3 @@ lto = "thin"
 
 [build-dependencies]
 chrono = "0.4.41"
-
-# Config for 'cargo dist'
-[workspace.metadata.dist]
-# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.21.1"
-# CI backends to support
-ci = "github"
-# The installers to generate for each app
-installers = ["shell", "powershell", "homebrew"]
-# A GitHub repo to push Homebrew formulas to
-tap = "gnostr-org/homebrew-gnostr-org"
-# Target platforms to build apps for (Rust target-triple syntax)
-targets = ["x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
-# Path that installers should place binaries in
-install-path = "CARGO_HOME"
-# Publish jobs to run in CI
-publish-jobs = ["homebrew"]
-# Whether to install an updater program
-install-updater = true
